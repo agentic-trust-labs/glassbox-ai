@@ -198,6 +198,6 @@ MIT
 
 ---
 
-Built by [Sourabh Gupta](https://github.com/sourabharsh) at [Agentic Trust Labs](https://github.com/agentic-trust-labs)
+Built by [Sourabh Gupta](https://www.linkedin.com/in/sourabhgupta16/) at [Agentic Trust Labs](https://github.com/agentic-trust-labs)
 
 **💎 Trust is earned, not assumed.**
