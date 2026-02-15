@@ -16,7 +16,8 @@ class Tester(BaseAgent):
 
     def __init__(self, client: OpenAI, github: GitHubClient, settings: Settings,
                  test_runner: TestRunner):
-        super().__init__(name="GlassBox Tester", avatar="🧪", client=client, github=github, settings=settings)
+        super().__init__(name="GlassBox Tester", avatar="\U0001f985", client=client, github=github, settings=settings,
+                         avatar_img="hawk.svg", title="The Skeptic")
         self.runner = test_runner
 
     def think(self, context: dict) -> str:

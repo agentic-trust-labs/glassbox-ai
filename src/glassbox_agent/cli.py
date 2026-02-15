@@ -69,7 +69,7 @@ def run_pipeline(issue_number: int) -> None:
     if triage.skip_reason:
         skip_body = manager.format_briefing(triage, template)
         github.silent_update(issue_number, ack_comment_id,
-                             f"🎯 **GlassBox Manager**\n\n⏭️ Skipping: {triage.skip_reason}\n\n{skip_body}")
+                             f"{manager.header}\n\n⏭️ Skipping: {triage.skip_reason}\n\n{skip_body}")
         print(f"  Skipping: {triage.skip_reason}")
         return
 
@@ -77,7 +77,7 @@ def run_pipeline(issue_number: int) -> None:
     briefing = manager.format_briefing(triage, template)
     ack_comment_id = github.silent_update(
         issue_number, ack_comment_id,
-        f"{make_phase_tag(PHASE_CLASSIFY)}\n🎯 **GlassBox Manager**\n\nPicked up **#{issue_number}**: \"{title}\"\n\n{briefing}",
+        f"{make_phase_tag(PHASE_CLASSIFY)}\n{manager.header}\n\nPicked up **#{issue_number}**: \"{title}\"\n\n{briefing}",
     )
 
     # ── Step 3: JuniorDev reacts + generates fix ──
@@ -129,9 +129,9 @@ def run_pipeline(issue_number: int) -> None:
     else:
         # All attempts exhausted
         report = tester.format_report(result, triage.edge_cases, template.max_diff_lines)
-        github.post_comment(issue_number, f"🧪 **GlassBox Tester**\n\n{report}")
+        github.post_comment(issue_number, f"{tester.header}\n\n{report}")
         github.post_comment(issue_number,
-                            f"🎯 **GlassBox Manager**\n\n❌ Fix failed after {template.max_attempts} attempts. Manual fix needed.")
+                            f"{manager.header}\n\n❌ Fix failed after {template.max_attempts} attempts. Manual fix needed.")
         memory.save_reflection(MemoryStore.Reflection(
             issue_number=issue_number, issue_title=title,
             template_id=template.id, reflection=feedback,

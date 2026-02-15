@@ -67,7 +67,8 @@ class JuniorDev(BaseAgent):
 
     def __init__(self, client: OpenAI, github: GitHubClient, settings: Settings,
                  editor: CodeEditor, file_reader: FileReader):
-        super().__init__(name="GlassBox Junior Dev", avatar="🔧", client=client, github=github, settings=settings)
+        super().__init__(name="GlassBox Junior Dev", avatar="\U0001f9ab", client=client, github=github, settings=settings,
+                         avatar_img="beaver.svg", title="The Builder")
         self.editor = editor
         self.reader = file_reader
 
@@ -131,7 +132,7 @@ class JuniorDev(BaseAgent):
 
     def format_comment(self, fix: Fix) -> str:
         """Format fix details as a GitHub comment."""
-        lines = ["🔧 **GlassBox JuniorDev** — Generating fix...\n"]
+        lines = ["Generating fix...\n"]
         for edit in fix.edits:
             lines.append(f"**[{edit.file}](https://github.com/{self.settings.repo}/blob/main/{edit.file}#L{edit.start_line})** line {edit.start_line}-{edit.end_line}:")
             lines.append(f"```python\n{edit.new_text}```")

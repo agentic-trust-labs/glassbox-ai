@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="110" viewBox="0 0 120 110" fill="none">
+  <ellipse cx="30" cy="86" rx="16" ry="7" fill="#1a5c38" stroke="#4ade80" stroke-width="1.5" transform="rotate(-15 30 86)"/>
+  <line x1="20" y1="83" x2="40" y2="83" stroke="#4ade80" stroke-width="0.7" opacity="0.4" transform="rotate(-15 30 86)"/>
+  <line x1="20" y1="87" x2="40" y2="87" stroke="#4ade80" stroke-width="0.7" opacity="0.4" transform="rotate(-15 30 86)"/>
+  <line x1="20" y1="91" x2="40" y2="91" stroke="#4ade80" stroke-width="0.7" opacity="0.4" transform="rotate(-15 30 86)"/>
+  <ellipse cx="64" cy="66" rx="26" ry="28" fill="#122e20" stroke="#4ade80" stroke-width="2"/>
+  <circle cx="64" cy="38" r="20" fill="#143d28" stroke="#4ade80" stroke-width="2"/>
+  <circle cx="46" cy="24" r="6" fill="#1a5c38" stroke="#4ade80" stroke-width="1.5"/>
+  <circle cx="82" cy="24" r="6" fill="#1a5c38" stroke="#4ade80" stroke-width="1.5"/>
+  <circle cx="56" cy="36" r="4" fill="#4ade80"/>
+  <circle cx="72" cy="36" r="4" fill="#4ade80"/>
+  <circle cx="57" cy="35" r="1.5" fill="#fff" opacity="0.5"/>
+  <circle cx="73" cy="35" r="1.5" fill="#fff" opacity="0.5"/>
+  <ellipse cx="64" cy="44" rx="4" ry="3" fill="#4ade80" opacity="0.5"/>
+  <rect x="60" y="48" width="3.5" height="5" rx="1" fill="#4ade80" opacity="0.7"/>
+  <rect x="64.5" y="48" width="3.5" height="5" rx="1" fill="#4ade80" opacity="0.7"/>
+  <circle cx="46" cy="64" r="5" fill="#143d28" stroke="#4ade80" stroke-width="1.5"/>
+  <circle cx="82" cy="64" r="5" fill="#143d28" stroke="#4ade80" stroke-width="1.5"/>
+  <line x1="88" y1="58" x2="102" y2="44" stroke="#4ade80" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+  <circle cx="104" cy="42" r="5" fill="none" stroke="#4ade80" stroke-width="1.5" opacity="0.6"/>
+</svg>

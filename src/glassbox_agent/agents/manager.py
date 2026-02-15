@@ -51,7 +51,8 @@ class Manager(BaseAgent):
 
     def __init__(self, client: OpenAI, github: GitHubClient, settings: Settings,
                  template_loader: TemplateLoader, memory: MemoryStore):
-        super().__init__(name="GlassBox Manager", avatar="🎯", client=client, github=github, settings=settings)
+        super().__init__(name="GlassBox Manager", avatar="\U0001f989", client=client, github=github, settings=settings,
+                         avatar_img="owl.svg", title="The Strategist")
         self.templates = template_loader
         self.memory = memory
 
