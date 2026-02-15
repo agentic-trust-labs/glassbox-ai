@@ -303,3 +303,52 @@ def build_guidance_prompt(guidance: AuthorGuidance) -> str
 ```yaml
 run: python -m glassbox_agent.cli ${{ github.event.issue.number }} --comment-id ${{ github.event.comment.id }}
 ```
+
+---
+
+## 7. Live Simulation Results (2026-02-16)
+
+Three real GitHub issues were created, labeled, and redirected mid-run to test the HITL system end-to-end.
+
+### 7.1 Simulation Matrix
+
+| Issue | Title | Author Comment | Detected Intent | Detected Phase | Pipeline Ran | PR Created |
+|-------|-------|---------------|-----------------|----------------|-------------|-----------|
+| **#126** | get_trust returns 0.50 instead of 0.85 | "don't touch SQL schema, only Python return value" | `constrain` | (empty) | Yes (twice - race) | No (empty URL) |
+| **#127** | trust_floor is 0.03 instead of 0.30 | "this is wrong_value not typo, don't modify test files" | `redirect` | `classify` | Yes | Yes (#129) |
+| **#128** | debate rounds default to 1 instead of 3 | "never mind, hold on" then "actually go ahead, only change function signature" | `abort` then `approve` | (empty) | Abort exited, second run succeeded | Yes (#130) |
+
+### 7.2 What Worked
+
+- **Intent detection**: All intents (`constrain`, `redirect`, `abort`, `approve`) were correctly identified from natural language
+- **Phase detection**: When keywords matched ("template" -> classify), phase was correctly detected
+- **Abort flow**: "never mind, hold on" -> agent posted "Understood. Stepping back." and exited cleanly
+- **Re-redirect after abort**: Second comment triggered a fresh pipeline run that succeeded
+- **Phase tags**: All 4 bot comments (classify, fix, test, pr) correctly embedded `<!-- glassbox:phase=X -->` tags
+- **Guidance injection**: `AUTHOR_GUIDANCE` env var was set and passed as `feedback` to JuniorDev
+- **Workflow YAML**: `--comment-id` flag correctly passed for `issue_comment` events, omitted for `issues` events
+
+### 7.3 Bugs Found
+
+| # | Bug | Severity | Edge Case | Root Cause | Fix |
+|---|-----|----------|-----------|-----------|-----|
+| **B1** | **Race condition: label + comment triggers run concurrently** - #126 had both a label-triggered run AND a comment-triggered run execute simultaneously on the same branch, producing 8 duplicate bot comments | High | EC28, CH5 | Workflow has no concurrency guard. Both `issues.labeled` and `issue_comment.created` fire independently. | Add `concurrency: group: issue-${{ github.event.issue.number }}` to workflow YAML |
+| **B2** | **Empty PR URL on concurrent runs** - Both runs on #126 tried to create/push `agent/issue-126` branch simultaneously. `create_pr` returned empty string, approval comment shows no PR link | High | CH5 | `create_branch()` calls `git push origin --delete` + `git checkout -b`. Two runs racing on same branch causes push failures | Fix B1 (concurrency). Also add error handling in `create_pr` to detect and report failures |
+| **B3** | **Phase detection empty when no prior bot comments** - On first comment-triggered run (#126, #128), `phase=` is empty because there are no prior bot comments with phase tags to reference | Medium | EC04 | `detect_reference_phase()` returns empty when `bot_comments` list is empty (no prior bot comments exist yet). Falls through to default, but default requires `bot_comments[-1]` | Add guard: if no bot comments, default to `PHASE_FIX` (most common redirect target) |
+| **B4** | **No "resuming with guidance" message** - When HITL re-runs the pipeline, the author sees duplicate classify/fix/test/pr comments with no indication that guidance was applied | Medium | SA5 | `run_guided()` sets env var and calls `run_pipeline()` but doesn't post an acknowledgment comment explaining what it parsed | Add a brief ack: "Resuming with your guidance: [parsed text]. Intent: [intent]" |
+| **B5** | **Phase tag position in fix/test/pr comments** - Phase tags appear after the agent header (`🔧 **GlassBox Junior Dev**\n\n<!-- glassbox:phase=fix -->`) instead of at the very start | Low | SA4 | `junior.comment()` from `base_agent.py` prepends agent header. The tag we pass in the body ends up after the header | Not blocking - `extract_phase_tag()` uses regex search (not match), so it finds the tag anywhere in the body |
+| **B6** | **Only 1 of 3 label events fired** - Three issues were labeled in quick succession but only issue #126 got a label-triggered workflow run | Low | CH5 | GitHub rate-limits webhook deliveries. Rapid labeling may coalesce events or drop some | Not critical - the comment trigger serves as backup. Could stagger label additions in automation |
+
+### 7.4 Priority Fixes
+
+**Must fix (before next deploy):**
+1. **B1**: Add workflow concurrency group - prevents duplicate runs on same issue
+2. **B2**: Resolved by B1. Add defensive error logging in `create_pr` as belt-and-suspenders
+
+**Should fix (next iteration):**
+3. **B3**: Default to `PHASE_FIX` when no bot comments exist
+4. **B4**: Post ack comment before re-running pipeline in `run_guided()`
+
+**Nice to have:**
+5. **B5**: Move phase tag injection into `base_agent.comment()` so it's always first
+6. **B6**: No code fix needed - document as known behavior

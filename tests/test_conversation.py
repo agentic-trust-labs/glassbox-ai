@@ -64,6 +64,15 @@ def test_detect_reference_defaults_to_latest():
     assert detect_reference_phase("hello", bots) == "test"
 
 
+def test_detect_reference_defaults_to_fix_when_no_phase():
+    bots = [BotComment(1, "")]  # ack comment with no phase tag
+    assert detect_reference_phase("hello", bots) == "fix"
+
+
+def test_detect_reference_defaults_to_fix_when_empty():
+    assert detect_reference_phase("hello", []) == "fix"
+
+
 # ── parse_intent ──
 
 def test_intent_redirect():

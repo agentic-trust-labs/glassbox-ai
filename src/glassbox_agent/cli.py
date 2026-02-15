@@ -184,6 +184,9 @@ def run_guided(issue_number: int, comment_id: int) -> None:
     print(f"  intent={guidance.intent} phase={guidance.reference_phase}")
     if guidance.intent == "abort":
         github.post_comment(issue_number, "🎯 **GlassBox Manager**\n\nUnderstood. Stepping back."); return
+    github.post_comment(issue_number,
+        f"🎯 **GlassBox Manager**\n\nResuming from **{guidance.reference_phase}** with your guidance.\n\n"
+        f"> {guidance.guidance_text[:200]}")
     os.environ["AUTHOR_GUIDANCE"] = build_guidance_prompt(guidance)
     run_pipeline(issue_number)
 

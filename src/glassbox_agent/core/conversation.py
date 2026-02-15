@@ -147,11 +147,12 @@ def detect_reference_phase(author_body: str, bot_comments: list[BotComment]) -> 
             if kw in body_lower:
                 return phase
 
-    # 3. Default: latest bot comment
+    # 3. Default: latest bot comment with a known phase, or PHASE_FIX
     if bot_comments:
-        return bot_comments[-1].phase
-
-    return PHASE_CLASSIFY
+        for bc in reversed(bot_comments):
+            if bc.phase:
+                return bc.phase
+    return PHASE_FIX
 
 
 def parse_intent(author_body: str) -> tuple[str, list[str]]:
