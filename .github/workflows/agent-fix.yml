@@ -82,4 +82,9 @@ jobs:
           GH_TOKEN: ${{ secrets.BOT_PAT }}
           ACK_COMMENT_ID: ${{ needs.ack.outputs.comment_id }}
           PYTHONPATH: src
-        run: python -m glassbox_agent.cli ${{ github.event.issue.number }}
+        run: |
+          if [ "${{ github.event_name }}" = "issue_comment" ]; then
+            python -m glassbox_agent.cli ${{ github.event.issue.number }} --comment-id ${{ github.event.comment.id }}
+          else
+            python -m glassbox_agent.cli ${{ github.event.issue.number }}
+          fi

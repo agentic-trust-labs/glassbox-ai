@@ -58,6 +58,16 @@ class GitHubClient:
         )
         return result.returncode == 0
 
+    def fetch_comments(self, issue_number: int) -> list[dict]:
+        """Fetch all comments on an issue. Returns list of dicts with id, body, user."""
+        result = self._gh_api(f"repos/{self._repo}/issues/{issue_number}/comments", method="GET")
+        if result.returncode != 0:
+            return []
+        try:
+            return json.loads(result.stdout)
+        except (json.JSONDecodeError, TypeError):
+            return []
+
     def create_branch(self, branch: str) -> None:
         """Delete old branch if exists, create fresh from main."""
         self._sh(f"git push origin --delete {branch} 2>/dev/null")

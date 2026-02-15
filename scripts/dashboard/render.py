@@ -9,12 +9,41 @@ from typing import Dict, List
 from .config import REPO
 
 
+MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+          "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+
+
+def _fmt_date(iso: str) -> str:
+    """Format ISO date to Indian style: 12 May 26, 18:30"""
+    if not iso:
+        return "-"
+    try:
+        dt = datetime.strptime(iso[:19], "%Y-%m-%dT%H:%M:%S").replace(tzinfo=timezone.utc)
+        # Convert to IST (UTC+5:30)
+        from datetime import timedelta
+        dt = dt + timedelta(hours=5, minutes=30)
+        d = dt.day
+        m = MONTHS[dt.month - 1]
+        y = str(dt.year)[2:]
+        t = dt.strftime("%H:%M")
+        return f'{d} {m} {y}, <span style="color:#8b949e">{t}</span>'
+    except (ValueError, TypeError):
+        return iso[:16]
+
+
 class DashboardRenderer:
     """Generates a complete HTML dashboard from agent data."""
 
     def __init__(self, data: Dict):
         self._data = data
-        self._now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+        now = datetime.now(timezone.utc)
+        from datetime import timedelta
+        ist = now + timedelta(hours=5, minutes=30)
+        d = ist.day
+        m = MONTHS[ist.month - 1]
+        y = str(ist.year)[2:]
+        t = ist.strftime("%H:%M")
+        self._now = f"{d} {m} {y}, {t} IST"
 
     def _esc(self, text: str) -> str:
         return html.escape(str(text))
@@ -35,9 +64,11 @@ class DashboardRenderer:
         pr_created = sum(1 for i in agent if i["outcome"] in ("merged", "open_pr", "closed"))
         success_rate = (merged / total_agent * 100) if total_agent > 0 else 0
 
-        total_runs = len(runs)
-        run_success = sum(1 for r in runs if r.get("conclusion") == "success")
-        run_fail = sum(1 for r in runs if r.get("conclusion") == "failure")
+        # Only agent-relevant runs (triggered by issues or issue_comment)
+        agent_runs = [r for r in runs if r.get("event") in ("issues", "issue_comment")]
+        total_runs = len(agent_runs)
+        run_success = sum(1 for r in agent_runs if r.get("conclusion") == "success")
+        run_fail = sum(1 for r in agent_runs if r.get("conclusion") == "failure")
 
         # Failure pattern analysis
         patterns = {}
@@ -46,26 +77,27 @@ class DashboardRenderer:
             if not msg:
                 continue
             if "IndentationError" in msg:
-                patterns.setdefault("IndentationError", []).append(i["number"])
+                patterns.setdefault("IndentationError", []).append(i)
             elif "OperationalError" in msg or "SQL" in msg.lower() or "DEFAULT_TRUST" in msg:
-                patterns.setdefault("SQL / Variable", []).append(i["number"])
+                patterns.setdefault("SQL / Variable Error", []).append(i)
             elif "AttributeError" in msg:
-                patterns.setdefault("AttributeError", []).append(i["number"])
+                patterns.setdefault("AttributeError", []).append(i)
             elif "SyntaxError" in msg or "Syntax error" in msg:
-                patterns.setdefault("SyntaxError", []).append(i["number"])
+                patterns.setdefault("SyntaxError", []).append(i)
             elif "Tests failed" in msg:
-                patterns.setdefault("Test Failure", []).append(i["number"])
+                patterns.setdefault("Test Failure", []).append(i)
             elif "Debate could not approve" in msg:
-                patterns.setdefault("Debate Rejection", []).append(i["number"])
+                patterns.setdefault("Debate Rejection", []).append(i)
             else:
-                patterns.setdefault("Other", []).append(i["number"])
+                patterns.setdefault("_other_", []).append(i)
 
         return {
             "total_agent": total_agent, "merged": merged, "failed": failed,
             "open_pr": open_pr, "analyzed": analyzed, "pr_created": pr_created,
             "by_label": by_label, "by_mention": by_mention,
             "success_rate": success_rate, "total_runs": total_runs,
-            "run_success": run_success, "run_fail": run_fail, "patterns": patterns,
+            "run_success": run_success, "run_fail": run_fail,
+            "agent_runs": agent_runs, "patterns": patterns,
         }
 
     # ── CSS ───────────────────────────────────────────────────────────────
@@ -73,124 +105,131 @@ class DashboardRenderer:
     def _css(self) -> str:
         return """
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background: #0d1117; color: #e6edf3; line-height: 1.6; }
-        .container { max-width: 1280px; margin: 0 auto; padding: 32px 24px; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background: #0d1117; color: #c9d1d9; line-height: 1.6; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 32px 24px; }
 
-        .header { text-align: center; margin-bottom: 48px; }
-        .header h1 { font-size: 32px; font-weight: 800; letter-spacing: -0.5px; }
-        .header .subtitle { color: #8b949e; font-size: 14px; margin-top: 8px; }
-        .header .version { display: inline-block; background: #238636; color: #fff; padding: 2px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; margin-left: 8px; vertical-align: middle; }
+        .header { text-align: center; margin-bottom: 40px; }
+        .header h1 { font-size: 24px; font-weight: 700; color: #e6edf3; }
+        .header .subtitle { color: #8b949e; font-size: 13px; margin-top: 4px; }
+        .header .ver { color: #8b949e; font-size: 11px; border: 1px solid #30363d; padding: 1px 8px; border-radius: 10px; margin-left: 6px; }
 
-        .section { margin-bottom: 48px; }
-        .section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid #30363d; }
-        .section-header h2 { font-size: 20px; font-weight: 700; }
-        .section-header .badge { background: #30363d; color: #8b949e; padding: 2px 10px; border-radius: 10px; font-size: 12px; }
+        .section { margin-bottom: 40px; }
+        .section-title { font-size: 15px; font-weight: 600; color: #e6edf3; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+        .section-title .count { color: #8b949e; font-weight: 400; font-size: 12px; }
 
-        .card { background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 20px; }
-        .card-grid { display: grid; gap: 16px; }
-        .card-grid-2 { grid-template-columns: 1fr 1fr; }
-        .card-grid-4 { grid-template-columns: repeat(4, 1fr); }
+        .card { background: #161b22; border: 1px solid #21262d; border-radius: 8px; padding: 16px; }
+        .row { display: flex; gap: 16px; }
+        .col { flex: 1; }
 
-        .metric { text-align: center; padding: 24px 16px; }
-        .metric .icon { font-size: 24px; margin-bottom: 8px; }
-        .metric .value { font-size: 36px; font-weight: 800; letter-spacing: -1px; }
-        .metric .label { font-size: 11px; color: #8b949e; text-transform: uppercase; letter-spacing: 0.8px; margin-top: 4px; }
+        .stat-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+        .stat { background: #161b22; border: 1px solid #21262d; border-radius: 8px; padding: 14px 16px; flex: 1; min-width: 120px; }
+        .stat .val { font-size: 24px; font-weight: 700; color: #e6edf3; }
+        .stat .lbl { font-size: 11px; color: #8b949e; margin-top: 2px; }
 
-        table { width: 100%; border-collapse: collapse; }
-        th { text-align: left; padding: 12px 16px; background: #0d1117; border-bottom: 2px solid #30363d; font-size: 11px; color: #8b949e; text-transform: uppercase; letter-spacing: 0.8px; font-weight: 600; }
-        td { padding: 10px 16px; border-bottom: 1px solid #21262d; font-size: 13px; }
-        tr:hover { background: #1c2128; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        th { text-align: left; padding: 8px 12px; border-bottom: 1px solid #21262d; font-size: 11px; color: #8b949e; font-weight: 500; }
+        td { padding: 7px 12px; border-bottom: 1px solid #161b22; }
+        tr:hover td { background: #1c2128; }
 
-        .pill { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; white-space: nowrap; }
-        .pill-green { background: #12261e; color: #3fb950; border: 1px solid #238636; }
-        .pill-red { background: #2d1215; color: #f85149; border: 1px solid #da3633; }
-        .pill-amber { background: #2d2200; color: #d29922; border: 1px solid #9e6a03; }
-        .pill-blue { background: #0d2039; color: #58a6ff; border: 1px solid #1f6feb; }
-        .pill-purple { background: #1c1433; color: #bc8cff; border: 1px solid #8957e5; }
-        .pill-gray { background: #21262d; color: #8b949e; border: 1px solid #30363d; }
+        .tag { display: inline-block; padding: 1px 8px; border-radius: 10px; font-size: 11px; font-weight: 500; }
+        .tag-green { color: #3fb950; background: #12261e; }
+        .tag-red { color: #f85149; background: #2d1215; }
+        .tag-amber { color: #d29922; background: #2d2200; }
+        .tag-blue { color: #58a6ff; background: #0d2039; }
+        .tag-gray { color: #8b949e; background: #21262d; }
 
         a { color: #58a6ff; text-decoration: none; }
         a:hover { text-decoration: underline; }
+        .muted { color: #484f58; }
+        .mono { font-family: ui-monospace, 'SF Mono', monospace; font-size: 12px; }
+        code { background: #21262d; padding: 1px 6px; border-radius: 3px; font-size: 11px; color: #8b949e; }
+        .center { text-align: center; }
+        .footer { color: #484f58; font-size: 11px; text-align: center; margin-top: 32px; padding-top: 16px; border-top: 1px solid #161b22; }
 
-        .flow { display: flex; align-items: center; justify-content: center; gap: 0; padding: 20px 0; flex-wrap: wrap; }
-        .flow-node { text-align: center; padding: 14px 18px; border-radius: 12px; min-width: 100px; }
-        .flow-arrow { color: #30363d; font-size: 20px; padding: 0 6px; }
-
-        .text-green { color: #3fb950; }
-        .text-red { color: #f85149; }
-        .text-amber { color: #d29922; }
-        .text-muted { color: #8b949e; }
-        .text-center { text-align: center; }
-        .font-mono { font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace; }
-        code { background: #21262d; padding: 2px 8px; border-radius: 4px; font-size: 11px; color: #79c0ff; }
-        .updated { color: #8b949e; font-size: 12px; text-align: center; margin-top: 32px; padding-top: 16px; border-top: 1px solid #21262d; }
-
-        @media (max-width: 900px) {
-            .card-grid-4 { grid-template-columns: repeat(2, 1fr); }
-            .card-grid-2 { grid-template-columns: 1fr; }
-            .flow { gap: 4px; }
+        @media (max-width: 800px) {
+            .row { flex-direction: column; }
+            .stat-row { flex-direction: column; }
         }
         """
 
-    # ── Section 1: Success Pipeline ──────────────────────────────────────
+    # ── Section 1: Funnel + Success Rate ─────────────────────────────────
 
-    def _section_success(self, agent_issues: List[Dict], m: Dict) -> str:
+    def _section_funnel(self, agent_issues: List[Dict], m: Dict) -> str:
         total = m["total_agent"]
         if total == 0:
             return ""
 
         stages = [
-            ("Assigned", total, "#58a6ff", "&#x1f4e5;"),
-            ("Analyzed", m["analyzed"], "#79c0ff", "&#x1f50d;"),
-            ("PR Created", m["pr_created"], "#d29922", "&#x1f4dd;"),
-            ("Merged", m["merged"], "#3fb950", "&#x2705;"),
+            ("Assigned", total, "#58a6ff"),
+            ("Analyzed", m["analyzed"], "#79c0ff"),
+            ("PR Created", m["pr_created"], "#d29922"),
+            ("Merged", m["merged"], "#3fb950"),
         ]
 
-        funnel_bars = ""
-        for label, count, color, emoji in stages:
-            pct = (count / total * 100) if total > 0 else 0
-            bar_pct = max(15, pct)
-            funnel_bars += f'''
-            <div style="display:flex;align-items:center;gap:16px;margin:8px 0">
-                <div style="min-width:100px;text-align:right;font-size:13px;color:#8b949e">{emoji} {label}</div>
-                <div style="flex:1;background:#21262d;border-radius:6px;height:32px;overflow:hidden">
-                    <div style="width:{bar_pct}%;height:100%;background:{color};border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;min-width:50px;transition:width 0.5s">
-                        {count} ({pct:.0f}%)
-                    </div>
-                </div>
-            </div>'''
+        # SVG funnel - actual narrowing trapezoid shape
+        fw, fh = 320, 220
+        funnel_svg = self._svg_funnel(stages, total, fw, fh)
 
         rate = m["success_rate"]
-        rate_color = "#3fb950" if rate >= 50 else "#d29922" if rate >= 30 else "#f85149"
-
         chart = self._svg_success_chart(agent_issues)
 
         return f'''
         <div class="section">
-            <div class="section-header">
-                <h2>&#x1f3af; Success Pipeline</h2>
-                <span class="badge">{m["merged"]}/{total} merged</span>
-            </div>
-            <div class="card-grid card-grid-2">
-                <div class="card">
-                    <div style="font-size:14px;font-weight:600;margin-bottom:16px">&#x1f4ca; Conversion Funnel</div>
-                    {funnel_bars}
-                    <div style="text-align:center;margin-top:20px;padding-top:14px;border-top:1px solid #30363d">
-                        <span style="font-size:32px;font-weight:800;color:{rate_color}">{rate:.0f}%</span>
-                        <div style="font-size:12px;color:#8b949e;margin-top:2px">end-to-end success rate</div>
-                    </div>
+            <div class="section-title">Success Pipeline <span class="count">{m["merged"]}/{total} merged - {rate:.0f}%</span></div>
+            <div class="row">
+                <div class="card col" style="display:flex;align-items:center;justify-content:center">
+                    {funnel_svg}
                 </div>
-                <div class="card">
-                    <div style="font-size:14px;font-weight:600;margin-bottom:12px">&#x1f4c8; Success Rate Over Time</div>
+                <div class="card col">
+                    <div style="font-size:12px;color:#8b949e;margin-bottom:8px">Success rate over time</div>
                     {chart}
                 </div>
             </div>
         </div>'''
 
+    def _svg_funnel(self, stages: list, total: int, w: int, h: int) -> str:
+        """Render actual funnel shape - trapezoids narrowing downward."""
+        n = len(stages)
+        row_h = h / n
+        min_w = w * 0.25
+        svg = f'<svg width="{w}" height="{h}" viewBox="0 0 {w} {h}">'
+
+        for i, (label, count, color) in enumerate(stages):
+            pct = (count / total * 100) if total > 0 else 0
+            # Top width and bottom width - narrowing
+            top_pct = count / total if total > 0 else 0
+            if i == 0:
+                top_w = w * 0.92
+            else:
+                prev_count = stages[i - 1][1]
+                top_w = max(min_w, w * 0.92 * (prev_count / total))
+            bot_w = max(min_w, w * 0.92 * top_pct)
+            if i == 0:
+                top_w = w * 0.92
+
+            y = i * row_h
+            cx = w / 2
+            # Trapezoid points
+            x1 = cx - top_w / 2
+            x2 = cx + top_w / 2
+            x3 = cx + bot_w / 2
+            x4 = cx - bot_w / 2
+            gap = 2
+
+            svg += f'<polygon points="{x1},{y + gap} {x2},{y + gap} {x3},{y + row_h - gap} {x4},{y + row_h - gap}" fill="{color}" opacity="0.18" stroke="{color}" stroke-width="1" stroke-opacity="0.4"/>'
+
+            # Label
+            mid_y = y + row_h / 2
+            svg += f'<text x="{cx}" y="{mid_y - 5}" fill="#c9d1d9" font-size="12" font-weight="600" text-anchor="middle">{count}</text>'
+            svg += f'<text x="{cx}" y="{mid_y + 10}" fill="#8b949e" font-size="10" text-anchor="middle">{label} ({pct:.0f}%)</text>'
+
+        svg += '</svg>'
+        return svg
+
     def _svg_success_chart(self, agent_issues: List[Dict]) -> str:
         sorted_issues = sorted(agent_issues, key=lambda x: x.get("created_at", ""))
         if not sorted_issues:
-            return '<div class="text-muted text-center" style="padding:40px">No data yet</div>'
+            return '<div class="muted center" style="padding:40px">No data yet</div>'
 
         points = []
         total = merged = 0
@@ -200,8 +239,8 @@ class DashboardRenderer:
                 merged += 1
             points.append((total, (merged / total) * 100))
 
-        w, h = 560, 200
-        pl, pr_, pt, pb = 42, 12, 12, 30
+        w, h = 480, 200
+        pl, pr_, pt, pb = 36, 8, 8, 24
         cw, ch = w - pl - pr_, h - pt - pb
         mx = max(total, 1)
 
@@ -212,7 +251,7 @@ class DashboardRenderer:
         for pct in [0, 25, 50, 75, 100]:
             y = sy(pct)
             grid += f'<line x1="{pl}" y1="{y}" x2="{w - pr_}" y2="{y}" stroke="#21262d" stroke-width="1"/>'
-            grid += f'<text x="{pl - 6}" y="{y + 4}" fill="#8b949e" font-size="9" text-anchor="end">{pct}%</text>'
+            grid += f'<text x="{pl - 4}" y="{y + 3}" fill="#484f58" font-size="9" text-anchor="end">{pct}%</text>'
 
         path_d = " ".join(f"{'M' if i == 0 else 'L'}{sx(x):.1f},{sy(y):.1f}" for i, (x, y) in enumerate(points))
         area_d = path_d + f" L{sx(points[-1][0]):.1f},{sy(0):.1f} L{sx(points[0][0]):.1f},{sy(0):.1f} Z"
@@ -221,93 +260,49 @@ class DashboardRenderer:
         color = "#3fb950" if cur >= 50 else "#d29922" if cur >= 30 else "#f85149"
 
         dots = ""
-        show_dots = points[-15:] if len(points) > 15 else points
-        for x, y in show_dots:
-            dc = "#3fb950" if y >= 50 else "#d29922" if y >= 30 else "#f85149"
-            dots += f'<circle cx="{sx(x):.1f}" cy="{sy(y):.1f}" r="3" fill="{dc}" stroke="#161b22" stroke-width="1.5"/>'
+        show = points[-12:] if len(points) > 12 else points
+        for x, y in show:
+            dots += f'<circle cx="{sx(x):.1f}" cy="{sy(y):.1f}" r="2.5" fill="{color}" stroke="#161b22" stroke-width="1"/>'
 
         return f'''
         <svg width="100%" viewBox="0 0 {w} {h}" style="max-width:{w}px">
             <defs><linearGradient id="sg" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="{color}" stop-opacity="0.25"/>
+                <stop offset="0%" stop-color="{color}" stop-opacity="0.15"/>
                 <stop offset="100%" stop-color="{color}" stop-opacity="0.0"/>
             </linearGradient></defs>
             {grid}
             <path d="{area_d}" fill="url(#sg)"/>
-            <path d="{path_d}" fill="none" stroke="{color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="{path_d}" fill="none" stroke="{color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             {dots}
-            <text x="{w // 2}" y="{h - 5}" fill="#8b949e" font-size="9" text-anchor="middle">Issue # (chronological) - Current: {cur:.0f}%</text>
+            <text x="{w // 2}" y="{h - 4}" fill="#484f58" font-size="9" text-anchor="middle">Issue # - current {cur:.0f}%</text>
         </svg>'''
 
-    # ── Section 2: Metrics Grid + Architecture Flow ──────────────────────
+    # ── Section 2: Metrics ───────────────────────────────────────────────
 
     def _section_metrics(self, m: Dict, avg_tat: int) -> str:
-        def card(emoji, value, label, color="#e6edf3"):
-            return f'''
-            <div class="card metric">
-                <div class="icon">{emoji}</div>
-                <div class="value" style="color:{color}">{value}</div>
-                <div class="label">{label}</div>
-            </div>'''
-
         rate = m["success_rate"]
         rc = "#3fb950" if rate >= 50 else "#d29922" if rate >= 30 else "#f85149"
         tc = "#3fb950" if avg_tat <= 35 else "#d29922" if avg_tat <= 50 else "#f85149" if avg_tat > 0 else "#8b949e"
 
-        flow = '''
-        <div class="card" style="margin-top:16px">
-            <div style="font-size:14px;font-weight:600;margin-bottom:8px">&#x1f3d7;&#xfe0f; Architecture Flow</div>
-            <div class="flow">
-                <div class="flow-node" style="background:#0d2039;border:1px solid #1f6feb">
-                    <div style="font-size:18px">&#x1f4e5;</div>
-                    <div style="font-size:11px;font-weight:700;color:#58a6ff">Issue</div>
-                    <div style="font-size:9px;color:#8b949e">labeled</div>
-                </div>
-                <div class="flow-arrow">&#x27a1;&#xfe0f;</div>
-                <div class="flow-node" style="background:#1c1433;border:1px solid #8957e5">
-                    <div style="font-size:18px">&#x1f3af;</div>
-                    <div style="font-size:11px;font-weight:700;color:#bc8cff">Manager</div>
-                    <div style="font-size:9px;color:#8b949e">classify + brief</div>
-                </div>
-                <div class="flow-arrow">&#x27a1;&#xfe0f;</div>
-                <div class="flow-node" style="background:#2d2200;border:1px solid #9e6a03">
-                    <div style="font-size:18px">&#x1f527;</div>
-                    <div style="font-size:11px;font-weight:700;color:#d29922">JuniorDev</div>
-                    <div style="font-size:9px;color:#8b949e">generate fix</div>
-                </div>
-                <div class="flow-arrow">&#x27a1;&#xfe0f;</div>
-                <div class="flow-node" style="background:#0d2818;border:1px solid #238636">
-                    <div style="font-size:18px">&#x1f9ea;</div>
-                    <div style="font-size:11px;font-weight:700;color:#3fb950">Tester</div>
-                    <div style="font-size:9px;color:#8b949e">validate</div>
-                </div>
-                <div class="flow-arrow">&#x27a1;&#xfe0f;</div>
-                <div class="flow-node" style="background:#12261e;border:1px solid #238636">
-                    <div style="font-size:18px">&#x2705;</div>
-                    <div style="font-size:11px;font-weight:700;color:#3fb950">PR</div>
-                    <div style="font-size:9px;color:#8b949e">merge</div>
-                </div>
-            </div>
-        </div>'''
+        def stat(val, label, color="#e6edf3"):
+            return f'<div class="stat"><div class="val" style="color:{color}">{val}</div><div class="lbl">{label}</div></div>'
 
         return f'''
         <div class="section">
-            <div class="section-header">
-                <h2>&#x1f4ca; Overview</h2>
+            <div class="section-title">Overview</div>
+            <div class="stat-row">
+                {stat(str(m["total_agent"]), "Total Issues")}
+                {stat(str(m["merged"]), "Merged", "#3fb950")}
+                {stat(str(m["failed"]), "Failed", "#f85149")}
+                {stat(str(m["open_pr"]), "Open PRs", "#d29922")}
+                {stat(f'{rate:.0f}%', "Success Rate", rc)}
             </div>
-            <div class="card-grid card-grid-4">
-                {card("&#x1f41b;", str(m["total_agent"]), "Total Issues")}
-                {card("&#x2705;", str(m["merged"]), "Merged", "#3fb950")}
-                {card("&#x274c;", str(m["failed"]), "Failed", "#f85149")}
-                {card("&#x1f4c8;", f'{rate:.0f}%', "Success Rate", rc)}
+            <div class="stat-row">
+                {stat(f'{avg_tat}s' if avg_tat else '-', "Avg TAT", tc)}
+                {stat(str(m["total_runs"]), "Agent Runs")}
+                {stat(str(m["run_success"]), "Run Success", "#3fb950")}
+                {stat(str(m["run_fail"]), "Run Failures", "#f85149")}
             </div>
-            <div class="card-grid card-grid-4" style="margin-top:16px">
-                {card("&#x23f1;&#xfe0f;", f'{avg_tat}s' if avg_tat else '-', "Avg TAT", tc)}
-                {card("&#x26a1;", str(m["total_runs"]), "Workflow Runs")}
-                {card("&#x1f3f7;&#xfe0f;", str(m["by_label"]), "Via Label", "#58a6ff")}
-                {card("&#x1f4ac;", str(m["by_mention"]), "Via @mention", "#bc8cff")}
-            </div>
-            {flow}
         </div>'''
 
     # ── Section 3: Turnaround Time ───────────────────────────────────────
@@ -346,25 +341,19 @@ class DashboardRenderer:
 
         n_runs = len(run_timings)
         segments = []
-        colors_map = {"Setup": "#58a6ff", "Agent": "#d29922", "Ack": "#bc8cff", "Overhead": "#8b949e"}
-        emoji_map = {"Setup": "&#x2699;&#xfe0f;", "Agent": "&#x1f916;", "Ack": "&#x1f4ac;", "Overhead": "&#x1f504;"}
+        colors_map = {"Setup": "#58a6ff", "Agent": "#d29922", "Ack": "#bc8cff", "Overhead": "#484f58"}
         for cat in ["Setup", "Agent", "Ack", "Overhead"]:
             if cat in step_totals:
                 avg_s = round(step_totals[cat] / n_runs, 1)
-                segments.append((cat, avg_s, colors_map.get(cat, "#8b949e"), emoji_map.get(cat, "")))
+                segments.append((cat, avg_s, colors_map.get(cat, "#484f58")))
 
-        pie = self._svg_pie_chart(segments, 170)
-
+        pie = self._svg_pie_chart(segments, 140)
         total_seg = sum(s[1] for s in segments)
+
         legend = ""
-        for label, val, color, emoji in segments:
+        for label, val, color in segments:
             pct = (val / total_seg * 100) if total_seg > 0 else 0
-            legend += f'''
-            <div style="display:flex;align-items:center;gap:8px;margin:6px 0;font-size:12px">
-                <div style="width:10px;height:10px;border-radius:3px;background:{color};flex-shrink:0"></div>
-                <span style="color:#8b949e">{emoji} {label}</span>
-                <span style="color:#e6edf3;font-weight:600;margin-left:auto">{val:.0f}s ({pct:.0f}%)</span>
-            </div>'''
+            legend += f'<div style="display:flex;align-items:center;gap:6px;margin:4px 0;font-size:12px"><span style="width:8px;height:8px;border-radius:2px;background:{color};display:inline-block"></span><span style="color:#8b949e">{label}</span><span style="margin-left:auto;color:#c9d1d9">{val:.0f}s ({pct:.0f}%)</span></div>'
 
         trend = self._svg_tat_chart(run_timings)
 
@@ -373,52 +362,40 @@ class DashboardRenderer:
 
         return f'''
         <div class="section">
-            <div class="section-header">
-                <h2>&#x23f1;&#xfe0f; Turnaround Time</h2>
-                <span class="badge">last {len(run_timings)} runs</span>
-            </div>
-            <div class="card-grid card-grid-2">
-                <div class="card">
-                    <div style="display:flex;align-items:center;gap:24px">
+            <div class="section-title">Turnaround Time <span class="count">last {len(run_timings)} runs</span></div>
+            <div class="row">
+                <div class="card col">
+                    <div style="display:flex;align-items:center;gap:20px">
                         <div style="flex-shrink:0">{pie}</div>
                         <div style="flex:1">
-                            <div style="font-size:14px;font-weight:600;margin-bottom:12px">&#x1f967; Time Breakdown (avg)</div>
+                            <div style="font-size:12px;color:#8b949e;margin-bottom:8px">Avg breakdown per run</div>
                             {legend}
-                            <div style="margin-top:14px;padding-top:14px;border-top:1px solid #30363d">
-                                <div style="display:flex;justify-content:space-between;font-size:12px;margin:3px 0">
-                                    <span style="color:#8b949e">&#x23f1;&#xfe0f; Latest</span>
-                                    <span style="color:{lc};font-weight:700">{latest}s</span>
-                                </div>
-                                <div style="display:flex;justify-content:space-between;font-size:12px;margin:3px 0">
-                                    <span style="color:#8b949e">&#x1f4ca; Average</span>
-                                    <span style="color:{ac};font-weight:700">{avg}s</span>
-                                </div>
-                                <div style="display:flex;justify-content:space-between;font-size:12px;margin:3px 0">
-                                    <span style="color:#8b949e">&#x1f3c6; Best / Worst</span>
-                                    <span style="color:#e6edf3;font-weight:600">{best}s / {worst}s</span>
-                                </div>
+                            <div style="margin-top:10px;padding-top:10px;border-top:1px solid #21262d;font-size:12px">
+                                <div style="display:flex;justify-content:space-between;margin:2px 0"><span style="color:#8b949e">Latest</span><span style="color:{lc}">{latest}s</span></div>
+                                <div style="display:flex;justify-content:space-between;margin:2px 0"><span style="color:#8b949e">Average</span><span style="color:{ac}">{avg}s</span></div>
+                                <div style="display:flex;justify-content:space-between;margin:2px 0"><span style="color:#8b949e">Best / Worst</span><span style="color:#8b949e">{best}s / {worst}s</span></div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="card">
-                    <div style="font-size:14px;font-weight:600;margin-bottom:12px">&#x1f4c9; TAT Trend</div>
+                <div class="card col">
+                    <div style="font-size:12px;color:#8b949e;margin-bottom:8px">TAT trend</div>
                     {trend}
                 </div>
             </div>
         </div>'''
 
-    def _svg_pie_chart(self, segments: list, size: int = 170) -> str:
-        total = sum(v for _, v, _, _ in segments)
+    def _svg_pie_chart(self, segments: list, size: int = 140) -> str:
+        total = sum(v for _, v, _ in segments)
         if total == 0:
             return ""
         cx, cy = size / 2, size / 2
-        ro = size / 2 - 5
-        ri = ro * 0.6
+        ro = size / 2 - 4
+        ri = ro * 0.58
 
         paths = ""
         start = -90
-        for _, value, color, _ in segments:
+        for _, value, color in segments:
             if value == 0:
                 continue
             sweep = (value / total) * 360
@@ -433,13 +410,13 @@ class DashboardRenderer:
             large = 1 if sweep > 180 else 0
             d = (f"M{x1o:.1f},{y1o:.1f} A{ro:.1f},{ro:.1f} 0 {large} 1 {x2o:.1f},{y2o:.1f} "
                  f"L{x1i:.1f},{y1i:.1f} A{ri:.1f},{ri:.1f} 0 {large} 0 {x2i:.1f},{y2i:.1f} Z")
-            paths += f'<path d="{d}" fill="{color}" opacity="0.85" stroke="#161b22" stroke-width="2"/>'
+            paths += f'<path d="{d}" fill="{color}" opacity="0.8" stroke="#161b22" stroke-width="2"/>'
             start = end
 
         avg_t = int(total)
         center = f'''
-            <text x="{cx}" y="{cy - 6}" fill="#e6edf3" font-size="18" font-weight="800" text-anchor="middle">{avg_t}s</text>
-            <text x="{cx}" y="{cy + 10}" fill="#8b949e" font-size="9" text-anchor="middle">avg total</text>'''
+            <text x="{cx}" y="{cy - 4}" fill="#e6edf3" font-size="16" font-weight="700" text-anchor="middle">{avg_t}s</text>
+            <text x="{cx}" y="{cy + 10}" fill="#484f58" font-size="9" text-anchor="middle">avg</text>'''
 
         return f'<svg width="{size}" height="{size}" viewBox="0 0 {size} {size}">{paths}{center}</svg>'
 
@@ -447,10 +424,10 @@ class DashboardRenderer:
         timings = list(reversed(run_timings))
         points = [(i + 1, t.get("duration_s", 0)) for i, t in enumerate(timings) if t.get("duration_s", 0) > 0]
         if not points:
-            return '<div class="text-muted text-center" style="padding:40px">No data</div>'
+            return '<div class="muted center" style="padding:40px">No data</div>'
 
-        w, h = 560, 200
-        pl, pr_, pt, pb = 48, 12, 12, 30
+        w, h = 480, 190
+        pl, pr_, pt, pb = 40, 8, 8, 24
         cw, ch = w - pl - pr_, h - pt - pb
         mx = max(p[0] for p in points)
         my = max(max(p[1] for p in points), 10)
@@ -463,17 +440,17 @@ class DashboardRenderer:
         for s in range(0, int(my) + 1, step_y):
             y = sy(s)
             grid += f'<line x1="{pl}" y1="{y}" x2="{w - pr_}" y2="{y}" stroke="#21262d" stroke-width="1"/>'
-            grid += f'<text x="{pl - 6}" y="{y + 4}" fill="#8b949e" font-size="9" text-anchor="end">{s}s</text>'
+            grid += f'<text x="{pl - 4}" y="{y + 3}" fill="#484f58" font-size="9" text-anchor="end">{s}s</text>'
 
         if my >= 55:
             y60 = sy(60)
-            grid += f'<line x1="{pl}" y1="{y60}" x2="{w - pr_}" y2="{y60}" stroke="#f85149" stroke-width="1" stroke-dasharray="5,4" opacity="0.5"/>'
-            grid += f'<text x="{w - pr_ - 2}" y="{y60 - 5}" fill="#f85149" font-size="8" text-anchor="end">60s baseline</text>'
+            grid += f'<line x1="{pl}" y1="{y60}" x2="{w - pr_}" y2="{y60}" stroke="#f85149" stroke-width="1" stroke-dasharray="4,4" opacity="0.4"/>'
+            grid += f'<text x="{w - pr_}" y="{y60 - 4}" fill="#f85149" font-size="8" text-anchor="end" opacity="0.6">60s</text>'
 
         if my >= 28:
             y32 = sy(32)
-            grid += f'<line x1="{pl}" y1="{y32}" x2="{w - pr_}" y2="{y32}" stroke="#3fb950" stroke-width="1" stroke-dasharray="5,4" opacity="0.35"/>'
-            grid += f'<text x="{w - pr_ - 2}" y="{y32 - 5}" fill="#3fb950" font-size="8" text-anchor="end">32s target</text>'
+            grid += f'<line x1="{pl}" y1="{y32}" x2="{w - pr_}" y2="{y32}" stroke="#3fb950" stroke-width="1" stroke-dasharray="4,4" opacity="0.3"/>'
+            grid += f'<text x="{w - pr_}" y="{y32 - 4}" fill="#3fb950" font-size="8" text-anchor="end" opacity="0.5">32s</text>'
 
         path_d = " ".join(f"{'M' if i == 0 else 'L'}{sx(x):.1f},{sy(y):.1f}" for i, (x, y) in enumerate(points))
         area_d = path_d + f" L{sx(points[-1][0]):.1f},{sy(0):.1f} L{sx(points[0][0]):.1f},{sy(0):.1f} Z"
@@ -484,22 +461,22 @@ class DashboardRenderer:
         dots = ""
         for x, y in points:
             dc = "#3fb950" if y <= 35 else "#d29922" if y <= 50 else "#f85149"
-            dots += f'<circle cx="{sx(x):.1f}" cy="{sy(y):.1f}" r="3.5" fill="{dc}" stroke="#161b22" stroke-width="1.5"/>'
+            dots += f'<circle cx="{sx(x):.1f}" cy="{sy(y):.1f}" r="3" fill="{dc}" stroke="#161b22" stroke-width="1"/>'
 
         return f'''
         <svg width="100%" viewBox="0 0 {w} {h}" style="max-width:{w}px">
             <defs><linearGradient id="tg" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="{color}" stop-opacity="0.2"/>
+                <stop offset="0%" stop-color="{color}" stop-opacity="0.12"/>
                 <stop offset="100%" stop-color="{color}" stop-opacity="0.0"/>
             </linearGradient></defs>
             {grid}
             <path d="{area_d}" fill="url(#tg)"/>
-            <path d="{path_d}" fill="none" stroke="{color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="{path_d}" fill="none" stroke="{color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             {dots}
-            <text x="{w // 2}" y="{h - 5}" fill="#8b949e" font-size="9" text-anchor="middle">Recent runs (chronological) - Latest: {latest}s</text>
+            <text x="{w // 2}" y="{h - 4}" fill="#484f58" font-size="9" text-anchor="middle">Runs (chronological) - latest {latest}s</text>
         </svg>'''
 
-    # ── Section 4: Recent Issues Table ───────────────────────────────────
+    # ── Section 4: Recent Issues ─────────────────────────────────────────
 
     def _section_issues(self, agent_issues: List[Dict]) -> str:
         recent = sorted(agent_issues, key=lambda x: x["number"], reverse=True)[:30]
@@ -509,93 +486,134 @@ class DashboardRenderer:
         rows = ""
         for issue in recent:
             n = issue["number"]
-            title = self._esc(issue["title"][:55])
+            title = self._esc(issue["title"][:60])
             url = issue.get("html_url", f"https://github.com/{REPO}/issues/{n}")
 
-            # Type from title prefix
+            # Type
             t = issue.get("title", "").lower()
             if t.startswith("[fix]") or "fix:" in t[:15]:
-                tp = '<span class="pill pill-blue">&#x1f527; Fix</span>'
+                tp = '<span class="tag tag-blue">Fix</span>'
             elif t.startswith("[bug]") or "bug" in t[:15]:
-                tp = '<span class="pill pill-red">&#x1f41b; Bug</span>'
+                tp = '<span class="tag tag-red">Bug</span>'
             elif t.startswith("[feature]") or "feature" in t[:15]:
-                tp = '<span class="pill pill-purple">&#x2728; Feature</span>'
+                tp = '<span class="tag tag-amber">Feature</span>'
             else:
-                tp = '<span class="pill pill-gray">&#x1f4cb; Other</span>'
+                tp = '<span class="tag tag-gray">Other</span>'
 
-            # Template from linked PR body
-            template = '<span class="text-muted">-</span>'
+            # Template
+            template = '<span class="muted">-</span>'
             pr = issue.get("linked_pr")
             if pr:
                 body = (pr.get("body") or "").lower()
-                if "typo_fix" in body:
-                    template = '<span class="pill pill-green">typo_fix</span>'
-                elif "wrong_value" in body:
-                    template = '<span class="pill pill-amber">wrong_value</span>'
-                elif "wrong_name" in body:
-                    template = '<span class="pill pill-blue">wrong_name</span>'
-                elif "swapped_args" in body:
-                    template = '<span class="pill pill-purple">swapped_args</span>'
+                for tpl in ["typo_fix", "wrong_value", "wrong_name", "swapped_args"]:
+                    if tpl in body:
+                        template = f'<code>{tpl}</code>'
+                        break
 
-            # Pipeline stage indicators
+            # Pipeline checkmarks
             outcome = issue.get("outcome", "not_triggered")
             cc = issue.get("comment_count", 0)
+            classify_ok = cc >= 1
+            fix_ok = pr is not None
+            test_ok = pr is not None
 
-            classify = "&#x2705;" if cc >= 1 else "&#x2796;"
-            fix = "&#x2705;" if pr else ("&#x274c;" if cc >= 1 else "&#x2796;")
-            test = "&#x2705;" if pr else "&#x2796;"
+            def check(ok, pending=False):
+                if ok:
+                    return '<span style="color:#3fb950">Y</span>'
+                if pending:
+                    return '<span class="muted">-</span>'
+                return '<span style="color:#f85149">N</span>'
 
-            pr_cell = '<span class="text-muted">-</span>'
+            pr_cell = '<span class="muted">-</span>'
             if pr:
                 pn = pr["number"]
                 pu = pr.get("html_url", f"https://github.com/{REPO}/pull/{pn}")
                 pr_cell = f'<a href="{pu}" target="_blank">#{pn}</a>'
 
-            result_map = {
-                "merged": '<span class="pill pill-green">&#x2705; Merged</span>',
-                "closed": '<span class="pill pill-red">&#x274c; Closed</span>',
-                "failed": '<span class="pill pill-red">&#x1f6ab; Failed</span>',
-                "open_pr": '<span class="pill pill-amber">&#x1f7e1; Open</span>',
-                "not_triggered": '<span class="pill pill-gray">&#x2796; -</span>',
-            }
-            result = result_map.get(outcome, '<span class="pill pill-gray">?</span>')
+            # Result with reason for closed
+            if outcome == "merged":
+                result = '<span class="tag tag-green">Merged</span>'
+            elif outcome == "closed":
+                reason = self._close_reason(issue)
+                result = f'<span class="tag tag-red">Closed</span>'
+                if reason:
+                    result += f' <span class="muted" style="font-size:11px">{self._esc(reason)}</span>'
+            elif outcome == "failed":
+                reason = self._fail_reason(issue)
+                result = f'<span class="tag tag-red">Failed</span>'
+                if reason:
+                    result += f' <span class="muted" style="font-size:11px">{self._esc(reason)}</span>'
+            elif outcome == "open_pr":
+                result = '<span class="tag tag-amber">Open</span>'
+            else:
+                result = '<span class="muted">-</span>'
+
+            created = _fmt_date(issue.get("created_at", ""))
 
             rows += f'''
             <tr>
-                <td><a href="{url}" target="_blank" style="font-weight:600">#{n}</a></td>
-                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{title}</td>
+                <td><a href="{url}" target="_blank">#{n}</a></td>
+                <td style="max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{title}</td>
                 <td>{tp}</td>
                 <td>{template}</td>
-                <td class="text-center">{classify}</td>
-                <td class="text-center">{fix}</td>
-                <td class="text-center">{test}</td>
+                <td class="center">{check(classify_ok, not classify_ok and outcome == "not_triggered")}</td>
+                <td class="center">{check(fix_ok, not classify_ok)}</td>
+                <td class="center">{check(test_ok, not classify_ok)}</td>
                 <td>{pr_cell}</td>
                 <td>{result}</td>
+                <td style="font-size:11px">{created}</td>
             </tr>'''
 
         return f'''
         <div class="section">
-            <div class="section-header">
-                <h2>&#x1f527; Recent Issues</h2>
-                <span class="badge">last {len(recent)}</span>
-            </div>
+            <div class="section-title">Recent Issues <span class="count">{len(recent)}</span></div>
             <div class="card" style="overflow-x:auto">
                 <table>
                     <tr>
-                        <th>#</th>
-                        <th>Title</th>
-                        <th>Type</th>
-                        <th>Template</th>
-                        <th class="text-center">&#x1f3af; Classify</th>
-                        <th class="text-center">&#x1f527; Fix</th>
-                        <th class="text-center">&#x1f9ea; Test</th>
-                        <th>PR</th>
-                        <th>Result</th>
+                        <th>#</th><th>Title</th><th>Type</th><th>Template</th>
+                        <th class="center">Classify</th><th class="center">Fix</th><th class="center">Test</th>
+                        <th>PR</th><th>Result</th><th>Date</th>
                     </tr>
                     {rows}
                 </table>
             </div>
         </div>'''
+
+    def _close_reason(self, issue: Dict) -> str:
+        """Extract a short reason for why a PR was closed."""
+        msg = issue.get("failure_msg", "")
+        if not msg:
+            return ""
+        if "IndentationError" in msg:
+            return "indentation"
+        if "Debate could not approve" in msg:
+            return "debate rejected"
+        if "Tests failed" in msg:
+            return "tests failed"
+        if "SyntaxError" in msg:
+            return "syntax error"
+        return ""
+
+    def _fail_reason(self, issue: Dict) -> str:
+        """Extract a short reason for pipeline failure."""
+        msg = issue.get("failure_msg", "")
+        if not msg:
+            return ""
+        if "IndentationError" in msg:
+            return "indentation"
+        if "AttributeError" in msg:
+            return "attribute error"
+        if "OperationalError" in msg or "SQL" in msg.lower():
+            return "sql error"
+        if "SyntaxError" in msg:
+            return "syntax error"
+        if "Tests failed" in msg:
+            return "tests failed"
+        if "Debate" in msg:
+            return "debate rejected"
+        # Trim to short snippet
+        clean = msg.replace("\n", " ").strip()[:40]
+        return clean if clean else ""
 
     # ── Section 5: Pull Requests ─────────────────────────────────────────
 
@@ -607,7 +625,7 @@ class DashboardRenderer:
         rows = ""
         for pr in recent:
             n = pr["number"]
-            title = self._esc(pr["title"][:50])
+            title = self._esc(pr["title"][:55])
             url = pr.get("html_url", f"https://github.com/{REPO}/pull/{n}")
             branch = self._esc(pr.get("head", ""))
             merged = pr.get("merged_at")
@@ -615,40 +633,40 @@ class DashboardRenderer:
 
             # Linked issue
             body = pr.get("body") or ""
-            issue_link = '<span class="text-muted">-</span>'
-            m = re.search(r'#(\d+)', body)
-            if not m:
+            issue_link = '<span class="muted">-</span>'
+            match = re.search(r'#(\d+)', body)
+            if not match:
                 bm = re.search(r'issue-(\d+)', branch)
                 if bm:
                     issue_link = f'<a href="https://github.com/{REPO}/issues/{bm.group(1)}" target="_blank">#{bm.group(1)}</a>'
             else:
-                issue_link = f'<a href="https://github.com/{REPO}/issues/{m.group(1)}" target="_blank">#{m.group(1)}</a>'
+                issue_link = f'<a href="https://github.com/{REPO}/issues/{match.group(1)}" target="_blank">#{match.group(1)}</a>'
 
             state_map = {
-                "merged": ("&#x2705;", "pill-green", "Merged"),
-                "closed": ("&#x274c;", "pill-red", "Closed"),
-                "open": ("&#x1f7e2;", "pill-green", "Open"),
+                "merged": ("tag-green", "Merged"),
+                "closed": ("tag-red", "Closed"),
+                "open": ("tag-green", "Open"),
             }
-            se, sc, sl = state_map.get(state, ("?", "pill-gray", state))
+            sc, sl = state_map.get(state, ("tag-gray", state))
+
+            created = _fmt_date(pr.get("merged_at") or pr.get("created_at", ""))
 
             rows += f'''
             <tr>
-                <td><a href="{url}" target="_blank" style="font-weight:600">#{n}</a></td>
+                <td><a href="{url}" target="_blank">#{n}</a></td>
                 <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{title}</td>
                 <td>{issue_link}</td>
                 <td><code>{branch}</code></td>
-                <td><span class="pill {sc}">{se} {sl}</span></td>
+                <td><span class="tag {sc}">{sl}</span></td>
+                <td style="font-size:11px">{created}</td>
             </tr>'''
 
         return f'''
         <div class="section">
-            <div class="section-header">
-                <h2>&#x1f500; Pull Requests</h2>
-                <span class="badge">last {len(recent)}</span>
-            </div>
+            <div class="section-title">Pull Requests <span class="count">{len(recent)}</span></div>
             <div class="card" style="overflow-x:auto">
                 <table>
-                    <tr><th>PR</th><th>Title</th><th>Issue</th><th>Branch</th><th>Status</th></tr>
+                    <tr><th>PR</th><th>Title</th><th>Issue</th><th>Branch</th><th>Status</th><th>Date</th></tr>
                     {rows}
                 </table>
             </div>
@@ -662,46 +680,111 @@ class DashboardRenderer:
             return ""
 
         total_f = sum(len(v) for v in patterns.values())
+
+        # Expand "Other" if <10 items: list each individually
+        expanded = {}
+        for pattern, items in patterns.items():
+            if pattern == "_other_" and len(items) < 10:
+                for item in items:
+                    msg = item.get("failure_msg", "")
+                    short = msg.replace("\n", " ").strip()[:60] or "Unknown"
+                    key = f"#{item['number']}: {short}"
+                    expanded[key] = [item]
+            else:
+                label = pattern if pattern != "_other_" else "Other"
+                expanded[label] = items
+
+        # Description map
+        desc_map = {
+            "IndentationError": "LLM generated code with wrong indentation level",
+            "SQL / Variable Error": "Referenced undefined variable or SQL schema mismatch",
+            "AttributeError": "Accessed attribute that does not exist on object",
+            "SyntaxError": "Generated code with invalid Python syntax",
+            "Test Failure": "Fix broke existing tests or new tests failed",
+            "Debate Rejection": "Multi-agent debate could not reach consensus to approve",
+            "Other": "Miscellaneous failures not matching known patterns",
+        }
+
+        # Pie chart segments
+        pie_segments = []
+        pie_colors = ["#f85149", "#d29922", "#58a6ff", "#bc8cff", "#8b949e", "#484f58", "#3fb950"]
+        ci = 0
+        for pattern, items in sorted(expanded.items(), key=lambda x: -len(x[1])):
+            if pattern.startswith("#"):
+                continue
+            color = pie_colors[ci % len(pie_colors)]
+            pie_segments.append((pattern, len(items), color))
+            ci += 1
+
+        pie = self._svg_pie_chart_simple(pie_segments, 120) if pie_segments else ""
+
         rows = ""
-        for pattern, nums in sorted(patterns.items(), key=lambda x: -len(x[1])):
-            count = len(nums)
+        for pattern, items in sorted(expanded.items(), key=lambda x: -len(x[1])):
+            count = len(items)
             pct = (count / total_f * 100) if total_f > 0 else 0
-            bar_w = max(4, min(pct * 2.5, 100))
-            links = ", ".join(f'<a href="https://github.com/{REPO}/issues/{n}" target="_blank">#{n}</a>' for n in nums[:8])
-            if len(nums) > 8:
-                links += f' <span class="text-muted">+{len(nums) - 8}</span>'
+            nums = [i["number"] for i in items]
+            links = ", ".join(f'<a href="https://github.com/{REPO}/issues/{n}" target="_blank">#{n}</a>' for n in nums[:10])
+            if len(nums) > 10:
+                links += f' <span class="muted">+{len(nums) - 10}</span>'
+
+            desc = desc_map.get(pattern, "")
+            if pattern.startswith("#"):
+                desc = ""
 
             rows += f'''
             <tr>
-                <td style="font-weight:600;white-space:nowrap">&#x1f6a8; {self._esc(pattern)}</td>
-                <td style="font-weight:700;color:#f85149">{count}</td>
-                <td>
-                    <div style="display:flex;align-items:center;gap:8px">
-                        <div style="background:#f85149;height:8px;width:{bar_w}%;border-radius:4px;min-width:4px"></div>
-                        <span class="text-muted" style="font-size:11px">{pct:.0f}%</span>
-                    </div>
-                </td>
-                <td style="font-size:12px">{links}</td>
+                <td style="white-space:nowrap">{self._esc(pattern)}</td>
+                <td style="font-size:12px;color:#8b949e">{desc}</td>
+                <td style="color:#f85149">{count}</td>
+                <td class="muted">{pct:.0f}%</td>
+                <td style="font-size:11px">{links}</td>
             </tr>'''
 
         return f'''
         <div class="section">
-            <div class="section-header">
-                <h2>&#x1f6a8; Failure Diagnostics</h2>
-                <span class="badge">{total_f} failures</span>
-            </div>
-            <div class="card" style="overflow-x:auto">
-                <table>
-                    <tr><th>Pattern</th><th>Count</th><th>Distribution</th><th>Issues</th></tr>
-                    {rows}
-                </table>
+            <div class="section-title">Failure Diagnostics <span class="count">{total_f}</span></div>
+            <div class="row">
+                {"<div class='card' style='flex:0 0 140px;display:flex;align-items:center;justify-content:center'>" + pie + "</div>" if pie else ""}
+                <div class="card col" style="overflow-x:auto">
+                    <table>
+                        <tr><th>Pattern</th><th>Description</th><th>Count</th><th>%</th><th>Issues</th></tr>
+                        {rows}
+                    </table>
+                </div>
             </div>
         </div>'''
 
-    # ── Section 7: Workflow Runs ─────────────────────────────────────────
+    def _svg_pie_chart_simple(self, segments: list, size: int = 120) -> str:
+        """Simple pie chart (not donut) for failure distribution."""
+        total = sum(v for _, v, _ in segments)
+        if total == 0:
+            return ""
+        cx, cy = size / 2, size / 2
+        r = size / 2 - 4
 
-    def _section_runs(self, runs: List[Dict]) -> str:
-        recent = sorted(runs, key=lambda x: x.get("created_at", ""), reverse=True)[:30]
+        paths = ""
+        start = -90
+        for _, value, color in segments:
+            if value == 0:
+                continue
+            sweep = (value / total) * 360
+            end = start + sweep
+            sa, ea = math.radians(start), math.radians(end)
+
+            x1, y1 = cx + r * math.cos(sa), cy + r * math.sin(sa)
+            x2, y2 = cx + r * math.cos(ea), cy + r * math.sin(ea)
+
+            large = 1 if sweep > 180 else 0
+            d = f"M{cx},{cy} L{x1:.1f},{y1:.1f} A{r:.1f},{r:.1f} 0 {large} 1 {x2:.1f},{y2:.1f} Z"
+            paths += f'<path d="{d}" fill="{color}" opacity="0.7" stroke="#161b22" stroke-width="1.5"/>'
+            start = end
+
+        return f'<svg width="{size}" height="{size}" viewBox="0 0 {size} {size}">{paths}</svg>'
+
+    # ── Section 7: Agent Runs ────────────────────────────────────────────
+
+    def _section_runs(self, agent_runs: List[Dict]) -> str:
+        recent = sorted(agent_runs, key=lambda x: x.get("created_at", ""), reverse=True)[:30]
         if not recent:
             return ""
 
@@ -709,50 +792,40 @@ class DashboardRenderer:
         for run in recent:
             rid = run["id"]
             url = run.get("html_url", f"https://github.com/{REPO}/actions/runs/{rid}")
-            title = self._esc(run.get("display_title", "")[:40])
+            title = self._esc(run.get("display_title", "")[:45])
             event = run.get("event", "")
             conclusion = run.get("conclusion") or "running"
-            created = run.get("created_at", "")[:16].replace("T", " ")
             dur = run.get("duration_s", 0)
 
             c_map = {
-                "success": ("&#x2705;", "pill-green", "Success"),
-                "failure": ("&#x274c;", "pill-red", "Failure"),
-                "skipped": ("&#x23ed;&#xfe0f;", "pill-gray", "Skipped"),
-                "running": ("&#x1f535;", "pill-blue", "Running"),
+                "success": ("tag-green", "Success"),
+                "failure": ("tag-red", "Failure"),
+                "skipped": ("tag-gray", "Skipped"),
+                "running": ("tag-blue", "Running"),
             }
-            ce, cc, cl = c_map.get(conclusion, ("?", "pill-gray", conclusion))
-
-            e_map = {
-                "issues": ("&#x1f41b;", "pill-blue"),
-                "issue_comment": ("&#x1f4ac;", "pill-purple"),
-                "push": ("&#x1f4e4;", "pill-gray"),
-                "pull_request": ("&#x1f500;", "pill-amber"),
-            }
-            ee, ec = e_map.get(event, ("&#x26a1;", "pill-gray"))
+            cc, cl = c_map.get(conclusion, ("tag-gray", conclusion))
 
             dur_str = f"{dur}s" if dur > 0 else "-"
-            dc = "#3fb950" if 0 < dur <= 35 else "#d29922" if dur <= 50 else "#f85149" if dur > 50 else "#8b949e"
+            dc = "#3fb950" if 0 < dur <= 35 else "#d29922" if dur <= 50 else "#f85149" if dur > 50 else "#484f58"
+
+            created = _fmt_date(run.get("created_at", ""))
 
             rows += f'''
             <tr>
-                <td><a href="{url}" target="_blank" style="font-size:12px">{rid}</a></td>
-                <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{title}</td>
-                <td><span class="pill {ec}">{ee} {event}</span></td>
-                <td><span class="pill {cc}">{ce} {cl}</span></td>
-                <td style="color:{dc};font-weight:600;font-family:monospace;font-size:12px">{dur_str}</td>
-                <td class="text-muted" style="font-size:12px">{created}</td>
+                <td><a href="{url}" target="_blank" class="mono">{rid}</a></td>
+                <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{title}</td>
+                <td><span class="tag tag-gray">{event}</span></td>
+                <td><span class="tag {cc}">{cl}</span></td>
+                <td class="mono" style="color:{dc}">{dur_str}</td>
+                <td style="font-size:11px">{created}</td>
             </tr>'''
 
         return f'''
         <div class="section">
-            <div class="section-header">
-                <h2>&#x26a1; Workflow Runs</h2>
-                <span class="badge">last {len(recent)}</span>
-            </div>
+            <div class="section-title">Agent Runs <span class="count">{len(recent)}</span></div>
             <div class="card" style="overflow-x:auto">
                 <table>
-                    <tr><th>Run ID</th><th>Title</th><th>Event</th><th>Result</th><th>Duration</th><th>Time</th></tr>
+                    <tr><th>Run</th><th>Title</th><th>Trigger</th><th>Result</th><th>Duration</th><th>Date</th></tr>
                     {rows}
                 </table>
             </div>
@@ -764,7 +837,6 @@ class DashboardRenderer:
         m = self._metrics()
         agent_issues = self._data["agent_issues"]
         prs = self._data["prs"]
-        runs = self._data["runs"]
         run_timings = self._data.get("run_timings", [])
 
         tat_durations = [t.get("duration_s", 0) for t in run_timings if t.get("duration_s", 0) > 0]
@@ -775,26 +847,26 @@ class DashboardRenderer:
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GlassBox Agent v1.0 - Performance Tracker</title>
+    <title>GlassBox Agent - Performance Tracker</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💎</text></svg>">
     <style>{self._css()}</style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>&#x1f48e; GlassBox Agent <span class="version">v1.0</span></h1>
-            <div class="subtitle">Real-time performance tracking - <a href="https://github.com/{REPO}" target="_blank">github.com/{REPO}</a></div>
+            <h1>GlassBox Agent <span class="ver">v1.0</span></h1>
+            <div class="subtitle">Performance Tracker - <a href="https://github.com/{REPO}" target="_blank">{REPO}</a></div>
         </div>
 
-        {self._section_success(agent_issues, m)}
+        {self._section_funnel(agent_issues, m)}
         {self._section_metrics(m, avg_tat)}
         {self._section_tat(run_timings)}
         {self._section_issues(agent_issues)}
         {self._section_prs(prs)}
         {self._section_failures(m)}
-        {self._section_runs(runs)}
+        {self._section_runs(m["agent_runs"])}
 
-        <div class="updated">&#x1f48e; Last updated: {self._now} | Generated by scripts/dashboard/generate.py</div>
+        <div class="footer">Last updated {self._now}</div>
     </div>
 </body>
 </html>'''

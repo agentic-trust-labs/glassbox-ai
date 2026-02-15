@@ -11,6 +11,10 @@ from openai import OpenAI
 from glassbox_agent.core.models import TestResult
 from glassbox_agent.core.settings import Settings
 from glassbox_agent.core.template import TemplateLoader
+from glassbox_agent.core.conversation import (
+    PHASE_CLASSIFY, PHASE_FIX, PHASE_TEST, PHASE_PR,
+    build_bot_comments, parse_author_comment, build_guidance_prompt, make_phase_tag,
+)
 from glassbox_agent.memory.store import MemoryStore
 from glassbox_agent.tools.github_client import GitHubClient
 from glassbox_agent.tools.code_editor import CodeEditor
@@ -73,7 +77,7 @@ def run_pipeline(issue_number: int) -> None:
     briefing = manager.format_briefing(triage, template)
     ack_comment_id = github.silent_update(
         issue_number, ack_comment_id,
-        f"🎯 **GlassBox Manager**\n\nPicked up **#{issue_number}**: \"{title}\"\n\n{briefing}",
+        f"{make_phase_tag(PHASE_CLASSIFY)}\n🎯 **GlassBox Manager**\n\nPicked up **#{issue_number}**: \"{title}\"\n\n{briefing}",
     )
 
     # ── Step 3: JuniorDev reacts + generates fix ──
@@ -83,7 +87,7 @@ def run_pipeline(issue_number: int) -> None:
     branch = f"agent/issue-{issue_number}"
     github.create_branch(branch)
 
-    feedback = ""
+    feedback = os.environ.pop("AUTHOR_GUIDANCE", "")
     fix = None
     result = TestResult(passed=False, output="No attempts succeeded", failures=[])
     for attempt in range(1, template.max_attempts + 1):
@@ -136,11 +140,11 @@ def run_pipeline(issue_number: int) -> None:
 
     # ── Step 4: JuniorDev posts fix comment ──
     fix_body = junior.format_comment(fix)
-    junior.comment(issue_number, fix_body)
+    junior.comment(issue_number, f"{make_phase_tag(PHASE_FIX, attempt)}\n{fix_body}")
 
     # ── Step 5: Tester posts validation comment ──
     report = tester.format_report(result, triage.edge_cases, template.max_diff_lines)
-    tester.comment(issue_number, report)
+    tester.comment(issue_number, f"{make_phase_tag(PHASE_TEST)}\n{report}")
 
     # ── Step 6: Manager approves + creates PR ──
     print("\n🎯 Manager: Approving and creating PR...")
@@ -157,6 +161,7 @@ def run_pipeline(issue_number: int) -> None:
     pr_url = github.create_pr(branch, issue_number, f"fix: {fix.summary}", pr_body)
 
     manager.comment(issue_number, (
+        f"{make_phase_tag(PHASE_PR)}\n"
         f"✅ **Approved.** All aspects pass, all edge cases clear.\n\n"
         f"| | |\n|---|---|\n"
         f"| 🔀 **PR** | {pr_url} |\n"
@@ -167,12 +172,32 @@ def run_pipeline(issue_number: int) -> None:
     print(f"\n✅ Done! PR: {pr_url}")
 
 
+def run_guided(issue_number: int, comment_id: int) -> None:
+    """Author-guided re-entry: parse comment, re-run pipeline with guidance as feedback."""
+    settings = Settings()
+    github = GitHubClient(settings.repo)
+    raw_comments = github.fetch_comments(issue_number)
+    trigger = next((c for c in raw_comments if c.get("id") == comment_id), None)
+    if not trigger:
+        print(f"Comment {comment_id} not found"); return
+    guidance = parse_author_comment(trigger, build_bot_comments(raw_comments))
+    print(f"  intent={guidance.intent} phase={guidance.reference_phase}")
+    if guidance.intent == "abort":
+        github.post_comment(issue_number, "🎯 **GlassBox Manager**\n\nUnderstood. Stepping back."); return
+    os.environ["AUTHOR_GUIDANCE"] = build_guidance_prompt(guidance)
+    run_pipeline(issue_number)
+
+
 def main():
     if len(sys.argv) < 2:
-        print("Usage: python -m glassbox_agent.cli <issue_number>")
+        print("Usage: python -m glassbox_agent.cli <issue_number> [--comment-id <id>]")
         sys.exit(1)
     issue_number = int(sys.argv[1])
-    run_pipeline(issue_number)
+    if "--comment-id" in sys.argv:
+        cid = int(sys.argv[sys.argv.index("--comment-id") + 1])
+        run_guided(issue_number, cid)
+    else:
+        run_pipeline(issue_number)
 
 
 if __name__ == "__main__":

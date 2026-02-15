@@ -3,1190 +3,1066 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GlassBox Agent v1.0 - Performance Tracker</title>
+    <title>GlassBox Agent - Performance Tracker</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💎</text></svg>">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background: #0d1117; color: #e6edf3; line-height: 1.6; }
-        .container { max-width: 1280px; margin: 0 auto; padding: 32px 24px; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background: #0d1117; color: #c9d1d9; line-height: 1.6; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 32px 24px; }
 
-        .header { text-align: center; margin-bottom: 48px; }
-        .header h1 { font-size: 32px; font-weight: 800; letter-spacing: -0.5px; }
-        .header .subtitle { color: #8b949e; font-size: 14px; margin-top: 8px; }
-        .header .version { display: inline-block; background: #238636; color: #fff; padding: 2px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; margin-left: 8px; vertical-align: middle; }
+        .header { text-align: center; margin-bottom: 40px; }
+        .header h1 { font-size: 24px; font-weight: 700; color: #e6edf3; }
+        .header .subtitle { color: #8b949e; font-size: 13px; margin-top: 4px; }
+        .header .ver { color: #8b949e; font-size: 11px; border: 1px solid #30363d; padding: 1px 8px; border-radius: 10px; margin-left: 6px; }
 
-        .section { margin-bottom: 48px; }
-        .section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid #30363d; }
-        .section-header h2 { font-size: 20px; font-weight: 700; }
-        .section-header .badge { background: #30363d; color: #8b949e; padding: 2px 10px; border-radius: 10px; font-size: 12px; }
+        .section { margin-bottom: 40px; }
+        .section-title { font-size: 15px; font-weight: 600; color: #e6edf3; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+        .section-title .count { color: #8b949e; font-weight: 400; font-size: 12px; }
 
-        .card { background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 20px; }
-        .card-grid { display: grid; gap: 16px; }
-        .card-grid-2 { grid-template-columns: 1fr 1fr; }
-        .card-grid-4 { grid-template-columns: repeat(4, 1fr); }
+        .card { background: #161b22; border: 1px solid #21262d; border-radius: 8px; padding: 16px; }
+        .row { display: flex; gap: 16px; }
+        .col { flex: 1; }
 
-        .metric { text-align: center; padding: 24px 16px; }
-        .metric .icon { font-size: 24px; margin-bottom: 8px; }
-        .metric .value { font-size: 36px; font-weight: 800; letter-spacing: -1px; }
-        .metric .label { font-size: 11px; color: #8b949e; text-transform: uppercase; letter-spacing: 0.8px; margin-top: 4px; }
+        .stat-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+        .stat { background: #161b22; border: 1px solid #21262d; border-radius: 8px; padding: 14px 16px; flex: 1; min-width: 120px; }
+        .stat .val { font-size: 24px; font-weight: 700; color: #e6edf3; }
+        .stat .lbl { font-size: 11px; color: #8b949e; margin-top: 2px; }
 
-        table { width: 100%; border-collapse: collapse; }
-        th { text-align: left; padding: 12px 16px; background: #0d1117; border-bottom: 2px solid #30363d; font-size: 11px; color: #8b949e; text-transform: uppercase; letter-spacing: 0.8px; font-weight: 600; }
-        td { padding: 10px 16px; border-bottom: 1px solid #21262d; font-size: 13px; }
-        tr:hover { background: #1c2128; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        th { text-align: left; padding: 8px 12px; border-bottom: 1px solid #21262d; font-size: 11px; color: #8b949e; font-weight: 500; }
+        td { padding: 7px 12px; border-bottom: 1px solid #161b22; }
+        tr:hover td { background: #1c2128; }
 
-        .pill { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; white-space: nowrap; }
-        .pill-green { background: #12261e; color: #3fb950; border: 1px solid #238636; }
-        .pill-red { background: #2d1215; color: #f85149; border: 1px solid #da3633; }
-        .pill-amber { background: #2d2200; color: #d29922; border: 1px solid #9e6a03; }
-        .pill-blue { background: #0d2039; color: #58a6ff; border: 1px solid #1f6feb; }
-        .pill-purple { background: #1c1433; color: #bc8cff; border: 1px solid #8957e5; }
-        .pill-gray { background: #21262d; color: #8b949e; border: 1px solid #30363d; }
+        .tag { display: inline-block; padding: 1px 8px; border-radius: 10px; font-size: 11px; font-weight: 500; }
+        .tag-green { color: #3fb950; background: #12261e; }
+        .tag-red { color: #f85149; background: #2d1215; }
+        .tag-amber { color: #d29922; background: #2d2200; }
+        .tag-blue { color: #58a6ff; background: #0d2039; }
+        .tag-gray { color: #8b949e; background: #21262d; }
 
         a { color: #58a6ff; text-decoration: none; }
         a:hover { text-decoration: underline; }
+        .muted { color: #484f58; }
+        .mono { font-family: ui-monospace, 'SF Mono', monospace; font-size: 12px; }
+        code { background: #21262d; padding: 1px 6px; border-radius: 3px; font-size: 11px; color: #8b949e; }
+        .center { text-align: center; }
+        .footer { color: #484f58; font-size: 11px; text-align: center; margin-top: 32px; padding-top: 16px; border-top: 1px solid #161b22; }
 
-        .flow { display: flex; align-items: center; justify-content: center; gap: 0; padding: 20px 0; flex-wrap: wrap; }
-        .flow-node { text-align: center; padding: 14px 18px; border-radius: 12px; min-width: 100px; }
-        .flow-arrow { color: #30363d; font-size: 20px; padding: 0 6px; }
-
-        .text-green { color: #3fb950; }
-        .text-red { color: #f85149; }
-        .text-amber { color: #d29922; }
-        .text-muted { color: #8b949e; }
-        .text-center { text-align: center; }
-        .font-mono { font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace; }
-        code { background: #21262d; padding: 2px 8px; border-radius: 4px; font-size: 11px; color: #79c0ff; }
-        .updated { color: #8b949e; font-size: 12px; text-align: center; margin-top: 32px; padding-top: 16px; border-top: 1px solid #21262d; }
-
-        @media (max-width: 900px) {
-            .card-grid-4 { grid-template-columns: repeat(2, 1fr); }
-            .card-grid-2 { grid-template-columns: 1fr; }
-            .flow { gap: 4px; }
+        @media (max-width: 800px) {
+            .row { flex-direction: column; }
+            .stat-row { flex-direction: column; }
         }
         </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>&#x1f48e; GlassBox Agent <span class="version">v1.0</span></h1>
-            <div class="subtitle">Real-time performance tracking - <a href="https://github.com/agentic-trust-labs/glassbox-ai" target="_blank">github.com/agentic-trust-labs/glassbox-ai</a></div>
+            <h1>GlassBox Agent <span class="ver">v1.0</span></h1>
+            <div class="subtitle">Performance Tracker - <a href="https://github.com/agentic-trust-labs/glassbox-ai" target="_blank">agentic-trust-labs/glassbox-ai</a></div>
         </div>
 
         
         <div class="section">
-            <div class="section-header">
-                <h2>&#x1f3af; Success Pipeline</h2>
-                <span class="badge">33/61 merged</span>
-            </div>
-            <div class="card-grid card-grid-2">
-                <div class="card">
-                    <div style="font-size:14px;font-weight:600;margin-bottom:16px">&#x1f4ca; Conversion Funnel</div>
+            <div class="section-title">Success Pipeline <span class="count">33/61 merged - 54%</span></div>
+            <div class="row">
+                <div class="card col" style="display:flex;align-items:center;justify-content:center">
+                    <svg width="320" height="220" viewBox="0 0 320 220"><polygon points="12.799999999999983,2.0 307.20000000000005,2.0 307.20000000000005,53.0 12.799999999999983,53.0" fill="#58a6ff" opacity="0.18" stroke="#58a6ff" stroke-width="1" stroke-opacity="0.4"/><text x="160.0" y="22.5" fill="#c9d1d9" font-size="12" font-weight="600" text-anchor="middle">61</text><text x="160.0" y="37.5" fill="#8b949e" font-size="10" text-anchor="middle">Assigned (100%)</text><polygon points="12.799999999999983,57.0 307.20000000000005,57.0 285.4819672131148,108.0 34.51803278688524,108.0" fill="#79c0ff" opacity="0.18" stroke="#79c0ff" stroke-width="1" stroke-opacity="0.4"/><text x="160.0" y="77.5" fill="#c9d1d9" font-size="12" font-weight="600" text-anchor="middle">52</text><text x="160.0" y="92.5" fill="#8b949e" font-size="10" text-anchor="middle">Analyzed (85%)</text><polygon points="34.51803278688524,112.0 285.4819672131148,112.0 280.65573770491807,163.0 39.34426229508195,163.0" fill="#d29922" opacity="0.18" stroke="#d29922" stroke-width="1" stroke-opacity="0.4"/><text x="160.0" y="132.5" fill="#c9d1d9" font-size="12" font-weight="600" text-anchor="middle">50</text><text x="160.0" y="147.5" fill="#8b949e" font-size="10" text-anchor="middle">PR Created (82%)</text><polygon points="39.34426229508195,167.0 280.65573770491807,167.0 239.63278688524593,218.0 80.36721311475408,218.0" fill="#3fb950" opacity="0.18" stroke="#3fb950" stroke-width="1" stroke-opacity="0.4"/><text x="160.0" y="187.5" fill="#c9d1d9" font-size="12" font-weight="600" text-anchor="middle">33</text><text x="160.0" y="202.5" fill="#8b949e" font-size="10" text-anchor="middle">Merged (54%)</text></svg>
+                </div>
+                <div class="card col">
+                    <div style="font-size:12px;color:#8b949e;margin-bottom:8px">Success rate over time</div>
                     
-            <div style="display:flex;align-items:center;gap:16px;margin:8px 0">
-                <div style="min-width:100px;text-align:right;font-size:13px;color:#8b949e">&#x1f4e5; Assigned</div>
-                <div style="flex:1;background:#21262d;border-radius:6px;height:32px;overflow:hidden">
-                    <div style="width:100.0%;height:100%;background:#58a6ff;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;min-width:50px;transition:width 0.5s">
-                        61 (100%)
-                    </div>
-                </div>
-            </div>
-            <div style="display:flex;align-items:center;gap:16px;margin:8px 0">
-                <div style="min-width:100px;text-align:right;font-size:13px;color:#8b949e">&#x1f50d; Analyzed</div>
-                <div style="flex:1;background:#21262d;border-radius:6px;height:32px;overflow:hidden">
-                    <div style="width:85.24590163934425%;height:100%;background:#79c0ff;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;min-width:50px;transition:width 0.5s">
-                        52 (85%)
-                    </div>
-                </div>
-            </div>
-            <div style="display:flex;align-items:center;gap:16px;margin:8px 0">
-                <div style="min-width:100px;text-align:right;font-size:13px;color:#8b949e">&#x1f4dd; PR Created</div>
-                <div style="flex:1;background:#21262d;border-radius:6px;height:32px;overflow:hidden">
-                    <div style="width:81.9672131147541%;height:100%;background:#d29922;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;min-width:50px;transition:width 0.5s">
-                        50 (82%)
-                    </div>
-                </div>
-            </div>
-            <div style="display:flex;align-items:center;gap:16px;margin:8px 0">
-                <div style="min-width:100px;text-align:right;font-size:13px;color:#8b949e">&#x2705; Merged</div>
-                <div style="flex:1;background:#21262d;border-radius:6px;height:32px;overflow:hidden">
-                    <div style="width:54.09836065573771%;height:100%;background:#3fb950;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;min-width:50px;transition:width 0.5s">
-                        33 (54%)
-                    </div>
-                </div>
-            </div>
-                    <div style="text-align:center;margin-top:20px;padding-top:14px;border-top:1px solid #30363d">
-                        <span style="font-size:32px;font-weight:800;color:#3fb950">54%</span>
-                        <div style="font-size:12px;color:#8b949e;margin-top:2px">end-to-end success rate</div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div style="font-size:14px;font-weight:600;margin-bottom:12px">&#x1f4c8; Success Rate Over Time</div>
-                    
-        <svg width="100%" viewBox="0 0 560 200" style="max-width:560px">
+        <svg width="100%" viewBox="0 0 480 200" style="max-width:480px">
             <defs><linearGradient id="sg" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#3fb950" stop-opacity="0.25"/>
+                <stop offset="0%" stop-color="#3fb950" stop-opacity="0.15"/>
                 <stop offset="100%" stop-color="#3fb950" stop-opacity="0.0"/>
             </linearGradient></defs>
-            <line x1="42" y1="170.0" x2="548" y2="170.0" stroke="#21262d" stroke-width="1"/><text x="36" y="174.0" fill="#8b949e" font-size="9" text-anchor="end">0%</text><line x1="42" y1="130.5" x2="548" y2="130.5" stroke="#21262d" stroke-width="1"/><text x="36" y="134.5" fill="#8b949e" font-size="9" text-anchor="end">25%</text><line x1="42" y1="91.0" x2="548" y2="91.0" stroke="#21262d" stroke-width="1"/><text x="36" y="95.0" fill="#8b949e" font-size="9" text-anchor="end">50%</text><line x1="42" y1="51.5" x2="548" y2="51.5" stroke="#21262d" stroke-width="1"/><text x="36" y="55.5" fill="#8b949e" font-size="9" text-anchor="end">75%</text><line x1="42" y1="12.0" x2="548" y2="12.0" stroke="#21262d" stroke-width="1"/><text x="36" y="16.0" fill="#8b949e" font-size="9" text-anchor="end">100%</text>
-            <path d="M50.3,12.0 L58.6,12.0 L66.9,64.7 L75.2,51.5 L83.5,43.6 L91.8,38.3 L100.1,57.1 L108.4,71.2 L116.7,64.7 L125.0,59.4 L133.2,55.1 L141.5,64.7 L149.8,72.8 L158.1,79.7 L166.4,85.7 L174.7,91.0 L183.0,95.6 L191.3,91.0 L199.6,95.2 L207.9,91.0 L216.2,94.8 L224.5,98.2 L232.8,101.3 L241.1,104.2 L249.4,100.5 L257.7,103.2 L266.0,99.8 L274.3,96.6 L282.6,93.7 L290.9,91.0 L299.1,88.5 L307.4,86.1 L315.7,83.8 L324.0,81.7 L332.3,84.2 L340.6,82.2 L348.9,80.3 L357.2,82.7 L365.5,84.9 L373.8,87.0 L382.1,89.1 L390.4,91.0 L398.7,89.2 L407.0,87.4 L415.3,89.2 L423.6,91.0 L431.9,92.7 L440.2,94.3 L448.5,95.8 L456.8,94.2 L465.0,92.5 L473.3,91.0 L481.6,92.5 L489.9,91.0 L498.2,89.6 L506.5,91.0 L514.8,89.6 L523.1,88.3 L531.4,87.0 L539.7,85.7 L548.0,84.5 L548.0,170.0 L50.3,170.0 Z" fill="url(#sg)"/>
-            <path d="M50.3,12.0 L58.6,12.0 L66.9,64.7 L75.2,51.5 L83.5,43.6 L91.8,38.3 L100.1,57.1 L108.4,71.2 L116.7,64.7 L125.0,59.4 L133.2,55.1 L141.5,64.7 L149.8,72.8 L158.1,79.7 L166.4,85.7 L174.7,91.0 L183.0,95.6 L191.3,91.0 L199.6,95.2 L207.9,91.0 L216.2,94.8 L224.5,98.2 L232.8,101.3 L241.1,104.2 L249.4,100.5 L257.7,103.2 L266.0,99.8 L274.3,96.6 L282.6,93.7 L290.9,91.0 L299.1,88.5 L307.4,86.1 L315.7,83.8 L324.0,81.7 L332.3,84.2 L340.6,82.2 L348.9,80.3 L357.2,82.7 L365.5,84.9 L373.8,87.0 L382.1,89.1 L390.4,91.0 L398.7,89.2 L407.0,87.4 L415.3,89.2 L423.6,91.0 L431.9,92.7 L440.2,94.3 L448.5,95.8 L456.8,94.2 L465.0,92.5 L473.3,91.0 L481.6,92.5 L489.9,91.0 L498.2,89.6 L506.5,91.0 L514.8,89.6 L523.1,88.3 L531.4,87.0 L539.7,85.7 L548.0,84.5" fill="none" stroke="#3fb950" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <circle cx="431.9" cy="92.7" r="3" fill="#d29922" stroke="#161b22" stroke-width="1.5"/><circle cx="440.2" cy="94.3" r="3" fill="#d29922" stroke="#161b22" stroke-width="1.5"/><circle cx="448.5" cy="95.8" r="3" fill="#d29922" stroke="#161b22" stroke-width="1.5"/><circle cx="456.8" cy="94.2" r="3" fill="#d29922" stroke="#161b22" stroke-width="1.5"/><circle cx="465.0" cy="92.5" r="3" fill="#d29922" stroke="#161b22" stroke-width="1.5"/><circle cx="473.3" cy="91.0" r="3" fill="#3fb950" stroke="#161b22" stroke-width="1.5"/><circle cx="481.6" cy="92.5" r="3" fill="#d29922" stroke="#161b22" stroke-width="1.5"/><circle cx="489.9" cy="91.0" r="3" fill="#3fb950" stroke="#161b22" stroke-width="1.5"/><circle cx="498.2" cy="89.6" r="3" fill="#3fb950" stroke="#161b22" stroke-width="1.5"/><circle cx="506.5" cy="91.0" r="3" fill="#3fb950" stroke="#161b22" stroke-width="1.5"/><circle cx="514.8" cy="89.6" r="3" fill="#3fb950" stroke="#161b22" stroke-width="1.5"/><circle cx="523.1" cy="88.3" r="3" fill="#3fb950" stroke="#161b22" stroke-width="1.5"/><circle cx="531.4" cy="87.0" r="3" fill="#3fb950" stroke="#161b22" stroke-width="1.5"/><circle cx="539.7" cy="85.7" r="3" fill="#3fb950" stroke="#161b22" stroke-width="1.5"/><circle cx="548.0" cy="84.5" r="3" fill="#3fb950" stroke="#161b22" stroke-width="1.5"/>
-            <text x="280" y="195" fill="#8b949e" font-size="9" text-anchor="middle">Issue # (chronological) - Current: 54%</text>
+            <line x1="36" y1="176.0" x2="472" y2="176.0" stroke="#21262d" stroke-width="1"/><text x="32" y="179.0" fill="#484f58" font-size="9" text-anchor="end">0%</text><line x1="36" y1="134.0" x2="472" y2="134.0" stroke="#21262d" stroke-width="1"/><text x="32" y="137.0" fill="#484f58" font-size="9" text-anchor="end">25%</text><line x1="36" y1="92.0" x2="472" y2="92.0" stroke="#21262d" stroke-width="1"/><text x="32" y="95.0" fill="#484f58" font-size="9" text-anchor="end">50%</text><line x1="36" y1="50.0" x2="472" y2="50.0" stroke="#21262d" stroke-width="1"/><text x="32" y="53.0" fill="#484f58" font-size="9" text-anchor="end">75%</text><line x1="36" y1="8.0" x2="472" y2="8.0" stroke="#21262d" stroke-width="1"/><text x="32" y="11.0" fill="#484f58" font-size="9" text-anchor="end">100%</text>
+            <path d="M43.1,8.0 L50.3,8.0 L57.4,64.0 L64.6,50.0 L71.7,41.6 L78.9,36.0 L86.0,56.0 L93.2,71.0 L100.3,64.0 L107.5,58.4 L114.6,53.8 L121.8,64.0 L128.9,72.6 L136.1,80.0 L143.2,86.4 L150.4,92.0 L157.5,96.9 L164.7,92.0 L171.8,96.4 L179.0,92.0 L186.1,96.0 L193.2,99.6 L200.4,103.0 L207.5,106.0 L214.7,102.1 L221.8,104.9 L229.0,101.3 L236.1,98.0 L243.3,94.9 L250.4,92.0 L257.6,89.3 L264.7,86.8 L271.9,84.4 L279.0,82.1 L286.2,84.8 L293.3,82.7 L300.5,80.6 L307.6,83.2 L314.8,85.5 L321.9,87.8 L329.0,90.0 L336.2,92.0 L343.3,90.0 L350.5,88.2 L357.6,90.1 L364.8,92.0 L371.9,93.8 L379.1,95.5 L386.2,97.1 L393.4,95.4 L400.5,93.6 L407.7,92.0 L414.8,93.6 L422.0,92.0 L429.1,90.5 L436.3,92.0 L443.4,90.5 L450.6,89.1 L457.7,87.7 L464.9,86.4 L472.0,85.1 L472.0,176.0 L43.1,176.0 Z" fill="url(#sg)"/>
+            <path d="M43.1,8.0 L50.3,8.0 L57.4,64.0 L64.6,50.0 L71.7,41.6 L78.9,36.0 L86.0,56.0 L93.2,71.0 L100.3,64.0 L107.5,58.4 L114.6,53.8 L121.8,64.0 L128.9,72.6 L136.1,80.0 L143.2,86.4 L150.4,92.0 L157.5,96.9 L164.7,92.0 L171.8,96.4 L179.0,92.0 L186.1,96.0 L193.2,99.6 L200.4,103.0 L207.5,106.0 L214.7,102.1 L221.8,104.9 L229.0,101.3 L236.1,98.0 L243.3,94.9 L250.4,92.0 L257.6,89.3 L264.7,86.8 L271.9,84.4 L279.0,82.1 L286.2,84.8 L293.3,82.7 L300.5,80.6 L307.6,83.2 L314.8,85.5 L321.9,87.8 L329.0,90.0 L336.2,92.0 L343.3,90.0 L350.5,88.2 L357.6,90.1 L364.8,92.0 L371.9,93.8 L379.1,95.5 L386.2,97.1 L393.4,95.4 L400.5,93.6 L407.7,92.0 L414.8,93.6 L422.0,92.0 L429.1,90.5 L436.3,92.0 L443.4,90.5 L450.6,89.1 L457.7,87.7 L464.9,86.4 L472.0,85.1" fill="none" stroke="#3fb950" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="393.4" cy="95.4" r="2.5" fill="#3fb950" stroke="#161b22" stroke-width="1"/><circle cx="400.5" cy="93.6" r="2.5" fill="#3fb950" stroke="#161b22" stroke-width="1"/><circle cx="407.7" cy="92.0" r="2.5" fill="#3fb950" stroke="#161b22" stroke-width="1"/><circle cx="414.8" cy="93.6" r="2.5" fill="#3fb950" stroke="#161b22" stroke-width="1"/><circle cx="422.0" cy="92.0" r="2.5" fill="#3fb950" stroke="#161b22" stroke-width="1"/><circle cx="429.1" cy="90.5" r="2.5" fill="#3fb950" stroke="#161b22" stroke-width="1"/><circle cx="436.3" cy="92.0" r="2.5" fill="#3fb950" stroke="#161b22" stroke-width="1"/><circle cx="443.4" cy="90.5" r="2.5" fill="#3fb950" stroke="#161b22" stroke-width="1"/><circle cx="450.6" cy="89.1" r="2.5" fill="#3fb950" stroke="#161b22" stroke-width="1"/><circle cx="457.7" cy="87.7" r="2.5" fill="#3fb950" stroke="#161b22" stroke-width="1"/><circle cx="464.9" cy="86.4" r="2.5" fill="#3fb950" stroke="#161b22" stroke-width="1"/><circle cx="472.0" cy="85.1" r="2.5" fill="#3fb950" stroke="#161b22" stroke-width="1"/>
+            <text x="240" y="196" fill="#484f58" font-size="9" text-anchor="middle">Issue # - current 54%</text>
         </svg>
                 </div>
             </div>
         </div>
         
         <div class="section">
-            <div class="section-header">
-                <h2>&#x1f4ca; Overview</h2>
+            <div class="section-title">Overview</div>
+            <div class="stat-row">
+                <div class="stat"><div class="val" style="color:#e6edf3">61</div><div class="lbl">Total Issues</div></div>
+                <div class="stat"><div class="val" style="color:#3fb950">33</div><div class="lbl">Merged</div></div>
+                <div class="stat"><div class="val" style="color:#f85149">28</div><div class="lbl">Failed</div></div>
+                <div class="stat"><div class="val" style="color:#d29922">0</div><div class="lbl">Open PRs</div></div>
+                <div class="stat"><div class="val" style="color:#3fb950">54%</div><div class="lbl">Success Rate</div></div>
             </div>
-            <div class="card-grid card-grid-4">
-                
-            <div class="card metric">
-                <div class="icon">&#x1f41b;</div>
-                <div class="value" style="color:#e6edf3">61</div>
-                <div class="label">Total Issues</div>
+            <div class="stat-row">
+                <div class="stat"><div class="val" style="color:#d29922">40s</div><div class="lbl">Avg TAT</div></div>
+                <div class="stat"><div class="val" style="color:#e6edf3">291</div><div class="lbl">Agent Runs</div></div>
+                <div class="stat"><div class="val" style="color:#3fb950">49</div><div class="lbl">Run Success</div></div>
+                <div class="stat"><div class="val" style="color:#f85149">4</div><div class="lbl">Run Failures</div></div>
             </div>
-                
-            <div class="card metric">
-                <div class="icon">&#x2705;</div>
-                <div class="value" style="color:#3fb950">33</div>
-                <div class="label">Merged</div>
-            </div>
-                
-            <div class="card metric">
-                <div class="icon">&#x274c;</div>
-                <div class="value" style="color:#f85149">28</div>
-                <div class="label">Failed</div>
-            </div>
-                
-            <div class="card metric">
-                <div class="icon">&#x1f4c8;</div>
-                <div class="value" style="color:#3fb950">54%</div>
-                <div class="label">Success Rate</div>
-            </div>
-            </div>
-            <div class="card-grid card-grid-4" style="margin-top:16px">
-                
-            <div class="card metric">
-                <div class="icon">&#x23f1;&#xfe0f;</div>
-                <div class="value" style="color:#d29922">40s</div>
-                <div class="label">Avg TAT</div>
-            </div>
-                
-            <div class="card metric">
-                <div class="icon">&#x26a1;</div>
-                <div class="value" style="color:#e6edf3">291</div>
-                <div class="label">Workflow Runs</div>
-            </div>
-                
-            <div class="card metric">
-                <div class="icon">&#x1f3f7;&#xfe0f;</div>
-                <div class="value" style="color:#58a6ff">48</div>
-                <div class="label">Via Label</div>
-            </div>
-                
-            <div class="card metric">
-                <div class="icon">&#x1f4ac;</div>
-                <div class="value" style="color:#bc8cff">3</div>
-                <div class="label">Via @mention</div>
-            </div>
-            </div>
-            
-        <div class="card" style="margin-top:16px">
-            <div style="font-size:14px;font-weight:600;margin-bottom:8px">&#x1f3d7;&#xfe0f; Architecture Flow</div>
-            <div class="flow">
-                <div class="flow-node" style="background:#0d2039;border:1px solid #1f6feb">
-                    <div style="font-size:18px">&#x1f4e5;</div>
-                    <div style="font-size:11px;font-weight:700;color:#58a6ff">Issue</div>
-                    <div style="font-size:9px;color:#8b949e">labeled</div>
-                </div>
-                <div class="flow-arrow">&#x27a1;&#xfe0f;</div>
-                <div class="flow-node" style="background:#1c1433;border:1px solid #8957e5">
-                    <div style="font-size:18px">&#x1f3af;</div>
-                    <div style="font-size:11px;font-weight:700;color:#bc8cff">Manager</div>
-                    <div style="font-size:9px;color:#8b949e">classify + brief</div>
-                </div>
-                <div class="flow-arrow">&#x27a1;&#xfe0f;</div>
-                <div class="flow-node" style="background:#2d2200;border:1px solid #9e6a03">
-                    <div style="font-size:18px">&#x1f527;</div>
-                    <div style="font-size:11px;font-weight:700;color:#d29922">JuniorDev</div>
-                    <div style="font-size:9px;color:#8b949e">generate fix</div>
-                </div>
-                <div class="flow-arrow">&#x27a1;&#xfe0f;</div>
-                <div class="flow-node" style="background:#0d2818;border:1px solid #238636">
-                    <div style="font-size:18px">&#x1f9ea;</div>
-                    <div style="font-size:11px;font-weight:700;color:#3fb950">Tester</div>
-                    <div style="font-size:9px;color:#8b949e">validate</div>
-                </div>
-                <div class="flow-arrow">&#x27a1;&#xfe0f;</div>
-                <div class="flow-node" style="background:#12261e;border:1px solid #238636">
-                    <div style="font-size:18px">&#x2705;</div>
-                    <div style="font-size:11px;font-weight:700;color:#3fb950">PR</div>
-                    <div style="font-size:9px;color:#8b949e">merge</div>
-                </div>
-            </div>
-        </div>
         </div>
         
         <div class="section">
-            <div class="section-header">
-                <h2>&#x23f1;&#xfe0f; Turnaround Time</h2>
-                <span class="badge">last 10 runs</span>
-            </div>
-            <div class="card-grid card-grid-2">
-                <div class="card">
-                    <div style="display:flex;align-items:center;gap:24px">
-                        <div style="flex-shrink:0"><svg width="170" height="170" viewBox="0 0 170 170"><path d="M85.0,5.0 A80.0,80.0 0 0 1 153.4,126.4 L126.1,109.9 A48.0,48.0 0 0 0 85.0,37.0 Z" fill="#58a6ff" opacity="0.85" stroke="#161b22" stroke-width="2"/><path d="M153.4,126.4 A80.0,80.0 0 1 1 55.8,10.5 L67.5,40.3 A48.0,48.0 0 1 0 126.1,109.9 Z" fill="#d29922" opacity="0.85" stroke="#161b22" stroke-width="2"/><path d="M55.8,10.5 A80.0,80.0 0 0 1 70.2,6.4 L76.1,37.8 A48.0,48.0 0 0 0 67.5,40.3 Z" fill="#bc8cff" opacity="0.85" stroke="#161b22" stroke-width="2"/><path d="M70.2,6.4 A80.0,80.0 0 0 1 85.0,5.0 L85.0,37.0 A48.0,48.0 0 0 0 76.1,37.8 Z" fill="#8b949e" opacity="0.85" stroke="#161b22" stroke-width="2"/>
-            <text x="85.0" y="79.0" fill="#e6edf3" font-size="18" font-weight="800" text-anchor="middle">30s</text>
-            <text x="85.0" y="95.0" fill="#8b949e" font-size="9" text-anchor="middle">avg total</text></svg></div>
+            <div class="section-title">Turnaround Time <span class="count">last 10 runs</span></div>
+            <div class="row">
+                <div class="card col">
+                    <div style="display:flex;align-items:center;gap:20px">
+                        <div style="flex-shrink:0"><svg width="140" height="140" viewBox="0 0 140 140"><path d="M70.0,4.0 A66.0,66.0 0 0 1 126.5,104.2 L102.7,89.8 A38.3,38.3 0 0 0 70.0,31.7 Z" fill="#58a6ff" opacity="0.8" stroke="#161b22" stroke-width="2"/><path d="M126.5,104.2 A66.0,66.0 0 1 1 45.9,8.5 L56.0,34.4 A38.3,38.3 0 1 0 102.7,89.8 Z" fill="#d29922" opacity="0.8" stroke="#161b22" stroke-width="2"/><path d="M45.9,8.5 A66.0,66.0 0 0 1 57.8,5.1 L62.9,32.4 A38.3,38.3 0 0 0 56.0,34.4 Z" fill="#bc8cff" opacity="0.8" stroke="#161b22" stroke-width="2"/><path d="M57.8,5.1 A66.0,66.0 0 0 1 70.0,4.0 L70.0,31.7 A38.3,38.3 0 0 0 62.9,32.4 Z" fill="#484f58" opacity="0.8" stroke="#161b22" stroke-width="2"/>
+            <text x="70.0" y="66.0" fill="#e6edf3" font-size="16" font-weight="700" text-anchor="middle">30s</text>
+            <text x="70.0" y="80.0" fill="#484f58" font-size="9" text-anchor="middle">avg</text></svg></div>
                         <div style="flex:1">
-                            <div style="font-size:14px;font-weight:600;margin-bottom:12px">&#x1f967; Time Breakdown (avg)</div>
-                            
-            <div style="display:flex;align-items:center;gap:8px;margin:6px 0;font-size:12px">
-                <div style="width:10px;height:10px;border-radius:3px;background:#58a6ff;flex-shrink:0"></div>
-                <span style="color:#8b949e">&#x2699;&#xfe0f; Setup</span>
-                <span style="color:#e6edf3;font-weight:600;margin-left:auto">10s (34%)</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:8px;margin:6px 0;font-size:12px">
-                <div style="width:10px;height:10px;border-radius:3px;background:#d29922;flex-shrink:0"></div>
-                <span style="color:#8b949e">&#x1f916; Agent</span>
-                <span style="color:#e6edf3;font-weight:600;margin-left:auto">18s (60%)</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:8px;margin:6px 0;font-size:12px">
-                <div style="width:10px;height:10px;border-radius:3px;background:#bc8cff;flex-shrink:0"></div>
-                <span style="color:#8b949e">&#x1f4ac; Ack</span>
-                <span style="color:#e6edf3;font-weight:600;margin-left:auto">1s (3%)</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:8px;margin:6px 0;font-size:12px">
-                <div style="width:10px;height:10px;border-radius:3px;background:#8b949e;flex-shrink:0"></div>
-                <span style="color:#8b949e">&#x1f504; Overhead</span>
-                <span style="color:#e6edf3;font-weight:600;margin-left:auto">1s (3%)</span>
-            </div>
-                            <div style="margin-top:14px;padding-top:14px;border-top:1px solid #30363d">
-                                <div style="display:flex;justify-content:space-between;font-size:12px;margin:3px 0">
-                                    <span style="color:#8b949e">&#x23f1;&#xfe0f; Latest</span>
-                                    <span style="color:#d29922;font-weight:700">42s</span>
-                                </div>
-                                <div style="display:flex;justify-content:space-between;font-size:12px;margin:3px 0">
-                                    <span style="color:#8b949e">&#x1f4ca; Average</span>
-                                    <span style="color:#d29922;font-weight:700">40s</span>
-                                </div>
-                                <div style="display:flex;justify-content:space-between;font-size:12px;margin:3px 0">
-                                    <span style="color:#8b949e">&#x1f3c6; Best / Worst</span>
-                                    <span style="color:#e6edf3;font-weight:600">32s / 50s</span>
-                                </div>
+                            <div style="font-size:12px;color:#8b949e;margin-bottom:8px">Avg breakdown per run</div>
+                            <div style="display:flex;align-items:center;gap:6px;margin:4px 0;font-size:12px"><span style="width:8px;height:8px;border-radius:2px;background:#58a6ff;display:inline-block"></span><span style="color:#8b949e">Setup</span><span style="margin-left:auto;color:#c9d1d9">10s (34%)</span></div><div style="display:flex;align-items:center;gap:6px;margin:4px 0;font-size:12px"><span style="width:8px;height:8px;border-radius:2px;background:#d29922;display:inline-block"></span><span style="color:#8b949e">Agent</span><span style="margin-left:auto;color:#c9d1d9">18s (60%)</span></div><div style="display:flex;align-items:center;gap:6px;margin:4px 0;font-size:12px"><span style="width:8px;height:8px;border-radius:2px;background:#bc8cff;display:inline-block"></span><span style="color:#8b949e">Ack</span><span style="margin-left:auto;color:#c9d1d9">1s (3%)</span></div><div style="display:flex;align-items:center;gap:6px;margin:4px 0;font-size:12px"><span style="width:8px;height:8px;border-radius:2px;background:#484f58;display:inline-block"></span><span style="color:#8b949e">Overhead</span><span style="margin-left:auto;color:#c9d1d9">1s (3%)</span></div>
+                            <div style="margin-top:10px;padding-top:10px;border-top:1px solid #21262d;font-size:12px">
+                                <div style="display:flex;justify-content:space-between;margin:2px 0"><span style="color:#8b949e">Latest</span><span style="color:#d29922">42s</span></div>
+                                <div style="display:flex;justify-content:space-between;margin:2px 0"><span style="color:#8b949e">Average</span><span style="color:#d29922">40s</span></div>
+                                <div style="display:flex;justify-content:space-between;margin:2px 0"><span style="color:#8b949e">Best / Worst</span><span style="color:#8b949e">32s / 50s</span></div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="card">
-                    <div style="font-size:14px;font-weight:600;margin-bottom:12px">&#x1f4c9; TAT Trend</div>
+                <div class="card col">
+                    <div style="font-size:12px;color:#8b949e;margin-bottom:8px">TAT trend</div>
                     
-        <svg width="100%" viewBox="0 0 560 200" style="max-width:560px">
+        <svg width="100%" viewBox="0 0 480 190" style="max-width:480px">
             <defs><linearGradient id="tg" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#d29922" stop-opacity="0.2"/>
+                <stop offset="0%" stop-color="#d29922" stop-opacity="0.12"/>
                 <stop offset="100%" stop-color="#d29922" stop-opacity="0.0"/>
             </linearGradient></defs>
-            <line x1="48" y1="170.0" x2="548" y2="170.0" stroke="#21262d" stroke-width="1"/><text x="42" y="174.0" fill="#8b949e" font-size="9" text-anchor="end">0s</text><line x1="48" y1="132.07999999999998" x2="548" y2="132.07999999999998" stroke="#21262d" stroke-width="1"/><text x="42" y="136.07999999999998" fill="#8b949e" font-size="9" text-anchor="end">12s</text><line x1="48" y1="94.16" x2="548" y2="94.16" stroke="#21262d" stroke-width="1"/><text x="42" y="98.16" fill="#8b949e" font-size="9" text-anchor="end">24s</text><line x1="48" y1="56.24000000000001" x2="548" y2="56.24000000000001" stroke="#21262d" stroke-width="1"/><text x="42" y="60.24000000000001" fill="#8b949e" font-size="9" text-anchor="end">36s</text><line x1="48" y1="18.319999999999993" x2="548" y2="18.319999999999993" stroke="#21262d" stroke-width="1"/><text x="42" y="22.319999999999993" fill="#8b949e" font-size="9" text-anchor="end">48s</text><line x1="48" y1="68.88" x2="548" y2="68.88" stroke="#3fb950" stroke-width="1" stroke-dasharray="5,4" opacity="0.35"/><text x="546" y="63.879999999999995" fill="#3fb950" font-size="8" text-anchor="end">32s target</text>
-            <path d="M98.0,62.6 L148.0,12.0 L198.0,46.8 L248.0,59.4 L298.0,40.4 L348.0,68.9 L398.0,43.6 L448.0,18.3 L498.0,34.1 L548.0,37.3 L548.0,170.0 L98.0,170.0 Z" fill="url(#tg)"/>
-            <path d="M98.0,62.6 L148.0,12.0 L198.0,46.8 L248.0,59.4 L298.0,40.4 L348.0,68.9 L398.0,43.6 L448.0,18.3 L498.0,34.1 L548.0,37.3" fill="none" stroke="#d29922" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <circle cx="98.0" cy="62.6" r="3.5" fill="#3fb950" stroke="#161b22" stroke-width="1.5"/><circle cx="148.0" cy="12.0" r="3.5" fill="#d29922" stroke="#161b22" stroke-width="1.5"/><circle cx="198.0" cy="46.8" r="3.5" fill="#d29922" stroke="#161b22" stroke-width="1.5"/><circle cx="248.0" cy="59.4" r="3.5" fill="#3fb950" stroke="#161b22" stroke-width="1.5"/><circle cx="298.0" cy="40.4" r="3.5" fill="#d29922" stroke="#161b22" stroke-width="1.5"/><circle cx="348.0" cy="68.9" r="3.5" fill="#3fb950" stroke="#161b22" stroke-width="1.5"/><circle cx="398.0" cy="43.6" r="3.5" fill="#d29922" stroke="#161b22" stroke-width="1.5"/><circle cx="448.0" cy="18.3" r="3.5" fill="#d29922" stroke="#161b22" stroke-width="1.5"/><circle cx="498.0" cy="34.1" r="3.5" fill="#d29922" stroke="#161b22" stroke-width="1.5"/><circle cx="548.0" cy="37.3" r="3.5" fill="#d29922" stroke="#161b22" stroke-width="1.5"/>
-            <text x="280" y="195" fill="#8b949e" font-size="9" text-anchor="middle">Recent runs (chronological) - Latest: 42s</text>
+            <line x1="40" y1="166.0" x2="472" y2="166.0" stroke="#21262d" stroke-width="1"/><text x="36" y="169.0" fill="#484f58" font-size="9" text-anchor="end">0s</text><line x1="40" y1="128.07999999999998" x2="472" y2="128.07999999999998" stroke="#21262d" stroke-width="1"/><text x="36" y="131.07999999999998" fill="#484f58" font-size="9" text-anchor="end">12s</text><line x1="40" y1="90.16" x2="472" y2="90.16" stroke="#21262d" stroke-width="1"/><text x="36" y="93.16" fill="#484f58" font-size="9" text-anchor="end">24s</text><line x1="40" y1="52.24000000000001" x2="472" y2="52.24000000000001" stroke="#21262d" stroke-width="1"/><text x="36" y="55.24000000000001" fill="#484f58" font-size="9" text-anchor="end">36s</text><line x1="40" y1="14.319999999999993" x2="472" y2="14.319999999999993" stroke="#21262d" stroke-width="1"/><text x="36" y="17.319999999999993" fill="#484f58" font-size="9" text-anchor="end">48s</text><line x1="40" y1="64.88" x2="472" y2="64.88" stroke="#3fb950" stroke-width="1" stroke-dasharray="4,4" opacity="0.3"/><text x="472" y="60.879999999999995" fill="#3fb950" font-size="8" text-anchor="end" opacity="0.5">32s</text>
+            <path d="M83.2,58.6 L126.4,8.0 L169.6,42.8 L212.8,55.4 L256.0,36.4 L299.2,64.9 L342.4,39.6 L385.6,14.3 L428.8,30.1 L472.0,33.3 L472.0,166.0 L83.2,166.0 Z" fill="url(#tg)"/>
+            <path d="M83.2,58.6 L126.4,8.0 L169.6,42.8 L212.8,55.4 L256.0,36.4 L299.2,64.9 L342.4,39.6 L385.6,14.3 L428.8,30.1 L472.0,33.3" fill="none" stroke="#d29922" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="83.2" cy="58.6" r="3" fill="#3fb950" stroke="#161b22" stroke-width="1"/><circle cx="126.4" cy="8.0" r="3" fill="#d29922" stroke="#161b22" stroke-width="1"/><circle cx="169.6" cy="42.8" r="3" fill="#d29922" stroke="#161b22" stroke-width="1"/><circle cx="212.8" cy="55.4" r="3" fill="#3fb950" stroke="#161b22" stroke-width="1"/><circle cx="256.0" cy="36.4" r="3" fill="#d29922" stroke="#161b22" stroke-width="1"/><circle cx="299.2" cy="64.9" r="3" fill="#3fb950" stroke="#161b22" stroke-width="1"/><circle cx="342.4" cy="39.6" r="3" fill="#d29922" stroke="#161b22" stroke-width="1"/><circle cx="385.6" cy="14.3" r="3" fill="#d29922" stroke="#161b22" stroke-width="1"/><circle cx="428.8" cy="30.1" r="3" fill="#d29922" stroke="#161b22" stroke-width="1"/><circle cx="472.0" cy="33.3" r="3" fill="#d29922" stroke="#161b22" stroke-width="1"/>
+            <text x="240" y="186" fill="#484f58" font-size="9" text-anchor="middle">Runs (chronological) - latest 42s</text>
         </svg>
                 </div>
             </div>
         </div>
         
         <div class="section">
-            <div class="section-header">
-                <h2>&#x1f527; Recent Issues</h2>
-                <span class="badge">last 30</span>
-            </div>
+            <div class="section-title">Recent Issues <span class="count">30</span></div>
             <div class="card" style="overflow-x:auto">
                 <table>
                     <tr>
-                        <th>#</th>
-                        <th>Title</th>
-                        <th>Type</th>
-                        <th>Template</th>
-                        <th class="text-center">&#x1f3af; Classify</th>
-                        <th class="text-center">&#x1f527; Fix</th>
-                        <th class="text-center">&#x1f9ea; Test</th>
-                        <th>PR</th>
-                        <th>Result</th>
+                        <th>#</th><th>Title</th><th>Type</th><th>Template</th>
+                        <th class="center">Classify</th><th class="center">Fix</th><th class="center">Test</th>
+                        <th>PR</th><th>Result</th><th>Date</th>
                     </tr>
                     
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/124" target="_blank" style="font-weight:600">#124</a></td>
-                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Update ack message to say GlassBox Agent v1 not v</td>
-                <td><span class="pill pill-blue">&#x1f527; Fix</span></td>
-                <td><span class="pill pill-green">typo_fix</span></td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/124" target="_blank">#124</a></td>
+                <td style="max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Update ack message to say GlassBox Agent v1 not v2</td>
+                <td><span class="tag tag-blue">Fix</span></td>
+                <td><code>typo_fix</code></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/125" target="_blank">#125</a></td>
-                <td><span class="pill pill-green">&#x2705; Merged</span></td>
+                <td><span class="tag tag-green">Merged</span></td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">23:19</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/122" target="_blank" style="font-weight:600">#122</a></td>
-                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Pin python-dotenv version to 1.1.0 in requirement</td>
-                <td><span class="pill pill-blue">&#x1f527; Fix</span></td>
-                <td><span class="pill pill-amber">wrong_value</span></td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/122" target="_blank">#122</a></td>
+                <td style="max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Pin python-dotenv version to 1.1.0 in requirements.txt</td>
+                <td><span class="tag tag-blue">Fix</span></td>
+                <td><code>wrong_value</code></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/123" target="_blank">#123</a></td>
-                <td><span class="pill pill-green">&#x2705; Merged</span></td>
+                <td><span class="tag tag-green">Merged</span></td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">23:17</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/120" target="_blank" style="font-weight:600">#120</a></td>
-                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Pin pytest version to 8.3.5 in requirements.txt</td>
-                <td><span class="pill pill-blue">&#x1f527; Fix</span></td>
-                <td><span class="pill pill-amber">wrong_value</span></td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/120" target="_blank">#120</a></td>
+                <td style="max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Pin pytest version to 8.3.5 in requirements.txt</td>
+                <td><span class="tag tag-blue">Fix</span></td>
+                <td><code>wrong_value</code></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/121" target="_blank">#121</a></td>
-                <td><span class="pill pill-green">&#x2705; Merged</span></td>
+                <td><span class="tag tag-green">Merged</span></td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">23:16</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/118" target="_blank" style="font-weight:600">#118</a></td>
-                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Pin pyyaml version to 6.0.2 in requirements.txt</td>
-                <td><span class="pill pill-blue">&#x1f527; Fix</span></td>
-                <td><span class="pill pill-amber">wrong_value</span></td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/118" target="_blank">#118</a></td>
+                <td style="max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Pin pyyaml version to 6.0.2 in requirements.txt</td>
+                <td><span class="tag tag-blue">Fix</span></td>
+                <td><code>wrong_value</code></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/119" target="_blank">#119</a></td>
-                <td><span class="pill pill-green">&#x2705; Merged</span></td>
+                <td><span class="tag tag-green">Merged</span></td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">23:14</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/116" target="_blank" style="font-weight:600">#116</a></td>
-                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Pin pydantic version to 2.11.1 in requirements.tx</td>
-                <td><span class="pill pill-blue">&#x1f527; Fix</span></td>
-                <td><span class="pill pill-amber">wrong_value</span></td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/116" target="_blank">#116</a></td>
+                <td style="max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Pin pydantic version to 2.11.1 in requirements.txt</td>
+                <td><span class="tag tag-blue">Fix</span></td>
+                <td><code>wrong_value</code></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/117" target="_blank">#117</a></td>
-                <td><span class="pill pill-green">&#x2705; Merged</span></td>
+                <td><span class="tag tag-green">Merged</span></td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">23:13</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/114" target="_blank" style="font-weight:600">#114</a></td>
-                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Skip redundant syntax check in Tester - tests alr</td>
-                <td><span class="pill pill-blue">&#x1f527; Fix</span></td>
-                <td><span class="pill pill-green">typo_fix</span></td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/114" target="_blank">#114</a></td>
+                <td style="max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Skip redundant syntax check in Tester - tests already </td>
+                <td><span class="tag tag-blue">Fix</span></td>
+                <td><code>typo_fix</code></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/115" target="_blank">#115</a></td>
-                <td><span class="pill pill-red">&#x274c; Closed</span></td>
+                <td><span class="tag tag-red">Closed</span></td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">23:12</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/112" target="_blank" style="font-weight:600">#112</a></td>
-                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Pin exact dependency versions in requirements.txt</td>
-                <td><span class="pill pill-blue">&#x1f527; Fix</span></td>
-                <td><span class="pill pill-amber">wrong_value</span></td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/112" target="_blank">#112</a></td>
+                <td style="max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Pin exact dependency versions in requirements.txt</td>
+                <td><span class="tag tag-blue">Fix</span></td>
+                <td><code>wrong_value</code></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/113" target="_blank">#113</a></td>
-                <td><span class="pill pill-green">&#x2705; Merged</span></td>
+                <td><span class="tag tag-green">Merged</span></td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">23:10</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/110" target="_blank" style="font-weight:600">#110</a></td>
-                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Remove -v verbose flag from test runner to reduce</td>
-                <td><span class="pill pill-blue">&#x1f527; Fix</span></td>
-                <td><span class="pill pill-amber">wrong_value</span></td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/110" target="_blank">#110</a></td>
+                <td style="max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Remove -v verbose flag from test runner to reduce outp</td>
+                <td><span class="tag tag-blue">Fix</span></td>
+                <td><code>wrong_value</code></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/111" target="_blank">#111</a></td>
-                <td><span class="pill pill-green">&#x2705; Merged</span></td>
+                <td><span class="tag tag-green">Merged</span></td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">23:09</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/108" target="_blank" style="font-weight:600">#108</a></td>
-                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Use gpt-4o-mini for Manager classify to reduce la</td>
-                <td><span class="pill pill-blue">&#x1f527; Fix</span></td>
-                <td><span class="pill pill-amber">wrong_value</span></td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/108" target="_blank">#108</a></td>
+                <td style="max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Use gpt-4o-mini for Manager classify to reduce latency</td>
+                <td><span class="tag tag-blue">Fix</span></td>
+                <td><code>wrong_value</code></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/109" target="_blank">#109</a></td>
-                <td><span class="pill pill-red">&#x274c; Closed</span></td>
+                <td><span class="tag tag-red">Closed</span></td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">23:05</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/106" target="_blank" style="font-weight:600">#106</a></td>
-                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Remove unused MCP dependency from requirements.tx</td>
-                <td><span class="pill pill-blue">&#x1f527; Fix</span></td>
-                <td><span class="pill pill-green">typo_fix</span></td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/106" target="_blank">#106</a></td>
+                <td style="max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Remove unused MCP dependency from requirements.txt</td>
+                <td><span class="tag tag-blue">Fix</span></td>
+                <td><code>typo_fix</code></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/107" target="_blank">#107</a></td>
-                <td><span class="pill pill-green">&#x2705; Merged</span></td>
+                <td><span class="tag tag-green">Merged</span></td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">23:01</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/104" target="_blank" style="font-weight:600">#104</a></td>
-                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Remove aider-chat from workflow pip install - not</td>
-                <td><span class="pill pill-blue">&#x1f527; Fix</span></td>
-                <td><span class="pill pill-green">typo_fix</span></td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/104" target="_blank">#104</a></td>
+                <td style="max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Remove aider-chat from workflow pip install - not used</td>
+                <td><span class="tag tag-blue">Fix</span></td>
+                <td><code>typo_fix</code></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/105" target="_blank">#105</a></td>
-                <td><span class="pill pill-green">&#x2705; Merged</span></td>
+                <td><span class="tag tag-green">Merged</span></td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">22:59</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/102" target="_blank" style="font-weight:600">#102</a></td>
-                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] HC prefix codes still showing in hard challenges </td>
-                <td><span class="pill pill-blue">&#x1f527; Fix</span></td>
-                <td><span class="pill pill-green">typo_fix</span></td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/102" target="_blank">#102</a></td>
+                <td style="max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] HC prefix codes still showing in hard challenges displ</td>
+                <td><span class="tag tag-blue">Fix</span></td>
+                <td><code>typo_fix</code></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/103" target="_blank">#103</a></td>
-                <td><span class="pill pill-green">&#x2705; Merged</span></td>
+                <td><span class="tag tag-green">Merged</span></td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">22:42</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/84" target="_blank" style="font-weight:600">#84</a></td>
-                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Rename Agent v2 to v1 in PR body</td>
-                <td><span class="pill pill-blue">&#x1f527; Fix</span></td>
-                <td><span class="pill pill-amber">wrong_value</span></td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/84" target="_blank">#84</a></td>
+                <td style="max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Rename Agent v2 to v1 in PR body</td>
+                <td><span class="tag tag-blue">Fix</span></td>
+                <td><code>wrong_value</code></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/93" target="_blank">#93</a></td>
-                <td><span class="pill pill-red">&#x274c; Closed</span></td>
+                <td><span class="tag tag-red">Closed</span></td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">21:55</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/83" target="_blank" style="font-weight:600">#83</a></td>
-                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Remove HA/HC/SA ID codes from aspect display</td>
-                <td><span class="pill pill-blue">&#x1f527; Fix</span></td>
-                <td><span class="pill pill-amber">wrong_value</span></td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/83" target="_blank">#83</a></td>
+                <td style="max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Remove HA/HC/SA ID codes from aspect display</td>
+                <td><span class="tag tag-blue">Fix</span></td>
+                <td><code>wrong_value</code></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/92" target="_blank">#92</a></td>
-                <td><span class="pill pill-red">&#x274c; Closed</span></td>
+                <td><span class="tag tag-red">Closed</span></td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">21:55</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/82" target="_blank" style="font-weight:600">#82</a></td>
-                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Add template description to Manager briefing</td>
-                <td><span class="pill pill-blue">&#x1f527; Fix</span></td>
-                <td><span class="pill pill-amber">wrong_value</span></td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/82" target="_blank">#82</a></td>
+                <td style="max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Add template description to Manager briefing</td>
+                <td><span class="tag tag-blue">Fix</span></td>
+                <td><code>wrong_value</code></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/91" target="_blank">#91</a></td>
-                <td><span class="pill pill-red">&#x274c; Closed</span></td>
+                <td><span class="tag tag-red">Closed</span></td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">21:55</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/81" target="_blank" style="font-weight:600">#81</a></td>
-                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Make file paths clickable GitHub links in JuniorD</td>
-                <td><span class="pill pill-blue">&#x1f527; Fix</span></td>
-                <td><span class="pill pill-purple">swapped_args</span></td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/81" target="_blank">#81</a></td>
+                <td style="max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Make file paths clickable GitHub links in JuniorDev co</td>
+                <td><span class="tag tag-blue">Fix</span></td>
+                <td><code>swapped_args</code></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/90" target="_blank">#90</a></td>
-                <td><span class="pill pill-red">&#x274c; Closed</span></td>
+                <td><span class="tag tag-red">Closed</span></td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">21:54</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/80" target="_blank" style="font-weight:600">#80</a></td>
-                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Truncate failure messages to human-readable summa</td>
-                <td><span class="pill pill-blue">&#x1f527; Fix</span></td>
-                <td><span class="pill pill-amber">wrong_value</span></td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/80" target="_blank">#80</a></td>
+                <td style="max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Truncate failure messages to human-readable summary</td>
+                <td><span class="tag tag-blue">Fix</span></td>
+                <td><code>wrong_value</code></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/89" target="_blank">#89</a></td>
-                <td><span class="pill pill-red">&#x274c; Closed</span></td>
+                <td><span class="tag tag-red">Closed</span></td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">21:54</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/79" target="_blank" style="font-weight:600">#79</a></td>
-                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Feature] Collapse hard challenges behind details tag</td>
-                <td><span class="pill pill-purple">&#x2728; Feature</span></td>
-                <td><span class="pill pill-purple">swapped_args</span></td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/79" target="_blank">#79</a></td>
+                <td style="max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Feature] Collapse hard challenges behind details tag</td>
+                <td><span class="tag tag-amber">Feature</span></td>
+                <td><code>swapped_args</code></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/88" target="_blank">#88</a></td>
-                <td><span class="pill pill-green">&#x2705; Merged</span></td>
+                <td><span class="tag tag-green">Merged</span></td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">21:54</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/78" target="_blank" style="font-weight:600">#78</a></td>
-                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Collapse hard aspects behind details tag</td>
-                <td><span class="pill pill-blue">&#x1f527; Fix</span></td>
-                <td><span class="pill pill-green">typo_fix</span></td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/78" target="_blank">#78</a></td>
+                <td style="max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Collapse hard aspects behind details tag</td>
+                <td><span class="tag tag-blue">Fix</span></td>
+                <td><code>typo_fix</code></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/101" target="_blank">#101</a></td>
-                <td><span class="pill pill-green">&#x2705; Merged</span></td>
+                <td><span class="tag tag-green">Merged</span></td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">21:54</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/77" target="_blank" style="font-weight:600">#77</a></td>
-                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Show before/after diff in JuniorDev comment</td>
-                <td><span class="pill pill-blue">&#x1f527; Fix</span></td>
-                <td><span class="pill pill-amber">wrong_value</span></td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/77" target="_blank">#77</a></td>
+                <td style="max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Show before/after diff in JuniorDev comment</td>
+                <td><span class="tag tag-blue">Fix</span></td>
+                <td><code>wrong_value</code></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/87" target="_blank">#87</a></td>
-                <td><span class="pill pill-red">&#x274c; Closed</span></td>
+                <td><span class="tag tag-red">Closed</span></td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">21:54</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/76" target="_blank" style="font-weight:600">#76</a></td>
-                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Replace Got it boss with professional JuniorDev p</td>
-                <td><span class="pill pill-blue">&#x1f527; Fix</span></td>
-                <td><span class="pill pill-amber">wrong_value</span></td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/76" target="_blank">#76</a></td>
+                <td style="max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Replace Got it boss with professional JuniorDev prefix</td>
+                <td><span class="tag tag-blue">Fix</span></td>
+                <td><code>wrong_value</code></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/86" target="_blank">#86</a></td>
-                <td><span class="pill pill-red">&#x274c; Closed</span></td>
+                <td><span class="tag tag-red">Closed</span></td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">21:54</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/75" target="_blank" style="font-weight:600">#75</a></td>
-                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Add step numbers [1/4] to agent comments</td>
-                <td><span class="pill pill-blue">&#x1f527; Fix</span></td>
-                <td><span class="pill pill-purple">swapped_args</span></td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/75" target="_blank">#75</a></td>
+                <td style="max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Add step numbers [1/4] to agent comments</td>
+                <td><span class="tag tag-blue">Fix</span></td>
+                <td><code>swapped_args</code></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/85" target="_blank">#85</a></td>
-                <td><span class="pill pill-red">&#x274c; Closed</span></td>
+                <td><span class="tag tag-red">Closed</span></td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">21:53</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/70" target="_blank" style="font-weight:600">#70</a></td>
-                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Feature] Extract difficulty from Manager LLM classify </td>
-                <td><span class="pill pill-purple">&#x2728; Feature</span></td>
-                <td><span class="pill pill-purple">swapped_args</span></td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/70" target="_blank">#70</a></td>
+                <td style="max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Feature] Extract difficulty from Manager LLM classify respo</td>
+                <td><span class="tag tag-amber">Feature</span></td>
+                <td><code>swapped_args</code></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/74" target="_blank">#74</a></td>
-                <td><span class="pill pill-red">&#x274c; Closed</span></td>
+                <td><span class="tag tag-red">Closed</span></td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">21:02</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/69" target="_blank" style="font-weight:600">#69</a></td>
-                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Feature] Include test files in agent context for groun</td>
-                <td><span class="pill pill-purple">&#x2728; Feature</span></td>
-                <td><span class="pill pill-purple">swapped_args</span></td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/69" target="_blank">#69</a></td>
+                <td style="max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Feature] Include test files in agent context for grounded f</td>
+                <td><span class="tag tag-amber">Feature</span></td>
+                <td><code>swapped_args</code></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/73" target="_blank">#73</a></td>
-                <td><span class="pill pill-red">&#x274c; Closed</span></td>
+                <td><span class="tag tag-red">Closed</span></td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">21:02</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/68" target="_blank" style="font-weight:600">#68</a></td>
-                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Feature] Reflexion memory should query full title, not</td>
-                <td><span class="pill pill-purple">&#x2728; Feature</span></td>
-                <td><span class="pill pill-amber">wrong_value</span></td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/68" target="_blank">#68</a></td>
+                <td style="max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Feature] Reflexion memory should query full title, not just</td>
+                <td><span class="tag tag-amber">Feature</span></td>
+                <td><code>wrong_value</code></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/72" target="_blank">#72</a></td>
-                <td><span class="pill pill-green">&#x2705; Merged</span></td>
+                <td><span class="tag tag-green">Merged</span></td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">21:01</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/67" target="_blank" style="font-weight:600">#67</a></td>
-                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Feature] Show model name in debate output for full tra</td>
-                <td><span class="pill pill-purple">&#x2728; Feature</span></td>
-                <td><span class="pill pill-amber">wrong_value</span></td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/67" target="_blank">#67</a></td>
+                <td style="max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Feature] Show model name in debate output for full transpar</td>
+                <td><span class="tag tag-amber">Feature</span></td>
+                <td><code>wrong_value</code></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/71" target="_blank">#71</a></td>
-                <td><span class="pill pill-green">&#x2705; Merged</span></td>
+                <td><span class="tag tag-green">Merged</span></td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">21:01</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/66" target="_blank" style="font-weight:600">#66</a></td>
-                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Feature] Adaptive EMA alpha — trust learning rate deca</td>
-                <td><span class="pill pill-purple">&#x2728; Feature</span></td>
-                <td><span class="text-muted">-</span></td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x274c;</td>
-                <td class="text-center">&#x2796;</td>
-                <td><span class="text-muted">-</span></td>
-                <td><span class="pill pill-red">&#x1f6ab; Failed</span></td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/66" target="_blank">#66</a></td>
+                <td style="max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Feature] Adaptive EMA alpha — trust learning rate decays wi</td>
+                <td><span class="tag tag-amber">Feature</span></td>
+                <td><span class="muted">-</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#f85149">N</span></td>
+                <td class="center"><span style="color:#f85149">N</span></td>
+                <td><span class="muted">-</span></td>
+                <td><span class="tag tag-red">Failed</span></td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">21:01</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/64" target="_blank" style="font-weight:600">#64</a></td>
-                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Bug] Trust score ceiling is 0.9 instead of 1.0 in upda</td>
-                <td><span class="pill pill-red">&#x1f41b; Bug</span></td>
-                <td><span class="pill pill-amber">wrong_value</span></td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/64" target="_blank">#64</a></td>
+                <td style="max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Bug] Trust score ceiling is 0.9 instead of 1.0 in update_tr</td>
+                <td><span class="tag tag-red">Bug</span></td>
+                <td><code>wrong_value</code></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/65" target="_blank">#65</a></td>
-                <td><span class="pill pill-green">&#x2705; Merged</span></td>
+                <td><span class="tag tag-green">Merged</span></td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">20:32</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/62" target="_blank" style="font-weight:600">#62</a></td>
-                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Bug] Critic agent missing from seed agent list in _ini</td>
-                <td><span class="pill pill-red">&#x1f41b; Bug</span></td>
-                <td><span class="pill pill-amber">wrong_value</span></td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/62" target="_blank">#62</a></td>
+                <td style="max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Bug] Critic agent missing from seed agent list in _init_db(</td>
+                <td><span class="tag tag-red">Bug</span></td>
+                <td><code>wrong_value</code></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/63" target="_blank">#63</a></td>
-                <td><span class="pill pill-green">&#x2705; Merged</span></td>
+                <td><span class="tag tag-green">Merged</span></td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">20:30</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/60" target="_blank" style="font-weight:600">#60</a></td>
-                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Bug] Pragmatist temperature is 1.5 (out of valid 0-1 r</td>
-                <td><span class="pill pill-red">&#x1f41b; Bug</span></td>
-                <td><span class="pill pill-amber">wrong_value</span></td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
-                <td class="text-center">&#x2705;</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/60" target="_blank">#60</a></td>
+                <td style="max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Bug] Pragmatist temperature is 1.5 (out of valid 0-1 range)</td>
+                <td><span class="tag tag-red">Bug</span></td>
+                <td><code>wrong_value</code></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
+                <td class="center"><span style="color:#3fb950">Y</span></td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/61" target="_blank">#61</a></td>
-                <td><span class="pill pill-green">&#x2705; Merged</span></td>
+                <td><span class="tag tag-green">Merged</span></td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">20:28</span></td>
             </tr>
                 </table>
             </div>
         </div>
         
         <div class="section">
-            <div class="section-header">
-                <h2>&#x1f500; Pull Requests</h2>
-                <span class="badge">last 30</span>
-            </div>
+            <div class="section-title">Pull Requests <span class="count">30</span></div>
             <div class="card" style="overflow-x:auto">
                 <table>
-                    <tr><th>PR</th><th>Title</th><th>Issue</th><th>Branch</th><th>Status</th></tr>
+                    <tr><th>PR</th><th>Title</th><th>Issue</th><th>Branch</th><th>Status</th><th>Date</th></tr>
                     
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/125" target="_blank" style="font-weight:600">#125</a></td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/125" target="_blank">#125</a></td>
                 <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">fix: Fix typo in workflow step name from v2 to v1</td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/124" target="_blank">#124</a></td>
                 <td><code>agent/issue-124</code></td>
-                <td><span class="pill pill-green">&#x2705; Merged</span></td>
+                <td><span class="tag tag-green">Merged</span></td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">23:20</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/123" target="_blank" style="font-weight:600">#123</a></td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/123" target="_blank">#123</a></td>
                 <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">fix: Pin python-dotenv version to 1.1.0</td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/122" target="_blank">#122</a></td>
                 <td><code>agent/issue-122</code></td>
-                <td><span class="pill pill-green">&#x2705; Merged</span></td>
+                <td><span class="tag tag-green">Merged</span></td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">23:18</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/121" target="_blank" style="font-weight:600">#121</a></td>
-                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">fix: Pin pytest version to 8.3.5 in requirements.t</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/121" target="_blank">#121</a></td>
+                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">fix: Pin pytest version to 8.3.5 in requirements.txt</td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/120" target="_blank">#120</a></td>
                 <td><code>agent/issue-120</code></td>
-                <td><span class="pill pill-green">&#x2705; Merged</span></td>
+                <td><span class="tag tag-green">Merged</span></td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">23:17</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/119" target="_blank" style="font-weight:600">#119</a></td>
-                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">fix: Pin pyyaml version to 6.0.2 in requirements.t</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/119" target="_blank">#119</a></td>
+                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">fix: Pin pyyaml version to 6.0.2 in requirements.txt</td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/118" target="_blank">#118</a></td>
                 <td><code>agent/issue-118</code></td>
-                <td><span class="pill pill-green">&#x2705; Merged</span></td>
+                <td><span class="tag tag-green">Merged</span></td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">23:15</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/117" target="_blank" style="font-weight:600">#117</a></td>
-                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">fix: Pin pydantic version to 2.11.1 in requirement</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/117" target="_blank">#117</a></td>
+                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">fix: Pin pydantic version to 2.11.1 in requirements.txt</td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/116" target="_blank">#116</a></td>
                 <td><code>agent/issue-116</code></td>
-                <td><span class="pill pill-green">&#x2705; Merged</span></td>
+                <td><span class="tag tag-green">Merged</span></td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">23:14</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/115" target="_blank" style="font-weight:600">#115</a></td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/115" target="_blank">#115</a></td>
                 <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">fix: Remove redundant syntax check in Tester</td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/114" target="_blank">#114</a></td>
                 <td><code>agent/issue-114</code></td>
-                <td><span class="pill pill-red">&#x274c; Closed</span></td>
+                <td><span class="tag tag-red">Closed</span></td>
+                <td style="font-size:11px">-</td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/113" target="_blank" style="font-weight:600">#113</a></td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/113" target="_blank">#113</a></td>
                 <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">fix: Pin exact version of openai dependency</td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/112" target="_blank">#112</a></td>
                 <td><code>agent/issue-112</code></td>
-                <td><span class="pill pill-green">&#x2705; Merged</span></td>
+                <td><span class="tag tag-green">Merged</span></td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">23:12</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/111" target="_blank" style="font-weight:600">#111</a></td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/111" target="_blank">#111</a></td>
                 <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">fix: Remove verbose flag from test runner command</td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/110" target="_blank">#110</a></td>
                 <td><code>agent/issue-110</code></td>
-                <td><span class="pill pill-green">&#x2705; Merged</span></td>
+                <td><span class="tag tag-green">Merged</span></td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">23:10</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/109" target="_blank" style="font-weight:600">#109</a></td>
-                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">fix: Add model_classify setting and update Manager</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/109" target="_blank">#109</a></td>
+                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">fix: Add model_classify setting and update Manager to u</td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/108" target="_blank">#108</a></td>
                 <td><code>agent/issue-108</code></td>
-                <td><span class="pill pill-red">&#x274c; Closed</span></td>
+                <td><span class="tag tag-red">Closed</span></td>
+                <td style="font-size:11px">-</td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/107" target="_blank" style="font-weight:600">#107</a></td>
-                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">fix: Remove unused mcp dependency from requirement</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/107" target="_blank">#107</a></td>
+                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">fix: Remove unused mcp dependency from requirements.txt</td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/106" target="_blank">#106</a></td>
                 <td><code>agent/issue-106</code></td>
-                <td><span class="pill pill-green">&#x2705; Merged</span></td>
+                <td><span class="tag tag-green">Merged</span></td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">23:04</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/105" target="_blank" style="font-weight:600">#105</a></td>
-                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">fix: Remove aider-chat from pip install command in</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/105" target="_blank">#105</a></td>
+                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">fix: Remove aider-chat from pip install command in work</td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/104" target="_blank">#104</a></td>
                 <td><code>agent/issue-104</code></td>
-                <td><span class="pill pill-green">&#x2705; Merged</span></td>
+                <td><span class="tag tag-green">Merged</span></td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">23:01</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/103" target="_blank" style="font-weight:600">#103</a></td>
-                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">fix: Remove HC prefix codes from hard challenges d</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/103" target="_blank">#103</a></td>
+                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">fix: Remove HC prefix codes from hard challenges displa</td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/102" target="_blank">#102</a></td>
                 <td><code>agent/issue-102</code></td>
-                <td><span class="pill pill-green">&#x2705; Merged</span></td>
+                <td><span class="tag tag-green">Merged</span></td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">22:44</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/101" target="_blank" style="font-weight:600">#101</a></td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/101" target="_blank">#101</a></td>
                 <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">fix: Wrap hard aspects in collapsible details tag</td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/78" target="_blank">#78</a></td>
                 <td><code>agent/issue-78</code></td>
-                <td><span class="pill pill-green">&#x2705; Merged</span></td>
+                <td><span class="tag tag-green">Merged</span></td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">22:40</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/100" target="_blank" style="font-weight:600">#100</a></td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/100" target="_blank">#100</a></td>
                 <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">fix: one-line commit message</td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/77" target="_blank">#77</a></td>
                 <td><code>agent/issue-77</code></td>
-                <td><span class="pill pill-red">&#x274c; Closed</span></td>
+                <td><span class="tag tag-red">Closed</span></td>
+                <td style="font-size:11px">-</td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/99" target="_blank" style="font-weight:600">#99</a></td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/99" target="_blank">#99</a></td>
                 <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">fix: Make file paths clickable GitHub links</td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/81" target="_blank">#81</a></td>
                 <td><code>agent/issue-81</code></td>
-                <td><span class="pill pill-green">&#x2705; Merged</span></td>
+                <td><span class="tag tag-green">Merged</span></td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">22:34</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/98" target="_blank" style="font-weight:600">#98</a></td>
-                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">fix: Remove HA prefix codes from hard aspects disp</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/98" target="_blank">#98</a></td>
+                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">fix: Remove HA prefix codes from hard aspects display</td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/83" target="_blank">#83</a></td>
                 <td><code>agent/issue-83</code></td>
-                <td><span class="pill pill-green">&#x2705; Merged</span></td>
+                <td><span class="tag tag-green">Merged</span></td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">22:32</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/97" target="_blank" style="font-weight:600">#97</a></td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/97" target="_blank">#97</a></td>
                 <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">fix: Add template description to Manager briefing</td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/82" target="_blank">#82</a></td>
                 <td><code>agent/issue-82</code></td>
-                <td><span class="pill pill-green">&#x2705; Merged</span></td>
+                <td><span class="tag tag-green">Merged</span></td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">22:31</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/96" target="_blank" style="font-weight:600">#96</a></td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/96" target="_blank">#96</a></td>
                 <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">fix: Truncate failure messages to 100 chars</td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/80" target="_blank">#80</a></td>
                 <td><code>agent/issue-80</code></td>
-                <td><span class="pill pill-green">&#x2705; Merged</span></td>
+                <td><span class="tag tag-green">Merged</span></td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">22:29</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/95" target="_blank" style="font-weight:600">#95</a></td>
-                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">fix: Replace casual greeting with professional pre</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/95" target="_blank">#95</a></td>
+                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">fix: Replace casual greeting with professional prefix</td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/76" target="_blank">#76</a></td>
                 <td><code>agent/issue-76</code></td>
-                <td><span class="pill pill-green">&#x2705; Merged</span></td>
+                <td><span class="tag tag-green">Merged</span></td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">22:27</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/94" target="_blank" style="font-weight:600">#94</a></td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/94" target="_blank">#94</a></td>
                 <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">fix: Rename Agent v2 to v1 in PR body</td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/84" target="_blank">#84</a></td>
                 <td><code>agent/issue-84</code></td>
-                <td><span class="pill pill-green">&#x2705; Merged</span></td>
+                <td><span class="tag tag-green">Merged</span></td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">22:25</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/93" target="_blank" style="font-weight:600">#93</a></td>
-                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">fix: Fix issue #84: Rename Agent v2 to v1 in PR bo</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/93" target="_blank">#93</a></td>
+                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">fix: Fix issue #84: Rename Agent v2 to v1 in PR body</td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/84" target="_blank">#84</a></td>
                 <td><code>agent/issue-84</code></td>
-                <td><span class="pill pill-red">&#x274c; Closed</span></td>
+                <td><span class="tag tag-red">Closed</span></td>
+                <td style="font-size:11px">-</td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/92" target="_blank" style="font-weight:600">#92</a></td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/92" target="_blank">#92</a></td>
                 <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">fix: Remove ID codes from hard aspects display</td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/83" target="_blank">#83</a></td>
                 <td><code>agent/issue-83</code></td>
-                <td><span class="pill pill-red">&#x274c; Closed</span></td>
+                <td><span class="tag tag-red">Closed</span></td>
+                <td style="font-size:11px">-</td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/91" target="_blank" style="font-weight:600">#91</a></td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/91" target="_blank">#91</a></td>
                 <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">fix: Add template description to manager briefing</td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/82" target="_blank">#82</a></td>
                 <td><code>agent/issue-82</code></td>
-                <td><span class="pill pill-red">&#x274c; Closed</span></td>
+                <td><span class="tag tag-red">Closed</span></td>
+                <td style="font-size:11px">-</td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/90" target="_blank" style="font-weight:600">#90</a></td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/90" target="_blank">#90</a></td>
                 <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">fix: Fix clickable GitHub link for file paths</td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/81" target="_blank">#81</a></td>
                 <td><code>agent/issue-81</code></td>
-                <td><span class="pill pill-red">&#x274c; Closed</span></td>
+                <td><span class="tag tag-red">Closed</span></td>
+                <td style="font-size:11px">-</td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/89" target="_blank" style="font-weight:600">#89</a></td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/89" target="_blank">#89</a></td>
                 <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">fix: Truncate failure messages to 100 chars</td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/80" target="_blank">#80</a></td>
                 <td><code>agent/issue-80</code></td>
-                <td><span class="pill pill-red">&#x274c; Closed</span></td>
+                <td><span class="tag tag-red">Closed</span></td>
+                <td style="font-size:11px">-</td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/88" target="_blank" style="font-weight:600">#88</a></td>
-                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">fix: Wrap hard challenges in collapsible details t</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/88" target="_blank">#88</a></td>
+                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">fix: Wrap hard challenges in collapsible details tag</td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/79" target="_blank">#79</a></td>
                 <td><code>agent/issue-79</code></td>
-                <td><span class="pill pill-green">&#x2705; Merged</span></td>
+                <td><span class="tag tag-green">Merged</span></td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">22:03</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/87" target="_blank" style="font-weight:600">#87</a></td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/87" target="_blank">#87</a></td>
                 <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">fix: Fix diff formatting in JuniorDev comment</td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/77" target="_blank">#77</a></td>
                 <td><code>agent/issue-77</code></td>
-                <td><span class="pill pill-red">&#x274c; Closed</span></td>
+                <td><span class="tag tag-red">Closed</span></td>
+                <td style="font-size:11px">-</td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/86" target="_blank" style="font-weight:600">#86</a></td>
-                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">fix: Replace casual greeting with professional pre</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/86" target="_blank">#86</a></td>
+                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">fix: Replace casual greeting with professional prefix</td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/76" target="_blank">#76</a></td>
                 <td><code>agent/issue-76</code></td>
-                <td><span class="pill pill-red">&#x274c; Closed</span></td>
+                <td><span class="tag tag-red">Closed</span></td>
+                <td style="font-size:11px">-</td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/85" target="_blank" style="font-weight:600">#85</a></td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/85" target="_blank">#85</a></td>
                 <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">fix: Add step numbers to agent comments</td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/75" target="_blank">#75</a></td>
                 <td><code>agent/issue-75</code></td>
-                <td><span class="pill pill-red">&#x274c; Closed</span></td>
+                <td><span class="tag tag-red">Closed</span></td>
+                <td style="font-size:11px">-</td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/74" target="_blank" style="font-weight:600">#74</a></td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/pull/74" target="_blank">#74</a></td>
                 <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">fix: Extract difficulty from LLM response</td>
                 <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/70" target="_blank">#70</a></td>
                 <td><code>agent/issue-70</code></td>
-                <td><span class="pill pill-red">&#x274c; Closed</span></td>
+                <td><span class="tag tag-red">Closed</span></td>
+                <td style="font-size:11px">-</td>
             </tr>
                 </table>
             </div>
         </div>
         
         <div class="section">
-            <div class="section-header">
-                <h2>&#x1f6a8; Failure Diagnostics</h2>
-                <span class="badge">6 failures</span>
-            </div>
-            <div class="card" style="overflow-x:auto">
-                <table>
-                    <tr><th>Pattern</th><th>Count</th><th>Distribution</th><th>Issues</th></tr>
-                    
+            <div class="section-title">Failure Diagnostics <span class="count">6</span></div>
+            <div class="row">
+                <div class='card' style='flex:0 0 140px;display:flex;align-items:center;justify-content:center'><svg width="120" height="120" viewBox="0 0 120 120"><path d="M60.0,60.0 L60.0,4.0 A56.0,56.0 0 0 1 60.0,116.0 Z" fill="#f85149" opacity="0.7" stroke="#161b22" stroke-width="1.5"/><path d="M60.0,60.0 L60.0,116.0 A56.0,56.0 0 0 1 4.0,60.0 Z" fill="#d29922" opacity="0.7" stroke="#161b22" stroke-width="1.5"/><path d="M60.0,60.0 L4.0,60.0 A56.0,56.0 0 0 1 60.0,4.0 Z" fill="#58a6ff" opacity="0.7" stroke="#161b22" stroke-width="1.5"/></svg></div>
+                <div class="card col" style="overflow-x:auto">
+                    <table>
+                        <tr><th>Pattern</th><th>Description</th><th>Count</th><th>%</th><th>Issues</th></tr>
+                        
             <tr>
-                <td style="font-weight:600;white-space:nowrap">&#x1f6a8; Debate Rejection</td>
-                <td style="font-weight:700;color:#f85149">2</td>
-                <td>
-                    <div style="display:flex;align-items:center;gap:8px">
-                        <div style="background:#f85149;height:8px;width:83.33333333333331%;border-radius:4px;min-width:4px"></div>
-                        <span class="text-muted" style="font-size:11px">33%</span>
-                    </div>
-                </td>
-                <td style="font-size:12px"><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/18" target="_blank">#18</a>, <a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/20" target="_blank">#20</a></td>
+                <td style="white-space:nowrap">Debate Rejection</td>
+                <td style="font-size:12px;color:#8b949e">Multi-agent debate could not reach consensus to approve</td>
+                <td style="color:#f85149">2</td>
+                <td class="muted">33%</td>
+                <td style="font-size:11px"><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/18" target="_blank">#18</a>, <a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/20" target="_blank">#20</a></td>
             </tr>
             <tr>
-                <td style="font-weight:600;white-space:nowrap">&#x1f6a8; Other</td>
-                <td style="font-weight:700;color:#f85149">2</td>
-                <td>
-                    <div style="display:flex;align-items:center;gap:8px">
-                        <div style="background:#f85149;height:8px;width:83.33333333333331%;border-radius:4px;min-width:4px"></div>
-                        <span class="text-muted" style="font-size:11px">33%</span>
-                    </div>
-                </td>
-                <td style="font-size:12px"><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/26" target="_blank">#26</a>, <a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/27" target="_blank">#27</a></td>
+                <td style="white-space:nowrap">#26: ❌ **Fix failed after 3 attempts.** Could not apply.  String </td>
+                <td style="font-size:12px;color:#8b949e"></td>
+                <td style="color:#f85149">1</td>
+                <td class="muted">17%</td>
+                <td style="font-size:11px"><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/26" target="_blank">#26</a></td>
             </tr>
             <tr>
-                <td style="font-weight:600;white-space:nowrap">&#x1f6a8; SyntaxError</td>
-                <td style="font-weight:700;color:#f85149">1</td>
-                <td>
-                    <div style="display:flex;align-items:center;gap:8px">
-                        <div style="background:#f85149;height:8px;width:41.66666666666666%;border-radius:4px;min-width:4px"></div>
-                        <span class="text-muted" style="font-size:11px">17%</span>
-                    </div>
-                </td>
-                <td style="font-size:12px"><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/30" target="_blank">#30</a></td>
+                <td style="white-space:nowrap">#27: ❌ **GlassBox Agent crashed:** `NameError: name &#x27;read_sources</td>
+                <td style="font-size:12px;color:#8b949e"></td>
+                <td style="color:#f85149">1</td>
+                <td class="muted">17%</td>
+                <td style="font-size:11px"><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/27" target="_blank">#27</a></td>
             </tr>
             <tr>
-                <td style="font-weight:600;white-space:nowrap">&#x1f6a8; Test Failure</td>
-                <td style="font-weight:700;color:#f85149">1</td>
-                <td>
-                    <div style="display:flex;align-items:center;gap:8px">
-                        <div style="background:#f85149;height:8px;width:41.66666666666666%;border-radius:4px;min-width:4px"></div>
-                        <span class="text-muted" style="font-size:11px">17%</span>
-                    </div>
-                </td>
-                <td style="font-size:12px"><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/32" target="_blank">#32</a></td>
+                <td style="white-space:nowrap">SyntaxError</td>
+                <td style="font-size:12px;color:#8b949e">Generated code with invalid Python syntax</td>
+                <td style="color:#f85149">1</td>
+                <td class="muted">17%</td>
+                <td style="font-size:11px"><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/30" target="_blank">#30</a></td>
             </tr>
-                </table>
+            <tr>
+                <td style="white-space:nowrap">Test Failure</td>
+                <td style="font-size:12px;color:#8b949e">Fix broke existing tests or new tests failed</td>
+                <td style="color:#f85149">1</td>
+                <td class="muted">17%</td>
+                <td style="font-size:11px"><a href="https://github.com/agentic-trust-labs/glassbox-ai/issues/32" target="_blank">#32</a></td>
+            </tr>
+                    </table>
+                </div>
             </div>
         </div>
         
         <div class="section">
-            <div class="section-header">
-                <h2>&#x26a1; Workflow Runs</h2>
-                <span class="badge">last 30</span>
-            </div>
+            <div class="section-title">Agent Runs <span class="count">30</span></div>
             <div class="card" style="overflow-x:auto">
                 <table>
-                    <tr><th>Run ID</th><th>Title</th><th>Event</th><th>Result</th><th>Duration</th><th>Time</th></tr>
+                    <tr><th>Run</th><th>Title</th><th>Trigger</th><th>Result</th><th>Duration</th><th>Date</th></tr>
                     
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040269739" target="_blank" style="font-size:12px">22040269739</a></td>
-                <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Update ack message to say GlassBox</td>
-                <td><span class="pill pill-purple">&#x1f4ac; issue_comment</span></td>
-                <td><span class="pill pill-gray">&#x23ed;&#xfe0f; Skipped</span></td>
-                <td style="color:#3fb950;font-weight:600;font-family:monospace;font-size:12px">1s</td>
-                <td class="text-muted" style="font-size:12px">2026-02-15 17:49</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040269739" target="_blank" class="mono">22040269739</a></td>
+                <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Update ack message to say GlassBox Agen</td>
+                <td><span class="tag tag-gray">issue_comment</span></td>
+                <td><span class="tag tag-gray">Skipped</span></td>
+                <td class="mono" style="color:#3fb950">1s</td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">23:19</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040269396" target="_blank" style="font-size:12px">22040269396</a></td>
-                <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Update ack message to say GlassBox</td>
-                <td><span class="pill pill-purple">&#x1f4ac; issue_comment</span></td>
-                <td><span class="pill pill-gray">&#x23ed;&#xfe0f; Skipped</span></td>
-                <td style="color:#d29922;font-weight:600;font-family:monospace;font-size:12px">-</td>
-                <td class="text-muted" style="font-size:12px">2026-02-15 17:49</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040269396" target="_blank" class="mono">22040269396</a></td>
+                <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Update ack message to say GlassBox Agen</td>
+                <td><span class="tag tag-gray">issue_comment</span></td>
+                <td><span class="tag tag-gray">Skipped</span></td>
+                <td class="mono" style="color:#d29922">-</td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">23:19</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040269204" target="_blank" style="font-size:12px">22040269204</a></td>
-                <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Update ack message to say GlassBox</td>
-                <td><span class="pill pill-purple">&#x1f4ac; issue_comment</span></td>
-                <td><span class="pill pill-gray">&#x23ed;&#xfe0f; Skipped</span></td>
-                <td style="color:#3fb950;font-weight:600;font-family:monospace;font-size:12px">1s</td>
-                <td class="text-muted" style="font-size:12px">2026-02-15 17:49</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040269204" target="_blank" class="mono">22040269204</a></td>
+                <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Update ack message to say GlassBox Agen</td>
+                <td><span class="tag tag-gray">issue_comment</span></td>
+                <td><span class="tag tag-gray">Skipped</span></td>
+                <td class="mono" style="color:#3fb950">1s</td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">23:19</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040261059" target="_blank" style="font-size:12px">22040261059</a></td>
-                <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Update ack message to say GlassBox</td>
-                <td><span class="pill pill-purple">&#x1f4ac; issue_comment</span></td>
-                <td><span class="pill pill-gray">&#x23ed;&#xfe0f; Skipped</span></td>
-                <td style="color:#3fb950;font-weight:600;font-family:monospace;font-size:12px">1s</td>
-                <td class="text-muted" style="font-size:12px">2026-02-15 17:49</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040261059" target="_blank" class="mono">22040261059</a></td>
+                <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Update ack message to say GlassBox Agen</td>
+                <td><span class="tag tag-gray">issue_comment</span></td>
+                <td><span class="tag tag-gray">Skipped</span></td>
+                <td class="mono" style="color:#3fb950">1s</td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">23:19</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040259493" target="_blank" style="font-size:12px">22040259493</a></td>
-                <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Update ack message to say GlassBox</td>
-                <td><span class="pill pill-blue">&#x1f41b; issues</span></td>
-                <td><span class="pill pill-green">&#x2705; Success</span></td>
-                <td style="color:#d29922;font-weight:600;font-family:monospace;font-size:12px">42s</td>
-                <td class="text-muted" style="font-size:12px">2026-02-15 17:49</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040259493" target="_blank" class="mono">22040259493</a></td>
+                <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Update ack message to say GlassBox Agen</td>
+                <td><span class="tag tag-gray">issues</span></td>
+                <td><span class="tag tag-green">Success</span></td>
+                <td class="mono" style="color:#d29922">42s</td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">23:19</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040249793" target="_blank" style="font-size:12px">22040249793</a></td>
-                <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Pin python-dotenv version to 1.1.0</td>
-                <td><span class="pill pill-purple">&#x1f4ac; issue_comment</span></td>
-                <td><span class="pill pill-gray">&#x23ed;&#xfe0f; Skipped</span></td>
-                <td style="color:#3fb950;font-weight:600;font-family:monospace;font-size:12px">1s</td>
-                <td class="text-muted" style="font-size:12px">2026-02-15 17:48</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040249793" target="_blank" class="mono">22040249793</a></td>
+                <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Pin python-dotenv version to 1.1.0 in r</td>
+                <td><span class="tag tag-gray">issue_comment</span></td>
+                <td><span class="tag tag-gray">Skipped</span></td>
+                <td class="mono" style="color:#3fb950">1s</td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">23:18</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040249274" target="_blank" style="font-size:12px">22040249274</a></td>
-                <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Pin python-dotenv version to 1.1.0</td>
-                <td><span class="pill pill-purple">&#x1f4ac; issue_comment</span></td>
-                <td><span class="pill pill-gray">&#x23ed;&#xfe0f; Skipped</span></td>
-                <td style="color:#3fb950;font-weight:600;font-family:monospace;font-size:12px">1s</td>
-                <td class="text-muted" style="font-size:12px">2026-02-15 17:48</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040249274" target="_blank" class="mono">22040249274</a></td>
+                <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Pin python-dotenv version to 1.1.0 in r</td>
+                <td><span class="tag tag-gray">issue_comment</span></td>
+                <td><span class="tag tag-gray">Skipped</span></td>
+                <td class="mono" style="color:#3fb950">1s</td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">23:18</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040249191" target="_blank" style="font-size:12px">22040249191</a></td>
-                <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Pin python-dotenv version to 1.1.0</td>
-                <td><span class="pill pill-purple">&#x1f4ac; issue_comment</span></td>
-                <td><span class="pill pill-gray">&#x23ed;&#xfe0f; Skipped</span></td>
-                <td style="color:#3fb950;font-weight:600;font-family:monospace;font-size:12px">1s</td>
-                <td class="text-muted" style="font-size:12px">2026-02-15 17:48</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040249191" target="_blank" class="mono">22040249191</a></td>
+                <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Pin python-dotenv version to 1.1.0 in r</td>
+                <td><span class="tag tag-gray">issue_comment</span></td>
+                <td><span class="tag tag-gray">Skipped</span></td>
+                <td class="mono" style="color:#3fb950">1s</td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">23:18</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040240832" target="_blank" style="font-size:12px">22040240832</a></td>
-                <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Pin python-dotenv version to 1.1.0</td>
-                <td><span class="pill pill-purple">&#x1f4ac; issue_comment</span></td>
-                <td><span class="pill pill-gray">&#x23ed;&#xfe0f; Skipped</span></td>
-                <td style="color:#d29922;font-weight:600;font-family:monospace;font-size:12px">-</td>
-                <td class="text-muted" style="font-size:12px">2026-02-15 17:47</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040240832" target="_blank" class="mono">22040240832</a></td>
+                <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Pin python-dotenv version to 1.1.0 in r</td>
+                <td><span class="tag tag-gray">issue_comment</span></td>
+                <td><span class="tag tag-gray">Skipped</span></td>
+                <td class="mono" style="color:#d29922">-</td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">23:17</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040239621" target="_blank" style="font-size:12px">22040239621</a></td>
-                <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Pin python-dotenv version to 1.1.0</td>
-                <td><span class="pill pill-blue">&#x1f41b; issues</span></td>
-                <td><span class="pill pill-green">&#x2705; Success</span></td>
-                <td style="color:#d29922;font-weight:600;font-family:monospace;font-size:12px">43s</td>
-                <td class="text-muted" style="font-size:12px">2026-02-15 17:47</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040239621" target="_blank" class="mono">22040239621</a></td>
+                <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Pin python-dotenv version to 1.1.0 in r</td>
+                <td><span class="tag tag-gray">issues</span></td>
+                <td><span class="tag tag-green">Success</span></td>
+                <td class="mono" style="color:#d29922">43s</td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">23:17</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040231407" target="_blank" style="font-size:12px">22040231407</a></td>
-                <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Pin pytest version to 8.3.5 in req</td>
-                <td><span class="pill pill-purple">&#x1f4ac; issue_comment</span></td>
-                <td><span class="pill pill-gray">&#x23ed;&#xfe0f; Skipped</span></td>
-                <td style="color:#3fb950;font-weight:600;font-family:monospace;font-size:12px">1s</td>
-                <td class="text-muted" style="font-size:12px">2026-02-15 17:46</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040231407" target="_blank" class="mono">22040231407</a></td>
+                <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Pin pytest version to 8.3.5 in requirem</td>
+                <td><span class="tag tag-gray">issue_comment</span></td>
+                <td><span class="tag tag-gray">Skipped</span></td>
+                <td class="mono" style="color:#3fb950">1s</td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">23:16</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040230817" target="_blank" style="font-size:12px">22040230817</a></td>
-                <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Pin pytest version to 8.3.5 in req</td>
-                <td><span class="pill pill-purple">&#x1f4ac; issue_comment</span></td>
-                <td><span class="pill pill-gray">&#x23ed;&#xfe0f; Skipped</span></td>
-                <td style="color:#3fb950;font-weight:600;font-family:monospace;font-size:12px">1s</td>
-                <td class="text-muted" style="font-size:12px">2026-02-15 17:46</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040230817" target="_blank" class="mono">22040230817</a></td>
+                <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Pin pytest version to 8.3.5 in requirem</td>
+                <td><span class="tag tag-gray">issue_comment</span></td>
+                <td><span class="tag tag-gray">Skipped</span></td>
+                <td class="mono" style="color:#3fb950">1s</td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">23:16</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040230807" target="_blank" style="font-size:12px">22040230807</a></td>
-                <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Pin pytest version to 8.3.5 in req</td>
-                <td><span class="pill pill-purple">&#x1f4ac; issue_comment</span></td>
-                <td><span class="pill pill-gray">&#x23ed;&#xfe0f; Skipped</span></td>
-                <td style="color:#3fb950;font-weight:600;font-family:monospace;font-size:12px">1s</td>
-                <td class="text-muted" style="font-size:12px">2026-02-15 17:46</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040230807" target="_blank" class="mono">22040230807</a></td>
+                <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Pin pytest version to 8.3.5 in requirem</td>
+                <td><span class="tag tag-gray">issue_comment</span></td>
+                <td><span class="tag tag-gray">Skipped</span></td>
+                <td class="mono" style="color:#3fb950">1s</td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">23:16</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040220961" target="_blank" style="font-size:12px">22040220961</a></td>
-                <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Pin pytest version to 8.3.5 in req</td>
-                <td><span class="pill pill-purple">&#x1f4ac; issue_comment</span></td>
-                <td><span class="pill pill-gray">&#x23ed;&#xfe0f; Skipped</span></td>
-                <td style="color:#3fb950;font-weight:600;font-family:monospace;font-size:12px">1s</td>
-                <td class="text-muted" style="font-size:12px">2026-02-15 17:46</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040220961" target="_blank" class="mono">22040220961</a></td>
+                <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Pin pytest version to 8.3.5 in requirem</td>
+                <td><span class="tag tag-gray">issue_comment</span></td>
+                <td><span class="tag tag-gray">Skipped</span></td>
+                <td class="mono" style="color:#3fb950">1s</td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">23:16</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040219235" target="_blank" style="font-size:12px">22040219235</a></td>
-                <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Pin pytest version to 8.3.5 in req</td>
-                <td><span class="pill pill-blue">&#x1f41b; issues</span></td>
-                <td><span class="pill pill-green">&#x2705; Success</span></td>
-                <td style="color:#d29922;font-weight:600;font-family:monospace;font-size:12px">48s</td>
-                <td class="text-muted" style="font-size:12px">2026-02-15 17:46</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040219235" target="_blank" class="mono">22040219235</a></td>
+                <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Pin pytest version to 8.3.5 in requirem</td>
+                <td><span class="tag tag-gray">issues</span></td>
+                <td><span class="tag tag-green">Success</span></td>
+                <td class="mono" style="color:#d29922">48s</td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">23:16</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040212431" target="_blank" style="font-size:12px">22040212431</a></td>
-                <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Pin pyyaml version to 6.0.2 in req</td>
-                <td><span class="pill pill-purple">&#x1f4ac; issue_comment</span></td>
-                <td><span class="pill pill-gray">&#x23ed;&#xfe0f; Skipped</span></td>
-                <td style="color:#3fb950;font-weight:600;font-family:monospace;font-size:12px">1s</td>
-                <td class="text-muted" style="font-size:12px">2026-02-15 17:45</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040212431" target="_blank" class="mono">22040212431</a></td>
+                <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Pin pyyaml version to 6.0.2 in requirem</td>
+                <td><span class="tag tag-gray">issue_comment</span></td>
+                <td><span class="tag tag-gray">Skipped</span></td>
+                <td class="mono" style="color:#3fb950">1s</td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">23:15</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040212029" target="_blank" style="font-size:12px">22040212029</a></td>
-                <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Pin pyyaml version to 6.0.2 in req</td>
-                <td><span class="pill pill-purple">&#x1f4ac; issue_comment</span></td>
-                <td><span class="pill pill-gray">&#x23ed;&#xfe0f; Skipped</span></td>
-                <td style="color:#d29922;font-weight:600;font-family:monospace;font-size:12px">-</td>
-                <td class="text-muted" style="font-size:12px">2026-02-15 17:45</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040212029" target="_blank" class="mono">22040212029</a></td>
+                <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Pin pyyaml version to 6.0.2 in requirem</td>
+                <td><span class="tag tag-gray">issue_comment</span></td>
+                <td><span class="tag tag-gray">Skipped</span></td>
+                <td class="mono" style="color:#d29922">-</td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">23:15</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040211952" target="_blank" style="font-size:12px">22040211952</a></td>
-                <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Pin pyyaml version to 6.0.2 in req</td>
-                <td><span class="pill pill-purple">&#x1f4ac; issue_comment</span></td>
-                <td><span class="pill pill-gray">&#x23ed;&#xfe0f; Skipped</span></td>
-                <td style="color:#3fb950;font-weight:600;font-family:monospace;font-size:12px">1s</td>
-                <td class="text-muted" style="font-size:12px">2026-02-15 17:45</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040211952" target="_blank" class="mono">22040211952</a></td>
+                <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Pin pyyaml version to 6.0.2 in requirem</td>
+                <td><span class="tag tag-gray">issue_comment</span></td>
+                <td><span class="tag tag-gray">Skipped</span></td>
+                <td class="mono" style="color:#3fb950">1s</td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">23:15</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040202398" target="_blank" style="font-size:12px">22040202398</a></td>
-                <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Pin pyyaml version to 6.0.2 in req</td>
-                <td><span class="pill pill-purple">&#x1f4ac; issue_comment</span></td>
-                <td><span class="pill pill-gray">&#x23ed;&#xfe0f; Skipped</span></td>
-                <td style="color:#3fb950;font-weight:600;font-family:monospace;font-size:12px">1s</td>
-                <td class="text-muted" style="font-size:12px">2026-02-15 17:45</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040202398" target="_blank" class="mono">22040202398</a></td>
+                <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Pin pyyaml version to 6.0.2 in requirem</td>
+                <td><span class="tag tag-gray">issue_comment</span></td>
+                <td><span class="tag tag-gray">Skipped</span></td>
+                <td class="mono" style="color:#3fb950">1s</td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">23:15</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040200824" target="_blank" style="font-size:12px">22040200824</a></td>
-                <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Pin pyyaml version to 6.0.2 in req</td>
-                <td><span class="pill pill-blue">&#x1f41b; issues</span></td>
-                <td><span class="pill pill-green">&#x2705; Success</span></td>
-                <td style="color:#d29922;font-weight:600;font-family:monospace;font-size:12px">40s</td>
-                <td class="text-muted" style="font-size:12px">2026-02-15 17:44</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040200824" target="_blank" class="mono">22040200824</a></td>
+                <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Pin pyyaml version to 6.0.2 in requirem</td>
+                <td><span class="tag tag-gray">issues</span></td>
+                <td><span class="tag tag-green">Success</span></td>
+                <td class="mono" style="color:#d29922">40s</td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">23:14</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040194713" target="_blank" style="font-size:12px">22040194713</a></td>
-                <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Pin pydantic version to 2.11.1 in </td>
-                <td><span class="pill pill-purple">&#x1f4ac; issue_comment</span></td>
-                <td><span class="pill pill-gray">&#x23ed;&#xfe0f; Skipped</span></td>
-                <td style="color:#3fb950;font-weight:600;font-family:monospace;font-size:12px">1s</td>
-                <td class="text-muted" style="font-size:12px">2026-02-15 17:44</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040194713" target="_blank" class="mono">22040194713</a></td>
+                <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Pin pydantic version to 2.11.1 in requi</td>
+                <td><span class="tag tag-gray">issue_comment</span></td>
+                <td><span class="tag tag-gray">Skipped</span></td>
+                <td class="mono" style="color:#3fb950">1s</td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">23:14</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040194234" target="_blank" style="font-size:12px">22040194234</a></td>
-                <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Pin pydantic version to 2.11.1 in </td>
-                <td><span class="pill pill-purple">&#x1f4ac; issue_comment</span></td>
-                <td><span class="pill pill-gray">&#x23ed;&#xfe0f; Skipped</span></td>
-                <td style="color:#3fb950;font-weight:600;font-family:monospace;font-size:12px">1s</td>
-                <td class="text-muted" style="font-size:12px">2026-02-15 17:44</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040194234" target="_blank" class="mono">22040194234</a></td>
+                <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Pin pydantic version to 2.11.1 in requi</td>
+                <td><span class="tag tag-gray">issue_comment</span></td>
+                <td><span class="tag tag-gray">Skipped</span></td>
+                <td class="mono" style="color:#3fb950">1s</td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">23:14</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040193994" target="_blank" style="font-size:12px">22040193994</a></td>
-                <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Pin pydantic version to 2.11.1 in </td>
-                <td><span class="pill pill-purple">&#x1f4ac; issue_comment</span></td>
-                <td><span class="pill pill-gray">&#x23ed;&#xfe0f; Skipped</span></td>
-                <td style="color:#3fb950;font-weight:600;font-family:monospace;font-size:12px">1s</td>
-                <td class="text-muted" style="font-size:12px">2026-02-15 17:44</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040193994" target="_blank" class="mono">22040193994</a></td>
+                <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Pin pydantic version to 2.11.1 in requi</td>
+                <td><span class="tag tag-gray">issue_comment</span></td>
+                <td><span class="tag tag-gray">Skipped</span></td>
+                <td class="mono" style="color:#3fb950">1s</td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">23:14</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040187504" target="_blank" style="font-size:12px">22040187504</a></td>
-                <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Pin pydantic version to 2.11.1 in </td>
-                <td><span class="pill pill-purple">&#x1f4ac; issue_comment</span></td>
-                <td><span class="pill pill-gray">&#x23ed;&#xfe0f; Skipped</span></td>
-                <td style="color:#3fb950;font-weight:600;font-family:monospace;font-size:12px">1s</td>
-                <td class="text-muted" style="font-size:12px">2026-02-15 17:43</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040187504" target="_blank" class="mono">22040187504</a></td>
+                <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Pin pydantic version to 2.11.1 in requi</td>
+                <td><span class="tag tag-gray">issue_comment</span></td>
+                <td><span class="tag tag-gray">Skipped</span></td>
+                <td class="mono" style="color:#3fb950">1s</td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">23:13</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040186021" target="_blank" style="font-size:12px">22040186021</a></td>
-                <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Pin pydantic version to 2.11.1 in </td>
-                <td><span class="pill pill-blue">&#x1f41b; issues</span></td>
-                <td><span class="pill pill-green">&#x2705; Success</span></td>
-                <td style="color:#3fb950;font-weight:600;font-family:monospace;font-size:12px">32s</td>
-                <td class="text-muted" style="font-size:12px">2026-02-15 17:43</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040186021" target="_blank" class="mono">22040186021</a></td>
+                <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Pin pydantic version to 2.11.1 in requi</td>
+                <td><span class="tag tag-gray">issues</span></td>
+                <td><span class="tag tag-green">Success</span></td>
+                <td class="mono" style="color:#3fb950">32s</td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">23:13</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040177047" target="_blank" style="font-size:12px">22040177047</a></td>
-                <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Skip redundant syntax check in Tes</td>
-                <td><span class="pill pill-purple">&#x1f4ac; issue_comment</span></td>
-                <td><span class="pill pill-gray">&#x23ed;&#xfe0f; Skipped</span></td>
-                <td style="color:#3fb950;font-weight:600;font-family:monospace;font-size:12px">1s</td>
-                <td class="text-muted" style="font-size:12px">2026-02-15 17:43</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040177047" target="_blank" class="mono">22040177047</a></td>
+                <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Skip redundant syntax check in Tester -</td>
+                <td><span class="tag tag-gray">issue_comment</span></td>
+                <td><span class="tag tag-gray">Skipped</span></td>
+                <td class="mono" style="color:#3fb950">1s</td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">23:13</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040176759" target="_blank" style="font-size:12px">22040176759</a></td>
-                <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Skip redundant syntax check in Tes</td>
-                <td><span class="pill pill-purple">&#x1f4ac; issue_comment</span></td>
-                <td><span class="pill pill-gray">&#x23ed;&#xfe0f; Skipped</span></td>
-                <td style="color:#3fb950;font-weight:600;font-family:monospace;font-size:12px">1s</td>
-                <td class="text-muted" style="font-size:12px">2026-02-15 17:43</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040176759" target="_blank" class="mono">22040176759</a></td>
+                <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Skip redundant syntax check in Tester -</td>
+                <td><span class="tag tag-gray">issue_comment</span></td>
+                <td><span class="tag tag-gray">Skipped</span></td>
+                <td class="mono" style="color:#3fb950">1s</td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">23:13</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040176758" target="_blank" style="font-size:12px">22040176758</a></td>
-                <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Skip redundant syntax check in Tes</td>
-                <td><span class="pill pill-purple">&#x1f4ac; issue_comment</span></td>
-                <td><span class="pill pill-gray">&#x23ed;&#xfe0f; Skipped</span></td>
-                <td style="color:#3fb950;font-weight:600;font-family:monospace;font-size:12px">1s</td>
-                <td class="text-muted" style="font-size:12px">2026-02-15 17:43</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040176758" target="_blank" class="mono">22040176758</a></td>
+                <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Skip redundant syntax check in Tester -</td>
+                <td><span class="tag tag-gray">issue_comment</span></td>
+                <td><span class="tag tag-gray">Skipped</span></td>
+                <td class="mono" style="color:#3fb950">1s</td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">23:13</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040168302" target="_blank" style="font-size:12px">22040168302</a></td>
-                <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Skip redundant syntax check in Tes</td>
-                <td><span class="pill pill-purple">&#x1f4ac; issue_comment</span></td>
-                <td><span class="pill pill-gray">&#x23ed;&#xfe0f; Skipped</span></td>
-                <td style="color:#3fb950;font-weight:600;font-family:monospace;font-size:12px">1s</td>
-                <td class="text-muted" style="font-size:12px">2026-02-15 17:42</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040168302" target="_blank" class="mono">22040168302</a></td>
+                <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Skip redundant syntax check in Tester -</td>
+                <td><span class="tag tag-gray">issue_comment</span></td>
+                <td><span class="tag tag-gray">Skipped</span></td>
+                <td class="mono" style="color:#3fb950">1s</td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">23:12</span></td>
             </tr>
             <tr>
-                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040166348" target="_blank" style="font-size:12px">22040166348</a></td>
-                <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Skip redundant syntax check in Tes</td>
-                <td><span class="pill pill-blue">&#x1f41b; issues</span></td>
-                <td><span class="pill pill-green">&#x2705; Success</span></td>
-                <td style="color:#d29922;font-weight:600;font-family:monospace;font-size:12px">41s</td>
-                <td class="text-muted" style="font-size:12px">2026-02-15 17:42</td>
+                <td><a href="https://github.com/agentic-trust-labs/glassbox-ai/actions/runs/22040166348" target="_blank" class="mono">22040166348</a></td>
+                <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">[Fix] Skip redundant syntax check in Tester -</td>
+                <td><span class="tag tag-gray">issues</span></td>
+                <td><span class="tag tag-green">Success</span></td>
+                <td class="mono" style="color:#d29922">41s</td>
+                <td style="font-size:11px">15 Feb 26, <span style="color:#8b949e">23:12</span></td>
             </tr>
                 </table>
             </div>
         </div>
 
-        <div class="updated">&#x1f48e; Last updated: 2026-02-15 18:33 UTC | Generated by scripts/dashboard/generate.py</div>
+        <div class="footer">Last updated 16 Feb 26, 00:28 IST</div>
     </div>
 </body>
 </html>
