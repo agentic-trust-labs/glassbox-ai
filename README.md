@@ -85,7 +85,66 @@ Issue opened   → 🦉 Manager classifies, generates briefing + edge cases
 
 ---
 
-## 🚀 Install
+## � Project Structure
+
+```
+glassbox-ai/
+├── src/
+│   ├── glassbox/                     # MCP server + core library (pip install glassbox-ai)
+│   │   ├── orchestrator.py           #   multi-agent debate engine (3 personas, 2 rounds)
+│   │   ├── trust_db.py               #   SQLite trust scores - EMA, floor 0.30, ceiling 1.00
+│   │   └── server.py                 #   MCP endpoint - works in any IDE
+│   │
+│   └── glassbox_agent/               # Autonomous agent pipeline (GitHub Actions)
+│       ├── cli.py                    #   entry point: python -m glassbox_agent.cli <issue>
+│       ├── agents/
+│       │   ├── manager.py            #   🦉 The Strategist - classifies, briefs, approves
+│       │   ├── junior_dev.py         #   🦫 The Builder - reads source, generates fix
+│       │   └── tester.py             #   🦅 The Skeptic - syntax, tests, diff, edge cases
+│       ├── core/
+│       │   ├── base_agent.py         #   ABC with animal avatars + GitHub comment headers
+│       │   ├── constants.py          #   hard aspects (HA1-5), challenges (HC1-5), patterns (TP1-3)
+│       │   ├── conversation.py       #   HITL parsing - phase tags, author guidance, re-entry
+│       │   ├── models.py             #   Pydantic: TriageResult, Fix, EdgeCase, TestResult
+│       │   ├── settings.py           #   env config - repo, model, temperature
+│       │   └── template.py           #   YAML template loader + matching
+│       ├── tools/
+│       │   ├── github_client.py      #   gh CLI wrapper - issues, comments, PRs, reactions
+│       │   ├── code_editor.py        #   line-number editing (no string matching)
+│       │   ├── file_reader.py        #   safe file reading with .py filter
+│       │   └── test_runner.py        #   pytest runner with failure parsing
+│       ├── templates/                #   fix templates: typo_fix, wrong_value, wrong_name, swapped_args
+│       └── memory/
+│           └── store.py              #   Reflexion memory - verbal failure reflections
+│
+├── evals/                            # Evaluation framework
+│   ├── catalog.py                    #   10 bug specs (E01-E18) with inject/verify
+│   ├── bug_factory.py                #   injects bugs into source, verifies fixes
+│   └── results.md                    #   7/7 first-try, 100% pass rate
+│
+├── tests/                            #   169+ tests across 10 files (phases 1-8 + avatars + evals)
+│
+├── docs/
+│   ├── index.html                    #   landing page (GitHub Pages)
+│   ├── dashboard/                    #   live performance tracker - funnel, TAT, diagnostics
+│   ├── assets/agents/                #   animal SVGs: owl, beaver, hawk, glasswing butterfly
+│   ├── architecture/                 #   RFCs: adaptive complexity, HITL, failure analysis
+│   └── research/                     #   paper explainer page
+│
+├── scripts/
+│   └── dashboard/                    #   fetches GitHub data, renders HTML dashboard
+│
+├── .github/workflows/
+│   ├── agent-fix.yml                 #   triggers on label/mention, runs full pipeline
+│   ├── ci.yml                        #   test suite on push/PR
+│   └── dashboard.yml                 #   regenerates live tracker on push
+│
+└── pyproject.toml                    #   package config, CLI entry point
+```
+
+---
+
+## �🚀 Install
 
 ```bash
 pip install glassbox-ai
