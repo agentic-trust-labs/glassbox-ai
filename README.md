@@ -6,7 +6,7 @@
 [![Tests](https://img.shields.io/badge/tests-25%20passed-brightgreen)]()
 [![Python](https://img.shields.io/badge/python-3.10%2B-blue)]()
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)]()
-[![Live Tracker](https://img.shields.io/badge/live-performance%20tracker-blueviolet)](https://agentic-trust-labs.github.io/glassbox-ai/)
+[![Live Tracker](https://img.shields.io/badge/live-performance%20tracker-blueviolet)](https://agentic-trust-labs.github.io/glassbox-ai/dashboard/)
 
 Autonomous coding agent that takes a GitHub issue and ships a tested PR, with full transparency at every step. Powered by trust scores that evolve with every interaction.
 
@@ -140,7 +140,7 @@ Backed by [EigenTrust (Kamvar et al. 2003)](https://dl.acm.org/doi/10.1145/77515
 | Bug eval (7 bugs) | Bug fixes | ✅ 7/7 first-try | #53 #55 #57 #59 #61 #63 #65 |
 | Feature eval (5 features) | New features | ✅ 4/5 solved, 2/4 merged | #71 #72 |
 
-👉 [**Live performance tracker →**](https://agentic-trust-labs.github.io/glassbox-ai/)
+👉 [**Live Performance Tracker →**](https://agentic-trust-labs.github.io/glassbox-ai/dashboard/)
 
 ---
 
