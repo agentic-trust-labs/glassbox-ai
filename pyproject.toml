@@ -4,18 +4,41 @@ build-backend = "hatchling.build"
 
 [project]
 name = "glassbox-ai"
-version = "0.3.0"
-description = "Multi-agent MCP server with trust scoring and multi-round debate"
+version = "1.0.0"
+description = "Autonomous coding agent that ships tested PRs from GitHub issues. Trust-scored multi-agent pipeline with full transparency."
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.10"
-authors = [{ name = "Sourabh Gupta" }]
-keywords = ["mcp", "multi-agent", "trust", "llm", "openai"]
+authors = [{ name = "Sourabh Gupta", email = "sourabharsh@gmail.com" }]
+keywords = [
+    "ai-agent", "coding-agent", "multi-agent", "trust-scoring",
+    "github-automation", "mcp-server", "openai", "autonomous-coding",
+    "transparency", "llm", "reflexion", "agentic-ai",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Quality Assurance",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
 dependencies = [
     "mcp",
     "openai>=1.54.0",
     "python-dotenv>=1.0.0",
 ]
+
+[project.urls]
+Homepage = "https://agentic-trust-labs.github.io/glassbox-ai/"
+Repository = "https://github.com/agentic-trust-labs/glassbox-ai"
+Tracker = "https://agentic-trust-labs.github.io/glassbox-ai/dashboard/"
+Issues = "https://github.com/agentic-trust-labs/glassbox-ai/issues"
+Changelog = "https://github.com/agentic-trust-labs/glassbox-ai/blob/main/CHANGELOG.md"
 
 [project.scripts]
 glassbox-ai = "glassbox.server:main"
