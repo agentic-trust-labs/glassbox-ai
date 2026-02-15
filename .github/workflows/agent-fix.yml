@@ -62,7 +62,6 @@ jobs:
           key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('requirements.txt') }}
 
       - name: Install dependencies
-        - name: Run agent (v1 — template-driven multi-agent)
         run: |
           python -m venv .venv
           .venv/bin/pip install --upgrade pip
