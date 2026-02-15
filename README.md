@@ -1,4 +1,8 @@
-# GlassBox AI 💎
+<p align="center">
+  <img src="docs/assets/agents/glasswing.svg" width="80" height="80" alt="GlassBox AI">
+</p>
+
+# GlassBox AI
 
 > **Trust is earned, not assumed.** 💎
 
@@ -144,7 +148,7 @@ glassbox-ai/
 
 ---
 
-## �🚀 Install
+## �� Install
 
 ```bash
 pip install glassbox-ai
@@ -171,13 +175,25 @@ Then ask your AI assistant anything - it will use GlassBox tools automatically.
 
 Label any issue `glassbox-agent` or mention `@glassbox-agent` - the agent ships a tested PR.
 
+### Meet the agents
+
+<p align="center">
+  <img src="docs/assets/agents/owl.svg" width="64" height="64" alt="Manager">&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="docs/assets/agents/beaver.svg" width="64" height="64" alt="JuniorDev">&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="docs/assets/agents/hawk.svg" width="64" height="64" alt="Tester">&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="docs/assets/agents/glasswing.svg" width="64" height="64" alt="Pull Request">
+</p>
+<p align="center">
+  <sub>🦉 Manager &nbsp;·&nbsp; 🦫 JuniorDev &nbsp;·&nbsp; 🦅 Tester &nbsp;·&nbsp; 🦋 Pull Request</sub>
+</p>
+
 ### Pipeline steps
 
 | Step | Agent | Identity | What happens |
 |------|-------|----------|--------------| 
 | 1 | 🦉 **Manager** | *The Strategist* | Classifies issue, picks template, generates edge cases (MRU: T1-T4), posts briefing |
 | 2 | 🦫 **JuniorDev** | *The Builder* | Reads source + tests, generates minimal fix via line-number editing |
-| 3 | � **Tester** | *The Skeptic* | Syntax check, full test suite, diff size verification |
+| 3 | 🦅 **Tester** | *The Skeptic* | Syntax check, full test suite, diff size verification |
 | 4 | 🦋 **Pull Request** | *The Glasswing* | Full reasoning chain, nothing hidden, transparent and ready to fly |
 | 5 | 💬 **HITL** | *Author* | Comment to guide, agent resumes from the right phase with context |
 
@@ -261,4 +277,4 @@ MIT
 
 Built by [Sourabh Gupta](https://www.linkedin.com/in/sourabhgupta16/) at [Agentic Trust Labs](https://github.com/agentic-trust-labs)
 
-**💎 Trust is earned, not assumed. 💎**
+**Trust is earned, not assumed. 💎**
