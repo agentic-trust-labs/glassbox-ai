@@ -8,6 +8,7 @@ import traceback
 
 from openai import OpenAI
 
+from glassbox_agent.core.base_agent import BaseAgent
 from glassbox_agent.core.models import TestResult
 from glassbox_agent.core.settings import Settings
 from glassbox_agent.core.template import TemplateLoader
@@ -182,10 +183,11 @@ def run_guided(issue_number: int, comment_id: int) -> None:
         print(f"Comment {comment_id} not found"); return
     guidance = parse_author_comment(trigger, build_bot_comments(raw_comments))
     print(f"  intent={guidance.intent} phase={guidance.reference_phase}")
+    mgr_hdr = BaseAgent.make_header("GlassBox Manager", "\U0001f989", "owl.svg", "The Strategist")
     if guidance.intent == "abort":
-        github.post_comment(issue_number, "🎯 **GlassBox Manager**\n\nUnderstood. Stepping back."); return
+        github.post_comment(issue_number, f"{mgr_hdr}\n\nUnderstood. Stepping back."); return
     github.post_comment(issue_number,
-        f"🎯 **GlassBox Manager**\n\nResuming from **{guidance.reference_phase}** with your guidance.\n\n"
+        f"{mgr_hdr}\n\nResuming from **{guidance.reference_phase}** with your guidance.\n\n"
         f"> {guidance.guidance_text[:200]}")
     os.environ["AUTHOR_GUIDANCE"] = build_guidance_prompt(guidance)
     run_pipeline(issue_number)
@@ -214,7 +216,8 @@ if __name__ == "__main__":
                 n = int(sys.argv[1])
                 settings = Settings()
                 gh = GitHubClient(settings.repo)
-                gh.post_comment(n, f"🎯 **GlassBox Manager**\n\n❌ Agent crashed: `{type(e).__name__}: {str(e)[:300]}`")
+                _hdr = BaseAgent.make_header("GlassBox Manager", "\U0001f989", "owl.svg", "The Strategist")
+                gh.post_comment(n, f"{_hdr}\n\n\u274c Agent crashed: `{type(e).__name__}: {str(e)[:300]}`")
             except Exception:
                 pass
         sys.exit(1)

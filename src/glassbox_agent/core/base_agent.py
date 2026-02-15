@@ -25,19 +25,24 @@ class BaseAgent(ABC):
         self.avatar_img = avatar_img
         self.title = title
 
+    @staticmethod
+    def make_header(name: str, avatar: str, avatar_img: str = "", title: str = "") -> str:
+        """Build a markdown header with optional animal avatar image. Usable without an instance."""
+        if avatar_img:
+            url = f"{BaseAgent.AVATAR_BASE_URL}/{avatar_img}"
+            title_html = f"<br><sub>{title}</sub>" if title else ""
+            return (
+                f'<table><tr>'
+                f'<td><img src="{url}" width="40" height="40" alt="{name}"></td>'
+                f'<td><strong>{avatar} {name}</strong>{title_html}</td>'
+                f'</tr></table>'
+            )
+        return f"{avatar} **{name}**"
+
     @property
     def header(self) -> str:
         """Markdown header for GitHub comments, with optional animal avatar image."""
-        if self.avatar_img:
-            url = f"{self.AVATAR_BASE_URL}/{self.avatar_img}"
-            title_html = f"<br><sub>{self.title}</sub>" if self.title else ""
-            return (
-                f'<table><tr>'
-                f'<td><img src="{url}" width="40" height="40" alt="{self.name}"></td>'
-                f'<td><strong>{self.avatar} {self.name}</strong>{title_html}</td>'
-                f'</tr></table>'
-            )
-        return f"{self.avatar} **{self.name}**"
+        return self.make_header(self.name, self.avatar, self.avatar_img, self.title)
 
     def comment(self, issue_number: int, body: str) -> int:
         """Post a GitHub comment as this agent (with avatar + name header)."""
