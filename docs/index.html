@@ -451,19 +451,15 @@
             color: var(--text-dim);
             line-height: 1.6;
         }
-        .pipe-avatar {
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--border2);
-            margin-bottom: 14px;
-            filter: grayscale(20%);
-            transition: all 0.3s;
+        .pipe-illustration {
+            display: block;
+            margin-bottom: 12px;
         }
-        .pipe-card:hover .pipe-avatar {
-            border-color: var(--green);
-            filter: grayscale(0%);
+        .pipe-illustration svg {
+            transition: transform 0.3s;
+        }
+        .pipe-card:hover .pipe-illustration svg {
+            transform: scale(1.08);
         }
         .pipe-personality {
             font-size: 0.72rem;
@@ -471,20 +467,6 @@
             font-weight: 500;
             margin-bottom: 10px;
             opacity: 0.8;
-        }
-        .pipe-avatar-icon {
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 14px;
-            border: 2px solid var(--border2);
-            transition: all 0.3s;
-        }
-        .pipe-card:hover .pipe-avatar-icon {
-            border-color: var(--green);
         }
 
         /* ═══════════════════════════════════
@@ -912,33 +894,104 @@
         <div class="pipeline-grid">
             <div class="pipe-card reveal">
                 <div class="pipe-step">Step 01</div>
-                <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&h=200&fit=crop&crop=face" alt="Manager agent" class="pipe-avatar" loading="lazy">
+                <div class="pipe-illustration">
+                    <svg width="80" height="80" viewBox="0 0 120 110" fill="none">
+                        <ellipse cx="60" cy="70" rx="28" ry="30" fill="#122e20" stroke="#4ade80" stroke-width="2"/>
+                        <circle cx="60" cy="38" r="22" fill="#143d28" stroke="#4ade80" stroke-width="2"/>
+                        <path d="M40 22 L46 30 L36 28 Z" fill="#1a5c38" stroke="#4ade80" stroke-width="1.5"/>
+                        <path d="M80 22 L74 30 L84 28 Z" fill="#1a5c38" stroke="#4ade80" stroke-width="1.5"/>
+                        <circle cx="50" cy="38" r="10" fill="#1a5c38" stroke="#4ade80" stroke-width="1.5"/>
+                        <circle cx="70" cy="38" r="10" fill="#1a5c38" stroke="#4ade80" stroke-width="1.5"/>
+                        <circle cx="50" cy="38" r="5" fill="#4ade80"/>
+                        <circle cx="70" cy="38" r="5" fill="#4ade80"/>
+                        <circle cx="52" cy="36" r="2" fill="#fff" opacity="0.6"/>
+                        <circle cx="72" cy="36" r="2" fill="#fff" opacity="0.6"/>
+                        <path d="M56 48 L60 54 L64 48" fill="#4ade80" opacity="0.6"/>
+                        <path d="M50 64 L60 70 L70 64" fill="none" stroke="#4ade80" stroke-width="1" opacity="0.3"/>
+                        <path d="M48 72 L60 78 L72 72" fill="none" stroke="#4ade80" stroke-width="1" opacity="0.3"/>
+                        <path d="M46 80 L60 86 L74 80" fill="none" stroke="#4ade80" stroke-width="1" opacity="0.3"/>
+                        <line x1="20" y1="100" x2="100" y2="100" stroke="#4ade80" stroke-width="2.5" stroke-linecap="round" opacity="0.3"/>
+                    </svg>
+                </div>
                 <div class="pipe-title">Manager</div>
-                <div class="pipe-personality">The Strategist</div>
-                <div class="pipe-desc">Reads the issue, classifies it against known templates, and thinks before anyone codes. Generates edge cases upfront (T1-T4), sets confidence, and writes the briefing. Doesn't touch code. Only plans.</div>
+                <div class="pipe-personality">&#x1f989; The Strategist</div>
+                <div class="pipe-desc">Wise and watchful. Reads the issue, classifies it against known templates, and thinks before anyone codes. Generates edge cases upfront, sets confidence, writes the briefing. Doesn't touch code. Only plans.</div>
             </div>
             <div class="pipe-card reveal">
                 <div class="pipe-step">Step 02</div>
-                <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=200&h=200&fit=crop&crop=face" alt="Junior Dev agent" class="pipe-avatar" loading="lazy">
+                <div class="pipe-illustration">
+                    <svg width="80" height="80" viewBox="0 0 120 110" fill="none">
+                        <ellipse cx="30" cy="86" rx="16" ry="7" fill="#1a5c38" stroke="#4ade80" stroke-width="1.5" transform="rotate(-15 30 86)"/>
+                        <line x1="20" y1="83" x2="40" y2="83" stroke="#4ade80" stroke-width="0.7" opacity="0.4" transform="rotate(-15 30 86)"/>
+                        <line x1="20" y1="87" x2="40" y2="87" stroke="#4ade80" stroke-width="0.7" opacity="0.4" transform="rotate(-15 30 86)"/>
+                        <line x1="20" y1="91" x2="40" y2="91" stroke="#4ade80" stroke-width="0.7" opacity="0.4" transform="rotate(-15 30 86)"/>
+                        <ellipse cx="64" cy="66" rx="26" ry="28" fill="#122e20" stroke="#4ade80" stroke-width="2"/>
+                        <circle cx="64" cy="38" r="20" fill="#143d28" stroke="#4ade80" stroke-width="2"/>
+                        <circle cx="46" cy="24" r="6" fill="#1a5c38" stroke="#4ade80" stroke-width="1.5"/>
+                        <circle cx="82" cy="24" r="6" fill="#1a5c38" stroke="#4ade80" stroke-width="1.5"/>
+                        <circle cx="56" cy="36" r="4" fill="#4ade80"/>
+                        <circle cx="72" cy="36" r="4" fill="#4ade80"/>
+                        <circle cx="57" cy="35" r="1.5" fill="#fff" opacity="0.5"/>
+                        <circle cx="73" cy="35" r="1.5" fill="#fff" opacity="0.5"/>
+                        <ellipse cx="64" cy="44" rx="4" ry="3" fill="#4ade80" opacity="0.5"/>
+                        <rect x="60" y="48" width="3.5" height="5" rx="1" fill="#4ade80" opacity="0.7"/>
+                        <rect x="64.5" y="48" width="3.5" height="5" rx="1" fill="#4ade80" opacity="0.7"/>
+                        <circle cx="46" cy="64" r="5" fill="#143d28" stroke="#4ade80" stroke-width="1.5"/>
+                        <circle cx="82" cy="64" r="5" fill="#143d28" stroke="#4ade80" stroke-width="1.5"/>
+                        <line x1="88" y1="58" x2="102" y2="44" stroke="#4ade80" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+                        <circle cx="104" cy="42" r="5" fill="none" stroke="#4ade80" stroke-width="1.5" opacity="0.6"/>
+                    </svg>
+                </div>
                 <div class="pipe-title">Junior Dev</div>
-                <div class="pipe-personality">The Builder</div>
-                <div class="pipe-desc">Heads-down and precise. Reads every source file and every test file before writing a single line. Uses line-number editing, not string matching. Changes only what needs changing.</div>
+                <div class="pipe-personality">&#x1f9ab; The Builder</div>
+                <div class="pipe-desc">Heads-down and relentless. Reads every source file and every test file before writing a single line. Uses line-number editing, not string matching. Changes only what needs changing. Born to build.</div>
             </div>
             <div class="pipe-card reveal">
                 <div class="pipe-step">Step 03</div>
-                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face" alt="Tester agent" class="pipe-avatar" loading="lazy">
+                <div class="pipe-illustration">
+                    <svg width="80" height="80" viewBox="0 0 120 110" fill="none">
+                        <path d="M60 50 Q24 30 8 52 Q14 58 28 54 Q18 64 10 60 Q16 72 38 64" fill="#122e20" stroke="#4ade80" stroke-width="2"/>
+                        <path d="M60 50 Q96 30 112 52 Q106 58 92 54 Q102 64 110 60 Q104 72 82 64" fill="#122e20" stroke="#4ade80" stroke-width="2"/>
+                        <ellipse cx="60" cy="68" rx="20" ry="26" fill="#122e20" stroke="#4ade80" stroke-width="2"/>
+                        <circle cx="60" cy="38" r="18" fill="#143d28" stroke="#4ade80" stroke-width="2"/>
+                        <path d="M46 30 L54 34" fill="none" stroke="#4ade80" stroke-width="2.5" stroke-linecap="round"/>
+                        <path d="M74 30 L66 34" fill="none" stroke="#4ade80" stroke-width="2.5" stroke-linecap="round"/>
+                        <circle cx="52" cy="38" r="4" fill="#4ade80"/>
+                        <circle cx="68" cy="38" r="4" fill="#4ade80"/>
+                        <circle cx="52" cy="38" r="2" fill="#050505"/>
+                        <circle cx="68" cy="38" r="2" fill="#050505"/>
+                        <path d="M56 46 L60 54 L64 46" fill="#4ade80" opacity="0.6"/>
+                        <path d="M50 68 L60 74 L70 68" fill="none" stroke="#4ade80" stroke-width="1" opacity="0.3"/>
+                        <path d="M48 76 L60 82 L72 76" fill="none" stroke="#4ade80" stroke-width="1" opacity="0.3"/>
+                        <path d="M48 94 L44 106 M48 94 L52 106" fill="none" stroke="#4ade80" stroke-width="1.5" opacity="0.4" stroke-linecap="round"/>
+                        <path d="M72 94 L68 106 M72 94 L76 106" fill="none" stroke="#4ade80" stroke-width="1.5" opacity="0.4" stroke-linecap="round"/>
+                    </svg>
+                </div>
                 <div class="pipe-title">Tester</div>
-                <div class="pipe-personality">The Skeptic</div>
-                <div class="pipe-desc">Trusts nothing. Runs syntax checks, the full test suite, and verifies the diff is minimal. Independently validates every edge case the Manager declared. The quality gate nobody gets past.</div>
+                <div class="pipe-personality">&#x1f985; The Skeptic</div>
+                <div class="pipe-desc">Sharp-eyed and ruthless. Runs syntax checks, the full test suite, and verifies the diff is minimal. Independently validates every edge case the Manager declared. Nothing escapes the hawk.</div>
             </div>
             <div class="pipe-card reveal">
                 <div class="pipe-step">Step 04</div>
-                <div class="pipe-avatar-icon" style="background: var(--green-dim);">
-                    <svg width="28" height="28" viewBox="0 0 16 16" fill="#4ade80"><path fill-rule="evenodd" d="M7.177 3.073L9.573.677A.25.25 0 0110 .854v4.792a.25.25 0 01-.427.177L7.177 3.427a.25.25 0 010-.354zM3.75 2.5a.75.75 0 100 1.5.75.75 0 000-1.5zm-2.25.75a2.25 2.25 0 113 2.122v5.256a2.251 2.251 0 11-1.5 0V5.372A2.25 2.25 0 011.5 3.25zM11 2.5h-1V4h1a1 1 0 011 1v5.628a2.251 2.251 0 101.5 0V5A2.5 2.5 0 0011 2.5zm1 10.25a.75.75 0 111.5 0 .75.75 0 01-1.5 0zM3.75 12a.75.75 0 100 1.5.75.75 0 000-1.5z"/></svg>
+                <div class="pipe-illustration">
+                    <svg width="80" height="80" viewBox="0 0 150 150" fill="none">
+                        <line x1="75" y1="24" x2="75" y2="125" stroke="#4ade80" stroke-width="6"/>
+                        <path d="M75 30 Q56 14 48 6" fill="none" stroke="#4ade80" stroke-width="3"/>
+                        <circle cx="48" cy="6" r="5" fill="#4ade80"/>
+                        <path d="M75 30 Q94 14 102 6" fill="none" stroke="#4ade80" stroke-width="3"/>
+                        <circle cx="102" cy="6" r="5" fill="#4ade80"/>
+                        <path d="M75 36 Q24 28 14 60 Q10 80 46 88 Q66 90 75 74 Z" fill="#143d28" stroke="#4ade80" stroke-width="3"/>
+                        <path d="M75 36 Q126 28 136 60 Q140 80 104 88 Q84 90 75 74 Z" fill="#143d28" stroke="#4ade80" stroke-width="3"/>
+                        <path d="M75 78 Q36 84 24 106 Q28 120 54 114 Q70 110 75 96 Z" fill="#122e20" stroke="#4ade80" stroke-width="2.5"/>
+                        <path d="M75 78 Q114 84 126 106 Q122 120 96 114 Q80 110 75 96 Z" fill="#122e20" stroke="#4ade80" stroke-width="2.5"/>
+                        <circle cx="46" cy="58" r="12" fill="#4ade80"/>
+                        <circle cx="104" cy="58" r="12" fill="#4ade80"/>
+                        <circle cx="75" cy="100" r="10" fill="#4ade80"/>
+                    </svg>
                 </div>
                 <div class="pipe-title">Pull Request</div>
-                <div class="pipe-personality">The Deliverable</div>
-                <div class="pipe-desc">Nothing hidden. Full reasoning chain, every aspect graded, every edge case checked. You see what was planned, what was built, and what was verified. Ready for human review.</div>
+                <div class="pipe-personality">&#x1f98b; The Glasswing</div>
+                <div class="pipe-desc">The final form. Nothing hidden. Full reasoning chain, every aspect graded, every edge case checked. Beautiful, transparent, ready to fly. The whole point of GlassBox.</div>
             </div>
         </div>
     </div>
