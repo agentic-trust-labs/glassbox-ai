@@ -14,7 +14,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="GlassBox AI - Transparent AI Agents You Can Trust">
     <meta name="twitter:description" content="Multi-agent coding system with trust scores, adversarial debate, and full transparency.">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💎</text></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 150 150'><line x1='75' y1='24' x2='75' y2='125' stroke='%234ade80' stroke-width='8'/><path d='M75 36 Q24 28 14 60 Q10 80 46 88 Q66 90 75 74 Z' fill='%23143d28' stroke='%234ade80' stroke-width='4'/><path d='M75 36 Q126 28 136 60 Q140 80 104 88 Q84 90 75 74 Z' fill='%23143d28' stroke='%234ade80' stroke-width='4'/><path d='M75 78 Q36 84 24 106 Q28 120 54 114 Q70 110 75 96 Z' fill='%23122e20' stroke='%234ade80' stroke-width='3.5'/><path d='M75 78 Q114 84 126 106 Q122 120 96 114 Q80 110 75 96 Z' fill='%23122e20' stroke='%234ade80' stroke-width='3.5'/><circle cx='46' cy='58' r='14' fill='%234ade80'/><circle cx='104' cy='58' r='14' fill='%234ade80'/><circle cx='75' cy='100' r='14' fill='%234ade80'/></svg>">
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -451,6 +451,41 @@
             color: var(--text-dim);
             line-height: 1.6;
         }
+        .pipe-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--border2);
+            margin-bottom: 14px;
+            filter: grayscale(20%);
+            transition: all 0.3s;
+        }
+        .pipe-card:hover .pipe-avatar {
+            border-color: var(--green);
+            filter: grayscale(0%);
+        }
+        .pipe-personality {
+            font-size: 0.72rem;
+            color: var(--green);
+            font-weight: 500;
+            margin-bottom: 10px;
+            opacity: 0.8;
+        }
+        .pipe-avatar-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 14px;
+            border: 2px solid var(--border2);
+            transition: all 0.3s;
+        }
+        .pipe-card:hover .pipe-avatar-icon {
+            border-color: var(--green);
+        }
 
         /* ═══════════════════════════════════
            FEATURES GRID
@@ -559,13 +594,14 @@
         .check { color: var(--green); font-weight: bold; }
         .cross { color: #555; }
         .partial { color: #fbbf24; }
+        .loss { color: var(--red); font-size: 0.75rem; }
 
         /* ═══════════════════════════════════
            STATS
            ═══════════════════════════════════ */
         .stats-row {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 20px;
             margin-bottom: 64px;
         }
@@ -876,27 +912,33 @@
         <div class="pipeline-grid">
             <div class="pipe-card reveal">
                 <div class="pipe-step">Step 01</div>
-                <span class="pipe-icon">&#x1F3AF;</span>
+                <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&h=200&fit=crop&crop=face" alt="Manager agent" class="pipe-avatar" loading="lazy">
                 <div class="pipe-title">Manager</div>
-                <div class="pipe-desc">Classifies the issue, picks a fix template, generates edge cases (MRU: T1-T4), and sets confidence.</div>
+                <div class="pipe-personality">The Strategist</div>
+                <div class="pipe-desc">Reads the issue, classifies it against known templates, and thinks before anyone codes. Generates edge cases upfront (T1-T4), sets confidence, and writes the briefing. Doesn't touch code. Only plans.</div>
             </div>
             <div class="pipe-card reveal">
                 <div class="pipe-step">Step 02</div>
-                <span class="pipe-icon">&#x1F527;</span>
+                <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=200&h=200&fit=crop&crop=face" alt="Junior Dev agent" class="pipe-avatar" loading="lazy">
                 <div class="pipe-title">Junior Dev</div>
-                <div class="pipe-desc">Reads all source and test files. Generates a minimal fix via line-number editing. Template-guided, precise.</div>
+                <div class="pipe-personality">The Builder</div>
+                <div class="pipe-desc">Heads-down and precise. Reads every source file and every test file before writing a single line. Uses line-number editing, not string matching. Changes only what needs changing.</div>
             </div>
             <div class="pipe-card reveal">
                 <div class="pipe-step">Step 03</div>
-                <span class="pipe-icon">&#x1F9EA;</span>
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face" alt="Tester agent" class="pipe-avatar" loading="lazy">
                 <div class="pipe-title">Tester</div>
-                <div class="pipe-desc">Syntax check, full test suite, diff size verification. Validates the Manager's edge cases independently.</div>
+                <div class="pipe-personality">The Skeptic</div>
+                <div class="pipe-desc">Trusts nothing. Runs syntax checks, the full test suite, and verifies the diff is minimal. Independently validates every edge case the Manager declared. The quality gate nobody gets past.</div>
             </div>
             <div class="pipe-card reveal">
                 <div class="pipe-step">Step 04</div>
-                <span class="pipe-icon">&#x2705;</span>
+                <div class="pipe-avatar-icon" style="background: var(--green-dim);">
+                    <svg width="28" height="28" viewBox="0 0 16 16" fill="#4ade80"><path fill-rule="evenodd" d="M7.177 3.073L9.573.677A.25.25 0 0110 .854v4.792a.25.25 0 01-.427.177L7.177 3.427a.25.25 0 010-.354zM3.75 2.5a.75.75 0 100 1.5.75.75 0 000-1.5zm-2.25.75a2.25 2.25 0 113 2.122v5.256a2.251 2.251 0 11-1.5 0V5.372A2.25 2.25 0 011.5 3.25zM11 2.5h-1V4h1a1 1 0 011 1v5.628a2.251 2.251 0 101.5 0V5A2.5 2.5 0 0011 2.5zm1 10.25a.75.75 0 111.5 0 .75.75 0 01-1.5 0zM3.75 12a.75.75 0 100 1.5.75.75 0 000-1.5z"/></svg>
+                </div>
                 <div class="pipe-title">Pull Request</div>
-                <div class="pipe-desc">Created with the full reasoning chain. Every decision visible. Every aspect graded. Ready for review.</div>
+                <div class="pipe-personality">The Deliverable</div>
+                <div class="pipe-desc">Nothing hidden. Full reasoning chain, every aspect graded, every edge case checked. You see what was planned, what was built, and what was verified. Ready for human review.</div>
             </div>
         </div>
     </div>
@@ -915,10 +957,6 @@
             <div class="stat-card">
                 <div class="stat-number" data-target="169">0</div>
                 <div class="stat-label">Tests Passing</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" data-target="15">0</div>
-                <div class="stat-label">Research Papers</div>
             </div>
             <div class="stat-card">
                 <div class="stat-number" data-target="3">0</div>
@@ -1003,7 +1041,7 @@
     <div class="container">
         <div class="section-label reveal">// comparison</div>
         <h2 class="section-title reveal">How GlassBox compares</h2>
-        <p class="section-desc reveal">Scoring across 7 key capabilities that matter for trustworthy AI agents.</p>
+        <p class="section-desc reveal">Honest comparison. Green where we lead, red where we're behind. Transparency starts here.</p>
 
         <div class="compare-table-wrapper reveal">
             <table class="compare-table">
@@ -1066,6 +1104,27 @@
                         <td><span class="check">&#x2714;</span></td>
                         <td><span class="check">&#x2714;</span></td>
                     </tr>
+                    <tr>
+                        <td class="cap-name">Multi-Language</td>
+                        <td><span class="check">&#x2714;</span></td>
+                        <td><span class="check">&#x2714;</span></td>
+                        <td><span class="check">&#x2714;</span></td>
+                        <td><span class="loss">Python only</span></td>
+                    </tr>
+                    <tr>
+                        <td class="cap-name">Sandboxed Execution</td>
+                        <td><span class="check">&#x2714;</span></td>
+                        <td><span class="check">&#x2714;</span></td>
+                        <td><span class="check">&#x2714;</span></td>
+                        <td><span class="loss">Not yet</span></td>
+                    </tr>
+                    <tr>
+                        <td class="cap-name">Speed</td>
+                        <td><span class="check">&#x2714;</span></td>
+                        <td><span class="partial">&#x25cb;</span></td>
+                        <td><span class="partial">&#x25cb;</span></td>
+                        <td><span class="loss">~5 min</span></td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -1077,9 +1136,9 @@
      ═══════════════════════════════════ -->
 <section id="research">
     <div class="container">
-        <div class="section-label reveal">// research foundation</div>
-        <h2 class="section-title reveal">Built on peer-reviewed science</h2>
-        <p class="section-desc reveal">Every design decision has a paper. Not marketing, science.</p>
+        <div class="section-label reveal">// standing on shoulders</div>
+        <h2 class="section-title reveal">Grounded in peer-reviewed research</h2>
+        <p class="section-desc reveal">We didn't invent these ideas. We built on them. Every design decision in GlassBox traces back to published, peer-reviewed work.</p>
 
         <div class="research-grid">
             <a href="https://arxiv.org/abs/2305.14325" target="_blank" class="research-card reveal">
