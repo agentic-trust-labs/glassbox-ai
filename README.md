@@ -1,6 +1,6 @@
 # GlassBox AI 💎
 
-> **Trust is earned, not assumed.**
+> **Trust is earned, not assumed.** 💎
 
 [![PyPI](https://img.shields.io/pypi/v/glassbox-ai)](https://pypi.org/project/glassbox-ai/)
 [![Tests](https://img.shields.io/badge/tests-169%20passed-brightgreen)]()
@@ -13,14 +13,14 @@ We are building trust infrastructure for autonomous AI agents, starting with the
 GlassBox is an autonomous coding agent that takes a GitHub issue and ships a tested PR. Every decision is visible. Every agent earns its trust score through outcomes, not assumptions. The same principles will extend to every domain where AI acts autonomously.
 
 ```
-Issue opened   → 🎯 Manager classifies, generates briefing + edge cases
-               → 🔧 JuniorDev generates fix (indent-preserving line editor)
-               → 🧪 Tester validates (syntax + full test suite)
-               → ✅ PR created in ~32s, merged on first attempt
+Issue opened   → 🦉 Manager classifies, generates briefing + edge cases
+               → 🦫 JuniorDev generates fix (indent-preserving line editor)
+               → � Tester validates (syntax + full test suite)
+               → 🦋 PR created in ~32s, merged on first attempt
                → 💬 Author can guide via comments (human-in-the-loop)
 ```
 
-**v1.0** - 54% end-to-end success rate, 32s turnaround. See [performance tracker](https://agentic-trust-labs.github.io/glassbox-ai/dashboard/) and [CHANGELOG](CHANGELOG.md).
+**65 agent issues. 33 PRs merged. 7/7 bug eval first-try. ~32s turnaround.** See [live performance tracker](https://agentic-trust-labs.github.io/glassbox-ai/dashboard/) and [CHANGELOG](CHANGELOG.md).
 
 ---
 
@@ -32,19 +32,19 @@ Issue opened   → 🎯 Manager classifies, generates briefing + edge cases
           └──────────────────────┬──────────────────────────────┘
                                  │
           ┌──────────────────────▼──────────────────────────────┐
-          │  🎯 Manager (The Strategist)                        │
+          │  🦉 Manager (The Strategist)                        │
           │  classifies issue, picks template, generates         │
           │  edge cases (MRU: T1-T4), sets confidence            │
           └──────────────────────┬──────────────────────────────┘
                                  │
           ┌──────────────────────▼──────────────────────────────┐
-          │  🔧 JuniorDev (The Builder)                         │
+          │  🦫 JuniorDev (The Builder)                         │
           │  reads source + tests, generates fix                 │
           │  line-number editing, template-guided                │
           └──────────────────────┬──────────────────────────────┘
                                  │
           ┌──────────────────────▼──────────────────────────────┐
-          │  🧪 Tester (The Gatekeeper)                         │
+          │  � Tester (The Skeptic)                             │
           │  syntax check, full test suite, diff size check      │
           └──────────────────────┬──────────────────────────────┘
                                  │
@@ -59,7 +59,8 @@ Issue opened   → 🎯 Manager classifies, generates briefing + edge cases
           └──────────────────────┬──────────────────────────────┘
                                  │
           ┌──────────────────────▼──────────────────────────────┐
-          │  ✅ Pull Request with full reasoning chain           │
+          │  🦋 Pull Request (The Glasswing)                     │
+          │  full reasoning chain, nothing hidden                │
           └──────────────────────┬──────────────────────────────┘
                                  │
           ┌──────────────────────▼──────────────────────────────┐
@@ -113,13 +114,13 @@ Label any issue `glassbox-agent` or mention `@glassbox-agent` - the agent ships 
 
 ### Pipeline steps
 
-| Step | Agent | What happens |
-|------|-------|--------------|
-| 1 | 🎯 **Manager** | Classifies issue, picks template, generates edge cases (MRU: T1-T4), posts briefing |
-| 2 | 🔧 **JuniorDev** | Reads source + tests, generates minimal fix via line-number editing |
-| 3 | 🧪 **Tester** | Syntax check, full test suite, diff size verification |
-| 4 | ✅ **PR** | Created with reasoning chain - every decision visible |
-| 5 | 💬 **HITL** | Author can comment to guide - agent resumes with context |
+| Step | Agent | Identity | What happens |
+|------|-------|----------|--------------| 
+| 1 | 🦉 **Manager** | *The Strategist* | Classifies issue, picks template, generates edge cases (MRU: T1-T4), posts briefing |
+| 2 | 🦫 **JuniorDev** | *The Builder* | Reads source + tests, generates minimal fix via line-number editing |
+| 3 | � **Tester** | *The Skeptic* | Syntax check, full test suite, diff size verification |
+| 4 | 🦋 **Pull Request** | *The Glasswing* | Full reasoning chain, nothing hidden, transparent and ready to fly |
+| 5 | 💬 **HITL** | *Author* | Comment to guide, agent resumes from the right phase with context |
 
 ### Core capabilities
 
@@ -130,7 +131,7 @@ Label any issue `glassbox-agent` or mention `@glassbox-agent` - the agent ships 
 - **Test-grounded fixes** - agent sees test files alongside source code
 - **Human-in-the-loop** - author comments parsed as guidance, agent re-enters at the right phase
 - **Concurrency control** - one run per issue, in-progress runs cancelled on re-trigger
-- **Agent avatars** - each agent has a distinct identity with animal avatars for GitHub readability
+- **Agent avatars** - each agent has a distinct animal kingdom identity (🦉 owl, 🦫 beaver, 🦅 hawk, 🦋 glasswing butterfly) rendered as custom SVGs in GitHub comments
 
 ### Trust system
 
@@ -147,12 +148,13 @@ Backed by [EigenTrust (Kamvar et al. 2003)](https://dl.acm.org/doi/10.1145/77515
 
 ## 📊 Results
 
-**54% end-to-end success rate across 61 agent issues. 33 PRs merged.**
+**65 agent issues. 33 PRs merged. 7/7 bug eval first-try. ~32s turnaround.**
 
-| Eval | Type | Result | PRs |
-|------|------|--------|-----|
-| Bug eval (7 bugs) | Bug fixes | 7/7 first-try | #53 #55 #57 #59 #61 #63 #65 |
-| Feature eval (5 features) | New features | 4/5 solved, 2/4 merged | #71 #72 |
+| Eval | Scope | Result | PRs |
+|------|-------|--------|-----|
+| 🦉 Bug eval (7 seeded bugs) | E01-E15 injected via BugFactory | **7/7 first-try, 100%** | [#53](https://github.com/agentic-trust-labs/glassbox-ai/pull/53) [#55](https://github.com/agentic-trust-labs/glassbox-ai/pull/55) [#57](https://github.com/agentic-trust-labs/glassbox-ai/pull/57) [#59](https://github.com/agentic-trust-labs/glassbox-ai/pull/59) [#61](https://github.com/agentic-trust-labs/glassbox-ai/pull/61) [#63](https://github.com/agentic-trust-labs/glassbox-ai/pull/63) [#65](https://github.com/agentic-trust-labs/glassbox-ai/pull/65) |
+| 🦫 Feature improvements | Comment UX, dep pinning, workflow fixes | **26 shipped** | [#71](https://github.com/agentic-trust-labs/glassbox-ai/pull/71) [#72](https://github.com/agentic-trust-labs/glassbox-ai/pull/72) [#88](https://github.com/agentic-trust-labs/glassbox-ai/pull/88)-[#125](https://github.com/agentic-trust-labs/glassbox-ai/pull/125) |
+| 🦅 End-to-end (all issues) | 65 agent issues across v1 + v2 | **33 merged, 51%** | 33 PRs total |
 
 👉 [**Live Performance Tracker**](https://agentic-trust-labs.github.io/glassbox-ai/dashboard/) - conversion funnel, TAT breakdown, failure diagnostics, all updated in real-time.
 
@@ -200,4 +202,4 @@ MIT
 
 Built by [Sourabh Gupta](https://www.linkedin.com/in/sourabhgupta16/) at [Agentic Trust Labs](https://github.com/agentic-trust-labs)
 
-**💎 Trust is earned, not assumed.**
+**💎 Trust is earned, not assumed. 💎**
