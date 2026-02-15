@@ -56,7 +56,7 @@ class MultiAgentOrchestrator:
 
     # ── V2: multi-round debate (the 20 lines) ──
 
-    async def debate(self, task, agents=None):
+    async def debate(self, task, agents=None, rounds=3):
         agents = [a for a in (agents or list(AGENTS.keys())) if a in AGENTS]
         log, out = [], [f"━━ TOPIC ━━\n{task}\n"]
         for i, rd in enumerate(ROUNDS):
