@@ -16,7 +16,7 @@ except Exception:
 
 from . import __version__
 mcp = FastMCP(f"GlassBox AI v{__version__}")
-orch = MultiAgentOrchestrator()
+trust_floor = 0.30
 
 
 @mcp.tool()
