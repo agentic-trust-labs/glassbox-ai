@@ -12,8 +12,8 @@ HARD_ASPECTS = (
 
 HARD_CHALLENGES = (
     {"id": "HC1", "name": "String matching", "desc": "old text must exactly match source — copy-paste, never type from memory"},
-    {"id": "HC2", "name": "Unrelated test breakage", "desc": "Fix might break a test you didn't know about"},
-    {"id": "HC3", "name": "Over-engineering", "desc": "Fix ONLY what the issue describes — no refactoring"},
+    {"id": "HC2", "name": "Unrelated test breakage", "desc": "Fix ONLY what the issue describes — no refactoring"},
+    {"id": "HC3", "name": "Over-engineering", "desc": "Fix might break a test you didn't know about"},
     {"id": "HC4", "name": "Stale state", "desc": "Bug might already be fixed by a prior run"},
     {"id": "HC5", "name": "Embedded DSL", "desc": "Numbers/strings inside SQL/regex/prompts are NOT Python"},
 )

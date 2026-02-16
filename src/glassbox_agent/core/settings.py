@@ -11,7 +11,7 @@ class Settings(BaseModel):
     model: str = "gpt-4o"
     model_classify: str = "gpt-4o-mini"
     temperature_classify: float = 0.3
-    temperature_code: float = 0.1
+    temperature_code: float = 1.0
     temperature_review: float = 0.3
     max_retries: int = 2
     templates_dir: str = Field(default_factory=lambda: os.path.join(os.path.dirname(__file__), "..", "templates"))
