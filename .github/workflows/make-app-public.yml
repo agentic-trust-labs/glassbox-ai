@@ -1,0 +1,42 @@
+name: Make App Public
+on: workflow_dispatch
+
+jobs:
+  make-public:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate JWT and make app public
+        env:
+          APP_ID: "2868564"
+          APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
+        run: |
+          pip install PyJWT cryptography requests
+          python3 << 'EOF'
+          import jwt, time, requests, os
+
+          app_id = os.environ["APP_ID"]
+          private_key = os.environ["APP_PRIVATE_KEY"].replace("\\n", "\n")
+
+          now = int(time.time())
+          payload = {
+              "iat": now - 60,
+              "exp": now + (10 * 60),
+              "iss": app_id,
+          }
+          token = jwt.encode(payload, private_key, algorithm="RS256")
+
+          resp = requests.patch(
+              "https://api.github.com/app",
+              headers={
+                  "Authorization": f"Bearer {token}",
+                  "Accept": "application/vnd.github+json",
+              },
+              json={"public": True},
+          )
+          print(f"Status: {resp.status_code}")
+          print(f"Response: {resp.json().get('name', '')} - public={resp.json().get('public', 'unknown')}")
+          if resp.status_code == 200:
+              print("✅ App is now PUBLIC! Anyone can install it.")
+          else:
+              print(f"❌ Failed: {resp.text}")
+          EOF
