@@ -10,33 +10,55 @@ jobs:
           APP_ID: "2868564"
           APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
         run: |
-          pip install PyJWT cryptography requests
-          python3 << 'EOF'
+          pip install --user --force-reinstall "PyJWT[crypto]" requests
+          python3 << 'PYEOF'
           import jwt, time, requests, os
 
           app_id = os.environ["APP_ID"]
-          private_key = os.environ["APP_PRIVATE_KEY"].replace("\\n", "\n")
+          raw_key = os.environ["APP_PRIVATE_KEY"]
+          private_key = raw_key.replace("\\n", "\n")
+
+          print(f"Key starts with: {private_key[:30]}...")
+          print(f"Key length: {len(private_key)}")
+          print(f"Has BEGIN: {'BEGIN' in private_key}")
 
           now = int(time.time())
           payload = {
               "iat": now - 60,
               "exp": now + (10 * 60),
-              "iss": app_id,
+              "iss": int(app_id),
           }
           token = jwt.encode(payload, private_key, algorithm="RS256")
+          print(f"JWT generated, length: {len(token)}")
 
-          resp = requests.patch(
-              "https://api.github.com/app",
-              headers={
-                  "Authorization": f"Bearer {token}",
-                  "Accept": "application/vnd.github+json",
-              },
-              json={"public": True},
-          )
-          print(f"Status: {resp.status_code}")
-          print(f"Response: {resp.json().get('name', '')} - public={resp.json().get('public', 'unknown')}")
-          if resp.status_code == 200:
+          headers = {
+              "Authorization": f"Bearer {token}",
+              "Accept": "application/vnd.github+json",
+              "X-GitHub-Api-Version": "2022-11-28",
+          }
+
+          # Step 1: Verify auth works
+          print("\n--- Step 1: GET /app (verify auth) ---")
+          r1 = requests.get("https://api.github.com/app", headers=headers)
+          print(f"GET /app status: {r1.status_code}")
+          if r1.status_code == 200:
+              data = r1.json()
+              print(f"App: {data.get('name')} (id={data.get('id')})")
+              print(f"Current visibility: public={data.get('public', 'unknown')}")
+          else:
+              print(f"Auth failed: {r1.text[:300]}")
+              exit(1)
+
+          # Step 2: Make public
+          print("\n--- Step 2: Make app public ---")
+          r2 = requests.patch("https://api.github.com/app", headers=headers,
+                              json={"public": True})
+          print(f"PATCH /app status: {r2.status_code}")
+          if r2.status_code == 200:
+              print(f"public={r2.json().get('public')}")
               print("✅ App is now PUBLIC! Anyone can install it.")
           else:
-              print(f"❌ Failed: {resp.text}")
-          EOF
+              print(f"❌ PATCH failed: {r2.text[:500]}")
+              # Try alternative: just log the install URL
+              print(f"\nInstall URL: https://github.com/apps/glassbox-agent/installations/new")
+          PYEOF
