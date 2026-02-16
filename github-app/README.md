@@ -1,84 +1,98 @@
-# GlassBox Agent — GitHub Identity
+# GlassBox Agent - GitHub App
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/agentic-trust-labs/glassbox-ai)
+
+## How it works
+
+```
+User installs app          GitHub sends webhook       Server runs agent
+─────────────────          ────────────────────       ─────────────────
+github.com/apps/     →     POST /webhook with    →    Clone repo
+glassbox-agent             issue/comment data          Analyze issue
+Click "Install"            (automatic)                 Generate fix
+Select repos                                           Run tests
+                                                       Create PR
+```
+
+One-click install for users. No workflow files, no configuration, no secrets on their end.
 
 ## Architecture
 
-Two-layer setup (industry standard — same pattern used by Claude, Renovate, Codecov):
+| Component | What | Status |
+|-----------|------|--------|
+| **GitHub App** | Registered at `github.com/apps/glassbox-agent` (ID: `2868564`) | ✅ Live |
+| **Machine User** | `@glassbox-agent` account for @mention autocomplete | ✅ Live |
+| **Webhook Server** | FastAPI server - receives events, authenticates, runs agent | ✅ Code ready |
+| **Agent Pipeline** | Manager → JuniorDev → Tester → PR | ✅ Working |
 
-| Layer | What | Why |
-|-------|------|-----|
-| **GitHub App** (`glassbox-agent`) | Distributable app with scoped permissions, webhook events | For marketplace, installation on other repos, fine-grained auth |
-| **Machine User** (`glassbox-agent`) | Regular GitHub account, member of `agentic-trust-labs` | Enables `@glassbox-agent` autocomplete in comments |
+### Why a machine user too?
 
-### Why two layers?
+GitHub Apps cannot appear in @mention autocomplete (platform limitation). Every bot with working autocomplete uses a machine user: `@claude`, `@renovate-bot`, `@codecov-commenter`.
 
-GitHub Apps **cannot** appear in `@mention` autocomplete (platform limitation, confirmed since 2023).
-Every bot with working autocomplete uses a machine user: `@claude` (User), `@renovate-bot` (User), `@codecov-commenter` (User).
+## Deploy the webhook server
 
+### One-click: Render (free tier)
+
+1. Click the **Deploy to Render** button above
+2. Sign in with GitHub
+3. Set these 4 environment variables:
+
+| Variable | Where to get it |
+|----------|----------------|
+| `GITHUB_APP_ID` | Already in repo secrets (`2868564`) |
+| `GITHUB_APP_PRIVATE_KEY` | Already in repo secrets (PEM content, replace newlines with `\n`) |
+| `GITHUB_WEBHOOK_SECRET` | Generate: `openssl rand -hex 20` |
+| `OPENAI_API_KEY` | Your OpenAI key |
+
+4. Deploy - note the URL (e.g. `https://glassbox-agent.onrender.com`)
+5. Update the GitHub App webhook URL:
+   - Go to: `github.com/organizations/agentic-trust-labs/settings/apps/glassbox-agent`
+   - Set Webhook URL to: `https://YOUR_URL/webhook`
+   - Set Webhook secret to the same secret from step 3
+   - Check "Active"
+
+### Alternative: Fly.io
+
+```bash
+fly launch --dockerfile github-app/Dockerfile
+fly secrets set GITHUB_APP_ID=... GITHUB_APP_PRIVATE_KEY=... GITHUB_WEBHOOK_SECRET=... OPENAI_API_KEY=...
 ```
-┌─────────────────────────────────────────────────┐
-│  GitHub Issue                                    │
-│  User types: "@glass" → autocomplete suggests    │
-│  "@glassbox-agent" → user selects it             │
-└──────────────────────┬──────────────────────────┘
-                       │ issue_comment event
-                       ▼
-┌─────────────────────────────────────────────────┐
-│  GitHub Actions (agent-fix.yml)                  │
-│                                                  │
-│  1. Checkout code using BOT_PAT                  │
-│  2. Run: python -m scripts.agent.main <issue#>   │
-│  3. Agent posts comments using BOT_PAT           │
-│     → shows as "glassbox-agent"                  │
-└─────────────────────────────────────────────────┘
-```
-
-## Current Setup
-
-### Repo Secrets
-
-| Secret | Source | Purpose |
-|--------|--------|---------|
-| `BOT_PAT` | Machine user PAT | All GitHub API calls (comments, PRs, pushes) |
-| `APP_ID` | GitHub App | Available for future webhook/marketplace use |
-| `APP_PRIVATE_KEY` | GitHub App | Available for future webhook/marketplace use |
-
-### Machine User Profile
-
-| Field | Value |
-|-------|-------|
-| **Username** | `glassbox-agent` |
-| **Display name** | `GlassBox Agent` |
-| **Company** | `@agentic-trust-labs` |
-| **Bio** | Autonomous bug fixer with 6-message transparency protocol |
-| **Org membership** | Member of `agentic-trust-labs` with push access |
 
 ## Files
 
 | File | Purpose |
 |------|---------|
-| `manifest.json` | GitHub App definition: name, permissions, events |
-| `setup.py` | One-time setup: create app via manifest flow, store secrets |
-| `.gitignore` | Prevents committing private keys (*.pem) |
-| `README.md` | This file |
+| `server.py` | FastAPI webhook server - receives events, runs agent pipeline |
+| `auth.py` | GitHub App JWT auth - generates installation access tokens |
+| `Dockerfile` | Container image with agent code baked in |
+| `requirements.txt` | Server dependencies (FastAPI, PyJWT, httpx) |
+| `railway.json` | Railway deployment config |
+| `manifest.json` | GitHub App definition (permissions, events) |
+| `setup.py` | One-time app creation via manifest flow |
 
-## Setup (Already Done)
+## For end users (summit attendees)
 
-### GitHub App (for distribution/webhooks)
-1. `python github-app/setup.py` → creates app via manifest flow
-2. Script stores `APP_ID` and `APP_PRIVATE_KEY` as repo secrets
-3. Install app on repo via the printed URL
+1. Go to **github.com/apps/glassbox-agent**
+2. Click **Install**
+3. Select your repos
+4. Create an issue describing a bug, add label `glassbox-agent`
+5. Agent responds, analyzes, fixes, creates PR
 
-### Machine User (for @mention autocomplete)
-1. Create GitHub account `glassbox-agent` with `+alias` email
-2. Invite to org: `gh api -X PUT /orgs/agentic-trust-labs/memberships/glassbox-agent -f role=member`
-3. Accept invite using machine user's PAT
-4. Add as repo collaborator: `gh api -X PUT /repos/agentic-trust-labs/glassbox-ai/collaborators/glassbox-agent -f permission=push`
-5. Store PAT: `gh secret set BOT_PAT --repo agentic-trust-labs/glassbox-ai`
-6. Post one comment to seed autocomplete
+No secrets. No workflow files. No configuration.
+
+## Secrets (already configured)
+
+| Secret | Source | Purpose |
+|--------|--------|---------|
+| `APP_ID` | GitHub App | JWT authentication |
+| `APP_PRIVATE_KEY` | GitHub App | JWT signing |
+| `BOT_PAT` | Machine user | GitHub Actions (internal repo only) |
+| `OPENAI_API_KEY` | OpenAI | LLM calls |
 
 ## Security
 
-- **BOT_PAT** stored as GitHub repo secret only, never in code
-- **`.gitignore`** prevents accidental commits of `*.pem` files
-- **Machine user** has push (not admin) access — minimum required
-- **GitHub App** has scoped permissions: `issues:write`, `pull_requests:write`, `contents:write`, `metadata:read`
+- All secrets stored as GitHub repo secrets, never in code
+- `.gitignore` prevents committing `*.pem` files
+- Machine user has push (not admin) access
+- GitHub App has minimum required permissions: `issues:write`, `pull_requests:write`, `contents:write`, `metadata:read`
+- Webhook signature verification (HMAC SHA-256)
