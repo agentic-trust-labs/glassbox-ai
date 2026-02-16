@@ -1,0 +1,92 @@
+name: GlassBox Agent (Reusable)
+
+on:
+  workflow_call:
+    secrets:
+      BOT_PAT:
+        required: true
+      OPENAI_API_KEY:
+        required: true
+
+jobs:
+  ack:
+    if: >
+      (github.event_name == 'issues' && github.event.label.name == 'glassbox-agent')
+      || (github.event_name == 'issue_comment'
+          && (contains(github.event.comment.body, '@glassbox-agent')
+              || contains(github.event.comment.body, '@glassbox_agent')))
+    runs-on: ubuntu-latest
+    outputs:
+      comment_id: ${{ steps.ack.outputs.comment_id }}
+    permissions:
+      issues: write
+    steps:
+      - name: Post instant ack
+        id: ack
+        env:
+          GH_TOKEN: ${{ secrets.BOT_PAT }}
+        run: |
+          RESPONSE=$(gh api repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/comments \
+            -f body="🤖 **GlassBox Agent** picked up **#${{ github.event.issue.number }}**
+
+          Analyzing and generating fix...
+
+          _This may take 30-60 seconds._")
+          COMMENT_ID=$(echo "$RESPONSE" | jq -r '.id')
+          echo "comment_id=$COMMENT_ID" >> "$GITHUB_OUTPUT"
+
+  agent-fix:
+    needs: ack
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.BOT_PAT }}
+
+      - name: Clone GlassBox Agent
+        run: git clone --depth 1 https://x-access-token:${{ secrets.BOT_PAT }}@github.com/agentic-trust-labs/glassbox-ai.git /tmp/glassbox-ai
+
+      - name: Set up Python 3.11
+        id: setup-python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Cache virtualenv
+        uses: actions/cache@v4
+        with:
+          path: .venv
+          key: glassbox-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m venv .venv
+          .venv/bin/pip install --upgrade pip
+          .venv/bin/pip install -r /tmp/glassbox-ai/requirements.txt
+          if [ -f requirements.txt ]; then .venv/bin/pip install -r requirements.txt; fi
+
+      - name: Activate venv
+        run: echo "${{ github.workspace }}/.venv/bin" >> $GITHUB_PATH
+
+      - name: Configure git
+        run: |
+          git config user.name "glassbox-agent"
+          git config user.email "noreply@glassbox-agent.dev"
+
+      - name: Run agent
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GH_TOKEN: ${{ secrets.BOT_PAT }}
+          ACK_COMMENT_ID: ${{ needs.ack.outputs.comment_id }}
+          PYTHONPATH: /tmp/glassbox-ai/src
+        run: |
+          if [ "${{ github.event_name }}" = "issue_comment" ]; then
+            python -m glassbox_agent.cli ${{ github.event.issue.number }} --comment-id ${{ github.event.comment.id }}
+          else
+            python -m glassbox_agent.cli ${{ github.event.issue.number }}
+          fi
