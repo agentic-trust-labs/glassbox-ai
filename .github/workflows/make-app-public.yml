@@ -26,7 +26,7 @@ jobs:
           payload = {
               "iat": now - 60,
               "exp": now + (10 * 60),
-              "iss": int(app_id),
+              "iss": app_id,
           }
           token = jwt.encode(payload, private_key, algorithm="RS256")
           print(f"JWT generated, length: {len(token)}")
