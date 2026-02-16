@@ -48,7 +48,7 @@ class GitHubClient:
             return comment_id
         return self.post_comment(issue_number, body)
 
-    def add_reaction(self, comment_id: int, reaction: str = "confused") -> bool:
+    def add_reaction(self, comment_id: int, reaction: str = "+1") -> bool:
         """Add a reaction to a comment (thumbs up ack)."""
         if comment_id <= 0:
             return False
