@@ -118,6 +118,7 @@ def create_app() -> FastAPI:
         uptime = time.time() - _start_time if _start_time else 0
         return {
             "status": "ok",
+            "version": "0.4.0-rate-limiter",
             "uptime_seconds": int(uptime),
             "uptime_human": _format_uptime(uptime),
             "app_id": _settings.github_app_id if _settings else "not loaded",
