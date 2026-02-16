@@ -24,6 +24,10 @@ class Settings(BaseSettings):
     agent_timeout: int = Field(default=300, description="Max seconds per agent run")
     max_concurrent_runs: int = Field(default=3, description="Max parallel agent runs")
 
+    # Rate limiting
+    rate_limit_daily: int = Field(default=20, description="Max agent runs per day for non-exempt orgs")
+    rate_limit_exempt_orgs: str = Field(default="agentic-trust-labs", description="Comma-separated exempt org logins")
+
     # Paths (inside Docker image)
     agent_pythonpath: str = Field(default="/app/src")
 
