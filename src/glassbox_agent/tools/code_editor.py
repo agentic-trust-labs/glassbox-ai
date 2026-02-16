@@ -91,7 +91,7 @@ class CodeEditor:
         return max(original_count, new_count)
 
     @staticmethod
-    def fuzzy_find(content: str, target: str, threshold: float = 0.3) -> tuple[int, float]:
+    def fuzzy_find(content: str, target: str, threshold: float = 0.6) -> tuple[int, float]:
         """Find best fuzzy match for target in content lines. Returns (line_number, ratio)."""
         lines = content.split("\n")
         best_line, best_ratio = 0, 0.0
