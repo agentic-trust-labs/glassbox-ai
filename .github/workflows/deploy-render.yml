@@ -1,0 +1,31 @@
+name: Deploy to Render
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'github-app/**'
+      - 'src/**'
+      - 'requirements.txt'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Render deploy
+        env:
+          RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+        run: |
+          if [ -z "$RENDER_DEPLOY_HOOK_URL" ]; then
+            echo "❌ RENDER_DEPLOY_HOOK_URL secret not set. Skipping deploy."
+            exit 0
+          fi
+          echo "🚀 Triggering Render deploy..."
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" "$RENDER_DEPLOY_HOOK_URL")
+          echo "Response: HTTP $RESPONSE"
+          if [ "$RESPONSE" = "200" ] || [ "$RESPONSE" = "201" ]; then
+            echo "✅ Deploy triggered successfully"
+          else
+            echo "❌ Deploy trigger failed with HTTP $RESPONSE"
+            exit 1
+          fi
