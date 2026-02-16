@@ -37,7 +37,7 @@ class CodeEditor:
         with open(full) as f:
             lines = f.readlines()
 
-        if edit.start_line < 0 or edit.end_line > len(lines):
+        if edit.start_line < 1 or edit.end_line > len(lines):
             return False, f"Line range {edit.start_line}-{edit.end_line} out of bounds ({len(lines)} lines)"
 
         # Indent-Capture-Reapply: preserve original indentation (RooCode pattern)
