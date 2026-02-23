@@ -22,8 +22,10 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt pytest
 
-      - name: Run 20 unit tests
-        run: python -m pytest tests/test_glassbox.py -v --tb=short
+      - name: Run unit tests
+        env:
+          PYTHONPATH: src
+        run: python -m pytest tests/unit/ -v --tb=short
 
   # ── Stage 2: Integration Tests (uses secret, only on push to main) ──
   integration-tests:
@@ -43,8 +45,10 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt pytest
 
-      - name: Run 5 integration tests (real OpenAI API calls)
-        run: python -m pytest tests/test_integration.py -v --tb=short
+      - name: Run integration tests
+        env:
+          PYTHONPATH: src
+        run: python -m pytest tests/integration/ -v --tb=short
 
   # ── Stage 3: Build Docker Image (only if all tests pass on main) ───
   build-image:
