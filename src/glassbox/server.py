@@ -1,54 +1,56 @@
-"""GlassBox AI — Multi-agent MCP server with trust scoring."""
+"""
+GlassBox Server — MCP Server (Stub)
+======================================
 
-import os, subprocess
-from typing import Optional
-from mcp.server.fastmcp import FastMCP
-from .orchestrator import MultiAgentOrchestrator
+Purpose:
+    Expose GlassBox capabilities as an MCP (Model Context Protocol) server
+    for IDE integration. This allows IDEs like VS Code, Cursor, and Windsurf
+    to interact with the GlassBox platform directly.
 
-# Read API key: Keychain first, then env var
-try:
-    os.environ["OPENAI_API_KEY"] = subprocess.run(
-        ["security", "find-generic-password", "-s", "OPENAI_API_KEY", "-a", "glassbox-ai", "-w"],
-        capture_output=True, text=True, check=True
-    ).stdout.strip()
-except Exception:
-    pass  # fall back to env var
+Current status: STUB
+    The full MCP server implementation is Phase 4. For now, this file provides
+    the structure and will be fleshed out when we get there.
 
-from . import __version__
-mcp = FastMCP(f"GlassBox AI v{__version__}")
-orch = MultiAgentOrchestrator()
+    The old server.py (54 lines) in src/glassbox/ was a FastAPI-based MCP server
+    that exposed the debate/orchestrator functionality. The new server will expose
+    the full platform: run use cases, check state, read audit logs, etc.
 
+What the MCP server will expose:
+    Tools:
+        - glassbox.run(issue_number, use_case) → Run a use case on an issue
+        - glassbox.status(issue_number) → Get current state and audit log
+        - glassbox.classify(issue_number) → Just classify without running
+        - glassbox.debate(topic) → Multi-agent debate (from old orchestrator)
 
-@mcp.tool()
-async def analyze(task: str, agents: Optional[str] = None) -> str:
-    """Run multiple AI agents on a task with trust-weighted consensus."""
-    agent_list = [a.strip() for a in agents.split(",")] if agents else None
-    return await orch.execute_formatted(task, agent_list)
+    Resources:
+        - glassbox://issues/{number}/state → Current state
+        - glassbox://issues/{number}/audit → Full audit trail
+        - glassbox://config → Current settings
 
+Future implementation will use the `mcp` Python SDK.
+"""
 
-@mcp.tool()
-async def debate(task: str) -> str:
-    """Run a multi-round debate between agents. They talk TO each other across 3 rounds: Position → Reaction → Convergence. Trust auto-updates based on who persuades whom."""
-    return await orch.debate(task)
-
-
-@mcp.tool()
-def trust_scores() -> str:
-    """View current trust scores for all agents."""
-    scores = orch.trust_db.get_all_scores()
-    return "\n".join(f"{a}: {s:.2f}" for a, s in scores.items())
+from __future__ import annotations
 
 
-@mcp.tool()
-def update_trust(agent: str, was_correct: bool) -> str:
-    """Update agent trust based on outcome."""
-    orch.trust_db.update_trust(agent, was_correct)
-    s = orch.trust_db.get_trust(agent)
-    return f"{'✅' if was_correct else '❌'} {agent}: {s:.2f}"
+def create_server():
+    """
+    Create and return the MCP server instance.
 
+    STUB: Returns None. Full implementation in Phase 4.
 
-def main():
-    mcp.run(transport="stdio")
+    When implemented, this will:
+        1. Create an MCP server instance.
+        2. Register tools (run, status, classify, debate).
+        3. Register resources (state, audit, config).
+        4. Return the server ready to be started.
+    """
+
+    # Placeholder — will be implemented in Phase 4.
+    print("GlassBox MCP Server — not yet implemented (Phase 4)")
+    print("Use the CLI instead: python -m glassbox.cli <issue_number>")
+    return None
+
 
 if __name__ == "__main__":
-    main()
+    create_server()

@@ -1,0 +1,4 @@
+# Escape hatch for future use-case-specific agents.
+# If this use case needs an agent that doesn't belong in the shared pool,
+# put it here. The pipeline will check local agents/ before the shared pool.
+# For now, all agents live in glassbox/agents/ (the shared pool).
