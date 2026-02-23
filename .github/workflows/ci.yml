@@ -2,9 +2,9 @@ name: GlassBox AI CI
 
 on:
   push:
-    branches: [main, qa]
+    branches: ['**']
   pull_request:
-    branches: [main, qa]
+    branches: ['**']
 
 jobs:
   # ── Stage 1: Unit Tests (no secrets, runs on all PRs including forks) ──
