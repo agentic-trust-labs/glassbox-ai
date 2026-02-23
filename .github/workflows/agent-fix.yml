@@ -79,15 +79,11 @@ jobs:
           git config user.name "glassbox-agent"
           git config user.email "261707184+glassbox-agent@users.noreply.github.com"
 
-      - name: Run agent (v2 — template-driven multi-agent)
+      - name: Run agent
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           GH_TOKEN: ${{ secrets.BOT_PAT }}
           ACK_COMMENT_ID: ${{ needs.ack.outputs.comment_id }}
           PYTHONPATH: src
         run: |
-          if [ "${{ github.event_name }}" = "issue_comment" ]; then
-            python -m glassbox_agent.cli ${{ github.event.issue.number }} --comment-id ${{ github.event.comment.id }}
-          else
-            python -m glassbox_agent.cli ${{ github.event.issue.number }}
-          fi
+          python -m glassbox.cli ${{ github.event.issue.number }}

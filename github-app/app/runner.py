@@ -5,7 +5,7 @@ Handles the full lifecycle of an agent run:
 2. Post ack comment on the issue
 3. Clone target repo
 4. Install target repo dependencies
-5. Run glassbox_agent.cli
+5. Run glassbox.cli
 6. Post error comment on failure
 7. Clean up temp directory
 8. Release semaphore
@@ -168,7 +168,7 @@ class AgentRunner:
                 )
 
             # Build agent command
-            agent_cmd = ["python", "-m", "glassbox_agent.cli", str(ctx.issue_number)]
+            agent_cmd = ["python", "-m", "glassbox.cli", str(ctx.issue_number)]
             if ctx.comment_id:
                 agent_cmd.extend(["--comment-id", str(ctx.comment_id)])
 

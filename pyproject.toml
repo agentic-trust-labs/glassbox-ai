@@ -41,7 +41,7 @@ Issues = "https://github.com/agentic-trust-labs/glassbox-ai/issues"
 Changelog = "https://github.com/agentic-trust-labs/glassbox-ai/blob/main/CHANGELOG.md"
 
 [project.scripts]
-glassbox-ai = "glassbox.server:main"
+glassbox-ai = "glassbox.cli:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/glassbox"]
