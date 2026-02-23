@@ -94,7 +94,8 @@ def main() -> None:
         pipeline=pipeline,
     )
 
-    print(f"GlassBox v0.5.0-alpha — Processing issue #{args.issue_number}")
+    from glassbox import __version__
+    print(f"GlassBox {__version__} — Processing issue #{args.issue_number}")
     print(f"Use case: {args.use_case}")
     print(f"Repo: {ctx.repo}")
     print("---")

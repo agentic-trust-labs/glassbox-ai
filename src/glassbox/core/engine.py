@@ -150,7 +150,9 @@ class Engine:
 
         # Step 4: Look up the next state from the transitions table.
         # If the event isn't in the transitions for this state, fail gracefully.
-        next_state = self._resolve_next_state(state, event, ctx)
+        # We pass the agent's result so _resolve_next_state can read "route_to"
+        # for _route resolution (the result isn't in ctx.history yet at this point).
+        next_state = self._resolve_next_state(state, event, ctx, result)
 
         # Step 5: Record this transition in the audit log.
         # This is automatic — agents don't have to opt in to auditing.
@@ -203,7 +205,9 @@ class Engine:
 
         return state, self.audit
 
-    def _resolve_next_state(self, current_state: str, event: str, ctx: AgentContext) -> str:
+    def _resolve_next_state(
+        self, current_state: str, event: str, ctx: AgentContext, current_result: dict | None = None,
+    ) -> str:
         """
         Resolve the next state from the transitions table, handling special placeholders.
 
@@ -213,6 +217,14 @@ class Engine:
             "_route" → Route based on external guidance (author intent, etc.).
                         The agent's result should include a "route_to" key with the target state.
                         If not present, falls back to "failed".
+
+        Args:
+            current_state  → The state we're currently in.
+            event          → The event returned by the agent.
+            ctx            → Agent context with history of previous steps.
+            current_result → The current agent's result dict. Needed because _route reads
+                              "route_to" from the result, but the result hasn't been appended
+                              to ctx.history yet when this method is called.
 
         If the event isn't found in the transitions for the current state, returns "failed".
         This is a safety net — misconfigured transitions don't crash the engine.
@@ -229,10 +241,15 @@ class Engine:
             # If somehow there's no non-retry state in history, fail.
             return "failed"
 
-        # Handle "_route": the agent should tell us where to go via "route_to" in its result.
+        # Handle "_route": the agent tells us where to go via "route_to" in its result.
         # This is used by the conversationalist agent when parsing author intent.
+        # We check the CURRENT result first (since it hasn't been added to history yet),
+        # then fall back to the last history entry.
         if next_state == "_route":
-            # Look at the most recent history entry for a "route_to" key.
+            if current_result:
+                route_to = current_result.get("route_to", "")
+                if route_to:
+                    return route_to
             if ctx.history:
                 last_result = ctx.history[-1].get("result", {})
                 route_to = last_result.get("route_to", "")

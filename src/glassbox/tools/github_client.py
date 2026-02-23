@@ -27,7 +27,7 @@ Implementation:
 
 Ported from:
     glassbox_agent/tools/github_client.py — VERBATIM port with added documentation.
-    The implementation is battle-tested from the v2 agent pipeline.
+    The implementation is battle-tested from the previous agent pipeline.
 """
 
 from __future__ import annotations
