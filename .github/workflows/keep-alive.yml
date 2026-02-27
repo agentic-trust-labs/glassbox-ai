@@ -1,0 +1,12 @@
+name: Keep Render Alive
+
+on:
+  schedule:
+    - cron: "*/13 * * * *"  # every 13 minutes - Render sleeps after 15
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Render health endpoint
+        run: curl -sf https://glassbox-agent.onrender.com/health || true
