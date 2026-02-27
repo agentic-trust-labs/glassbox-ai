@@ -1,0 +1,3 @@
+# Escape hatch for future use-case-specific tools.
+# If this use case needs a tool that doesn't belong in the shared pool,
+# put it here. For now, all tools live in glassbox/tools/ (the shared pool).
