@@ -177,7 +177,7 @@ class AgentRunner:
                 "OPENAI_API_KEY": self.settings.openai_api_key,
                 "GH_TOKEN": token,
                 "ACK_COMMENT_ID": str(ack_id or ""),
-                "PYTHONPATH": os.path.join(repo_dir, "src"),
+                "PYTHONPATH": self.settings.agent_pythonpath,
                 "GITHUB_REPOSITORY": ctx.repo,
             }
 
