@@ -12,80 +12,75 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)]()
 [![Live Tracker](https://img.shields.io/badge/live-performance%20tracker-blueviolet)](https://agentic-trust-labs.github.io/glassbox-ai/dashboard/)
 
-We are building trust infrastructure for autonomous AI agents, starting with the coding domain. When AI acts on your behalf - writing code, opening PRs, modifying production systems - you need more than accuracy. You need accountability, transparency, and trust that evolves with every interaction.
+We are building trust infrastructure for autonomous AI agents. When AI acts on your behalf - writing code, reviewing pull requests, auditing systems, managing workflows - you need more than accuracy. You need accountability, transparency, and trust that evolves with every interaction.
 
-GlassBox is an autonomous coding agent platform. Label a GitHub issue and the agent classifies it, routes it through the right pipeline (easy, medium, or hard), and ships a tested PR - or posts a research report for issues that are too complex to fix automatically. Every state transition is logged. Every decision is auditable.
+GlassBox is a **lean orchestration platform** for autonomous agents. At its core is a state machine engine: agents are plain functions, use cases are self-contained folders, and every state transition is logged in an append-only audit trail. You can look inside the box and see exactly what happened, what was decided, and why. Not a black box. A glass box.
 
 ```
-Issue labeled  → 🔍 Classifier routes to easy / medium / hard pipeline
-               →   [easy]   Localizer finds file → FixGenerator patches → TestValidator confirms → PR
-               →   [medium] Planner decomposes → step-by-step execution → integration test → PR
-               →   [hard]   Researcher posts analysis → Author guides → agent acts on direction
-               → 💬 Author can guide at any checkpoint (human-in-the-loop)
-               → 🦋 PR created with full audit trail, nothing hidden
+Any task arrives  →  Engine classifies and routes to the right pipeline
+                  →  Agents run as plain functions, return events
+                  →  State machine drives transitions, logs every step
+                  →  Human checkpoints are first-class states, not afterthoughts
+                  →  Full audit trail ships with every result
 ```
 
-**65 agent issues. 33 PRs merged. 7/7 bug eval first-try. ~32s turnaround.** See [live performance tracker](https://agentic-trust-labs.github.io/glassbox-ai/dashboard/) and [CHANGELOG](CHANGELOG.md).
+The platform is domain-agnostic. The same engine, the same agent contracts, the same audit model - applied to any problem where an AI needs to act autonomously on your behalf.
 
 ---
 
-## 🏗️ Architecture
+## 🏗️ How It Works
 
-GlassBox v0.5 is built as an **OS + Apps** platform. The core is a state machine engine that never knows what the agent is doing - it only knows states, transitions, and agents as functions. Use cases (like GitHub Issues) plug in on top without touching the core.
+GlassBox v0.5 is an **OS + Apps** platform. The core engine is completely decoupled from what agents do - it only knows: states exist, transitions connect them, and agents are functions that return events.
 
 ```
           ┌─────────────────────────────────────────────────────┐
-          │         GitHub Issue (labeled glassbox-agent)         │
+          │              Task arrives (any domain)               │
           └──────────────────────┬──────────────────────────────┘
                                  │
           ┌──────────────────────▼──────────────────────────────┐
-          │  🔍 Classifier                                       │
-          │  reads title + body, routes to easy / medium / hard  │
-          │  safe fallback: malformed LLM output → hard          │
+          │  GlassBox Engine (core)                             │
+          │  state machine - transitions - audit trail           │
+          │  never imports from agents, tools, or use cases      │
           └──────┬───────────────┬───────────────┬──────────────┘
                  │               │               │
-         ┌───────▼──────┐ ┌──────▼──────┐ ┌─────▼────────┐
-         │  EASY         │ │  MEDIUM      │ │  HARD         │
-         │  single file  │ │  multi-step  │ │  research     │
-         │  clear scope  │ │  decomposed  │ │  + convo loop │
-         └───────┬───────┘ └──────┬───────┘ └─────┬─────────┘
-                 │               │               │
-         ┌───────▼──────┐ ┌──────▼──────┐ ┌─────▼────────┐
-         │  Localizer   │ │  Planner    │ │  Researcher   │
-         │  FixGen      │ │  StepExec   │ │  (report)     │
-         │  TestValid   │ │  StepTest   │ │               │
-         └───────┬───────┘ │  Integrate  │ └─────┬─────────┘
-                 │         └──────┬───────┘       │
-                 └────────────────┴───────────────┘
-                                  │
+         ┌───────▼───────┐ ┌─────▼──────┐ ┌─────▼────────┐
+         │  Agents        │ │  Tools     │ │  Use Cases   │
+         │  plain funcs   │ │  stateless │ │  self-       │
+         │  return events │ │  utilities │ │  contained   │
+         └───────┬───────┘ └─────┬──────┘ └─────┬─────────┘
+                 └───────────────┴───────────────┘
+                                 │
           ┌──────────────────────▼──────────────────────────────┐
-          │  🧠 Reflexion Memory                                │
-          │  verbal failure reflections stored per-repo         │
+          │  Audit Trail                                        │
+          │  every step: state, event, agent, timestamp, detail  │
           └──────────────────────┬──────────────────────────────┘
                                  │
           ┌──────────────────────▼──────────────────────────────┐
-          │  🦋 Pull Request                                     │
-          │  full audit trail: every state, event, agent logged  │
-          └──────────────────────┬──────────────────────────────┘
-                                 │
-          ┌──────────────────────▼──────────────────────────────┐
-          │  💬 Human-in-the-Loop (checkpoints)                 │
-          │  author comments parsed by Conversationalist agent   │
+          │  Human-in-the-Loop (first-class checkpoints)        │
+          │  pause states in the machine, not bolt-on features   │
           │  engine resumes from the right state with context    │
           └─────────────────────────────────────────────────────┘
-
-          ┌ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ┐
-                           PLANNED (next)
-          │                                                     │
-            � Researcher: real codebase analysis (Phase 4)
-          │ 🔒 Sandboxed test execution (Docker runner)        │
-            🧬 Multi-model support (Claude, Gemini)
-          │ 📦 MCP server (glassbox-ai as IDE tool)            │
-            🌐 Cross-repo fixing (fork, fix, PR)
-          └ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ┘
 ```
 
-**Solid lines** = built and shipping. **Dotted** = planned.
+**The key design principle:** adding a new use case means adding a folder. No core changes. The engine doesn't need to know it exists.
+
+```python
+# Every agent is a plain function - same contract across all use cases
+def run(ctx: AgentContext, **kwargs) -> dict:
+    return {"event": "classified", "detail": "Easy fix, high confidence"}
+
+# Engine drives the state machine
+engine.run(ctx, state="received")
+# Logs every step automatically - no agent opt-in required
+```
+
+**Platform capabilities:**
+- **Lean orchestration** - state machine engine with explicit transitions, no magic
+- **Full audit trail** - every state, event, agent, and timestamp logged automatically
+- **Human checkpoints** - `awaiting_author` is a real pause state, not a workaround
+- **Retry with memory** - `_back` routing returns to the exact failed state
+- **Author routing** - `_route` lets the author's reply determine the next state
+- **Modular use cases** - each use case is a self-contained folder: states, pipeline, settings, templates
 
 ---
 
@@ -93,21 +88,21 @@ GlassBox v0.5 is built as an **OS + Apps** platform. The core is a state machine
 
 ```
 glassbox-ai/
-├── src/glassbox/                     # Agent platform (v0.5, OS + Apps architecture)
+├── src/glassbox/                     # Orchestration platform (v0.5)
 │   ├── core/
 │   │   ├── engine.py                 #   State machine: step(), run(), audit trail
 │   │   ├── state.py                  #   BaseState enum + BASE_TRANSITIONS
 │   │   └── models.py                 #   AgentContext, AuditEntry, TriageResult
 │   │
 │   ├── agents/                       # Shared agent pool (one copy, never duplicated)
-│   │   ├── classifier.py             #   Routes issues to easy / medium / hard / skip
-│   │   ├── localizer.py              #   Ranks files by relevance to the issue
-│   │   ├── fix_generator.py          #   Generates line-number edits (no string matching)
+│   │   ├── classifier.py             #   Routes tasks to easy / medium / hard / skip
+│   │   ├── localizer.py              #   Ranks files by relevance
+│   │   ├── fix_generator.py          #   Generates line-number edits
 │   │   ├── test_validator.py         #   Syntax check + pytest runner
-│   │   ├── planner.py                #   Decomposes medium issues into ordered steps
-│   │   ├── conversationalist.py      #   Parses author intent from GitHub comments
-│   │   ├── reviewer.py               #   Claude-based code review
-│   │   └── researcher.py             #   Research report for hard issues (Phase 4 stub)
+│   │   ├── planner.py                #   Decomposes tasks into ordered steps
+│   │   ├── conversationalist.py      #   Parses author intent from comments
+│   │   ├── reviewer.py               #   Claude-based review (model diversity)
+│   │   └── researcher.py             #   Research report for hard tasks (Phase 4 stub)
 │   │
 │   ├── tools/                        # Shared tool pool (stateless utilities)
 │   │   ├── llm.py                    #   OpenAI client wrapper
@@ -117,11 +112,12 @@ glassbox-ai/
 │   │   ├── file_reader.py            #   Safe repo file reading
 │   │   └── test_runner.py            #   pytest runner with failure parsing
 │   │
-│   ├── use_cases/github_issues/      # GitHub Issues use case (self-contained)
-│   │   ├── states.py                 #   17 transitions: easy + medium + hard pipelines
-│   │   ├── pipeline.py               #   Maps each state to its agent function
-│   │   ├── settings.py               #   18 config keys with defaults
-│   │   └── templates/                #   4 YAML fix templates
+│   ├── use_cases/                    # Use case apps (self-contained, plug in on top of core)
+│   │   └── github_issues/            #   UC-01: Coding Agent (see Use Cases below)
+│   │       ├── states.py             #     17 transitions: easy + medium + hard pipelines
+│   │       ├── pipeline.py           #     Maps each state to its agent function
+│   │       ├── settings.py           #     18 config keys with defaults
+│   │       └── templates/            #     4 YAML fix templates
 │   │
 │   ├── cli.py                        # Entry point: python -m glassbox.cli <issue>
 │   └── server.py                     # MCP server stub (Phase 4)
@@ -135,10 +131,6 @@ glassbox-ai/
 │   ├── github_api.py                 #   Async GitHub API client
 │   ├── rate_limiter.py               #   Daily rate limiting with exempt orgs
 │   └── config.py                     #   Pydantic settings, fail-fast validation
-│
-├── evals/                            # Evaluation framework
-│   ├── catalog.py                    #   Bug specs (E01-E18) with inject/verify
-│   └── bug_factory.py                #   Injects bugs into source, verifies fixes
 │
 ├── tests/
 │   ├── unit/
@@ -158,11 +150,28 @@ glassbox-ai/
 
 ---
 
-## 🤖 Agent Pipeline
+## � Use Cases
 
-Label any issue `glassbox-agent` - the agent classifies it and routes it to the right pipeline.
+Use cases are self-contained folders that plug into the engine. Each one defines its own states, which agents run at which state, and its own config. The core never changes.
 
-### The agents
+---
+
+### UC-01 — Coding Agent (GitHub Issues)
+
+**Status: live.** Label any GitHub issue `glassbox-agent` - the agent classifies it by complexity and routes it through the right pipeline, then ships a tested PR or posts a research report.
+
+```
+Issue labeled  → 🔍 Classifier routes to easy / medium / hard
+               →   [easy]   Localizer → FixGenerator → TestValidator → PR
+               →   [medium] Planner decomposes → step-by-step execution → integrate → PR
+               →   [hard]   Researcher posts analysis → Author guides → agent acts
+               → 💬 Author can comment at any checkpoint to redirect
+               → 🦋 PR ships with full audit trail attached
+```
+
+**65 agent issues. 33 PRs merged. 7/7 bug eval first-try. ~32s turnaround.** See [live performance tracker](https://agentic-trust-labs.github.io/glassbox-ai/dashboard/) and [CHANGELOG](CHANGELOG.md).
+
+#### The agents
 
 <p align="center">
   <img src="docs/assets/agents/owl.svg" width="64" height="64" alt="Classifier">&nbsp;&nbsp;&nbsp;&nbsp;
@@ -182,7 +191,7 @@ Label any issue `glassbox-agent` - the agent classifies it and routes it to the 
 | 🔬 **Reviewer** | Code review before PR | Claude-based for model diversity |
 | 📊 **Researcher** | Research report for hard issues | Phase 4 - stub in current release |
 
-### Three pipelines
+#### Three pipelines
 
 **Easy** - fully automated, single file, clear scope:
 ```
@@ -199,69 +208,49 @@ received → classifying → med_planning → med_step_executing → med_step_te
 **Hard** - research first, author-guided execution:
 ```
 received → classifying → hard_researching → hard_report_posted → hard_author_guided
-                                                                        ↓ try_fix → med_planning
-                                                                        ↓ more_research → hard_researching
-                                                                        ↓ manual → done
+                                                                     ↓ try_fix → med_planning
+                                                                     ↓ more_research → hard_researching
+                                                                     ↓ manual → done
 ```
 
-### State machine core
-
-Every step is logged automatically. You can see the full audit trail in the PR description:
-
-```python
-# Every agent is a plain function
-def run(ctx: AgentContext, **kwargs) -> dict:
-    return {"event": "easy", "detail": "Single-file typo, confidence 0.95"}
-
-# Engine drives transitions
-engine.run(ctx, state="received")
-# → received → classifying → easy_localizing → easy_fixing → easy_testing → creating_pr → done
-```
-
-### Core capabilities
-
-- **Adaptive routing** - classifier sends issues to the right pipeline based on complexity
-- **Line-number editing** - no more "string not found" errors from patch tools
-- **Reflexion memory** - learns from past failures ([Shinn et al. 2023](https://arxiv.org/abs/2303.11366))
-- **Human-in-the-loop** - author comments parsed as guidance, engine resumes at the right state
-- **Full audit trail** - every state transition logged with timestamp, agent, event, detail
-- **Concurrency control** - one run per issue, deduplication at the runner level
-- **Rate limiting** - configurable daily limit with exempt orgs (agentic-trust-labs exempt by default)
-
----
-
-## 📊 Results
-
-**65 agent issues. 33 PRs merged. 7/7 bug eval first-try. ~32s turnaround.**
+#### Results
 
 | Eval | Scope | Result | PRs |
 |------|-------|--------|-----|
 | 🔍 Bug eval (7 seeded bugs) | E01-E15 injected via BugFactory | **7/7 first-try, 100%** | [#53](https://github.com/agentic-trust-labs/glassbox-ai/pull/53) [#55](https://github.com/agentic-trust-labs/glassbox-ai/pull/55) [#57](https://github.com/agentic-trust-labs/glassbox-ai/pull/57) [#59](https://github.com/agentic-trust-labs/glassbox-ai/pull/59) [#61](https://github.com/agentic-trust-labs/glassbox-ai/pull/61) [#63](https://github.com/agentic-trust-labs/glassbox-ai/pull/63) [#65](https://github.com/agentic-trust-labs/glassbox-ai/pull/65) |
 | 🔧 Feature improvements | Comment UX, dep pinning, workflow fixes | **26 shipped** | [#71](https://github.com/agentic-trust-labs/glassbox-ai/pull/71) [#72](https://github.com/agentic-trust-labs/glassbox-ai/pull/72) [#88](https://github.com/agentic-trust-labs/glassbox-ai/pull/88)-[#125](https://github.com/agentic-trust-labs/glassbox-ai/pull/125) |
-| � End-to-end (all issues) | 65 agent issues across v1 + v2 | **33 merged, 51%** | 33 PRs total |
+| 🦋 End-to-end (all issues) | 65 agent issues across v1 + v2 | **33 merged, 51%** | 33 PRs total |
 
 👉 [**Live Performance Tracker**](https://agentic-trust-labs.github.io/glassbox-ai/dashboard/) - conversion funnel, TAT breakdown, failure diagnostics, all updated in real-time.
 
 ---
 
-## 🏆 How GlassBox Compares
+### UC-02 and beyond
+
+The platform is designed to support any domain where an AI agent needs to act autonomously. Adding a use case means adding a folder under `use_cases/` with its own states, pipeline, and settings. No core changes required.
+
+Future use cases under consideration: PR review pipelines, security audit agents, dependency update automation, cross-repo refactoring.
+
+---
+
+## 🏆 Why GlassBox
 
 | Capability | Devin | SWE-agent | OpenHands | **GlassBox** |
 |-----------|-------|-----------|-----------|-------------|
-| Issue to PR | ✅ | ✅ | ✅ | ✅ |
-| Adaptive complexity routing | ❌ | ❌ | ❌ | ✅ |
+| Autonomous task execution | ✅ | ✅ | ✅ | ✅ |
+| Domain-agnostic orchestration | ❌ | ❌ | ❌ | ✅ |
 | State machine audit trail | ❌ | ❌ | ❌ | ✅ |
 | Human checkpoints (first-class) | Partial | ❌ | ❌ | ✅ |
+| Adaptive complexity routing | ❌ | ❌ | ❌ | ✅ |
 | Reflexion memory | ❌ | ❌ | Partial | ✅ |
-| Multi-pipeline (easy/med/hard) | ❌ | ❌ | ❌ | ✅ |
-| MCP server (any IDE) | ❌ | ❌ | ✅ | ✅ (planned) |
+| Pluggable use cases | ❌ | ❌ | ❌ | ✅ |
 | Open source | ❌ | ✅ | ✅ | ✅ |
 
 **What makes GlassBox different:**
-1. **Transparent** - every state transition logged, every PR shows the full audit trail
-2. **Adaptive** - easy issues are fully automated, hard issues get a research report + conversation
-3. **Human-first** - author checkpoints are first-class states in the machine, not afterthoughts
-4. **Modular** - agents are plain functions, use cases are folders, adding a pipeline needs no core changes
+1. **Transparent** - every state transition logged, every result ships with a full audit trail
+2. **Lean** - the core engine is ~260 lines. Agents are plain functions. No framework lock-in.
+3. **Human-first** - author checkpoints are first-class pause states in the machine, not afterthoughts
+4. **Modular** - adding a use case = adding a folder. The engine never needs to change.
 5. **Learning** - failures become Reflexion memory, not just retries
 
 ---
