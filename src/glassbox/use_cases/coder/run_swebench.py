@@ -117,6 +117,16 @@ def main():
                     log.error("Skipping %s — clone failed", iid)
                     predictions.append({"instance_id": iid, "model_patch": "", "model_name_or_path": MODEL_NAME})
                     continue
+                # Install the repo as an editable package — mirrors what SWE-bench's setup_repo.sh does:
+                #   "conda activate testbed && python -m pip install -e ."
+                # This ensures the agent can run `python3 reproduce.py` without hitting
+                # ModuleNotFoundError, which is what triggers the pip/venv yak-shaving loop.
+                # Source: github.com/swe-bench/SWE-bench .../setup_repo.sh
+                log.info("Installing %s as editable package (pip install -e .)", iid)
+                subprocess.run(
+                    "pip install -e . --quiet --no-build-isolation 2>&1 | tail -3",
+                    shell=True, cwd=repo_root, timeout=120,
+                )
 
             try:
                 patch = solve_instance(instance, repo_root)

@@ -323,6 +323,7 @@ BASH_TOOL = {
             "* Use this for: running tests, executing scripts, searching with grep/find, git operations.\n"
             "* Do NOT use this for viewing or editing files — use str_replace_editor instead.\n"
             "* State is persistent across command calls (cwd, env vars, installed packages).\n"
+            "* The current working directory (cwd) is the root of the repository.\n"
             "* Output is truncated to 16000 chars. Pipe large output through head.\n"
             "* Please avoid commands that may produce a very large amount of output.\n"
             "* Please run long-lived commands in the background, e.g. 'sleep 10 &'."

@@ -59,6 +59,11 @@ Create a minimal script to reproduce the error and execute it with bash to confi
 ## 6. Complete
 When the fix is verified and all tests pass, call the `complete` tool with a summary.
 
+# Environment
+- You already have everything you need to solve this problem in the repository folder, even without internet connection.
+- THE PROBLEM CAN DEFINITELY BE SOLVED WITHOUT THE INTERNET.
+- The package is already installed in the current Python environment. Do NOT run pip install, create virtual environments, or run setup.py. Just run tests directly with python3 or pytest.
+
 # Rules
 - If tests fail after your fix, analyze the failure and iterate — do NOT give up.
 - The repository root is your working directory. Use absolute paths with str_replace_editor.
