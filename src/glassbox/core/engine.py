@@ -53,11 +53,14 @@ How the author-interaction mechanism works:
 
 from __future__ import annotations
 
+import logging
 from datetime import datetime, timezone
 from typing import Any, Callable
 
 from .models import AgentContext, AuditEntry
 from .state import PAUSE_STATES, TERMINAL_STATES
+
+log = logging.getLogger("glassbox.engine")
 
 
 # ---------------------------------------------------------------------------
@@ -107,14 +110,15 @@ class Engine:
         transitions: dict[str, dict[str, str]],
         pipeline: dict[str, AgentFn],
         state_store: Any | None = None,
+        pause_states: set[str] | None = None,
     ):
         self.transitions = transitions
         self.pipeline = pipeline
         self.state_store = state_store
-
-        # The audit log: an ordered list of every state transition.
-        # This is the "glass" in GlassBox — full transparency of what happened.
+        self.pause_states = pause_states if pause_states is not None else PAUSE_STATES
         self.audit: list[AuditEntry] = []
+        log.debug("Engine init | %d transitions, %d pipeline states, pause=%s",
+                  len(transitions), len(pipeline), self.pause_states)
 
     def step(self, state: str, ctx: AgentContext) -> tuple[str, dict]:
         """
@@ -138,24 +142,16 @@ class Engine:
         # If no agent is registered, we can't proceed — return an error event.
         agent_fn = self.pipeline.get(state)
         if not agent_fn:
+            log.error("No agent registered for state '%s'", state)
             return state, {"event": "no_agent", "error": f"No agent registered for state '{state}'"}
 
-        # Step 2: Call the agent. The agent does its work (LLM call, tool usage, etc.)
-        # and returns a dict with at least {"event": "some_event_name"}.
+        log.info("[engine] %s → calling %s", state, getattr(agent_fn, "__name__", "?"))
         result = agent_fn(ctx)
-
-        # Step 3: Extract the event from the agent's result.
-        # Default to "done" if the agent forgot to include an event key.
         event = result.get("event", "done")
-
-        # Step 4: Look up the next state from the transitions table.
-        # If the event isn't in the transitions for this state, fail gracefully.
-        # We pass the agent's result so _resolve_next_state can read "route_to"
-        # for _route resolution (the result isn't in ctx.history yet at this point).
         next_state = self._resolve_next_state(state, event, ctx, result)
+        log.info("[engine] %s --%s--> %s | %s",
+                 state, event, next_state, result.get("detail", "")[:80])
 
-        # Step 5: Record this transition in the audit log.
-        # This is automatic — agents don't have to opt in to auditing.
         self.audit.append(AuditEntry(
             timestamp=datetime.now(timezone.utc).isoformat(),
             from_state=state,
@@ -165,10 +161,8 @@ class Engine:
             detail=result.get("detail", ""),
         ))
 
-        # Step 6: Update context so downstream agents can see what happened.
         ctx.state = next_state
         ctx.history.append({"state": state, "event": event, "result": result})
-
         return next_state, result
 
     def run(self, ctx: AgentContext, state: str = "received") -> tuple[str, list[AuditEntry]]:
@@ -194,15 +188,17 @@ class Engine:
 
         # Initialize the context's state field to match where we're starting.
         ctx.state = state
+        log.info("[engine] Starting run from state=%s", state)
 
-        # The main loop: keep stepping until we can't continue.
-        while state not in TERMINAL_STATES and state not in PAUSE_STATES:
+        while state not in TERMINAL_STATES and state not in self.pause_states:
             state, _ = self.step(state, ctx)
-
-            # Persist after every step so we don't lose progress if the process crashes.
             if self.state_store:
                 self.state_store.save(ctx.issue_number, state, self.audit)
 
+        if state in TERMINAL_STATES:
+            log.info("[engine] Reached terminal state: %s", state)
+        else:
+            log.info("[engine] Paused at state: %s (waiting for external input)", state)
         return state, self.audit
 
     def _resolve_next_state(

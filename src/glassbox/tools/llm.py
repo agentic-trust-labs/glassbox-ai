@@ -19,22 +19,18 @@ Why a single LLM abstraction:
        client creation in every agent file.
 
 Current implementation:
-    Wraps the OpenAI Python SDK (openai>=1.0). Supports:
-        - Any OpenAI model (gpt-4o, gpt-4o-mini, o1, etc.)
+    Wraps litellm (100+ providers via a single interface). Supports:
+        - Any model: OpenAI, Anthropic, Gemini, Llama, Mistral, Qwen, DeepSeek
         - JSON mode (for structured agent responses)
         - Temperature control (per agent needs)
 
-    Claude support is planned but not yet implemented. When added, the function
-    signature stays the same — agents won't need to change.
-
 Environment:
-    Requires OPENAI_API_KEY environment variable to be set.
-    For Claude: ANTHROPIC_API_KEY (future).
+    Set the API key for your chosen provider:
+        OPENAI_API_KEY, ANTHROPIC_API_KEY, GEMINI_API_KEY, etc.
 """
 
 from __future__ import annotations
 
-import os
 from typing import Any
 
 
@@ -66,44 +62,22 @@ def call_llm(
         The LLM's response text as a string.
 
     Raises:
-        openai.AuthenticationError: If OPENAI_API_KEY is invalid.
-        openai.RateLimitError: If the API rate limit is hit.
-        openai.APIError: For other API errors.
-
-    Note on Claude:
-        When Anthropic support is added, this function will check the model name
-        prefix ("claude-" vs "gpt-") to route to the correct provider.
-        The function signature will NOT change.
+        litellm.AuthenticationError: If the provider API key is invalid.
+        litellm.RateLimitError: If the API rate limit is hit.
+        litellm.APIError: For other API errors.
     """
 
-    # Lazy import: only import openai when actually calling.
+    # Lazy import: only import litellm when actually calling.
     # This avoids import errors in tests that mock this function.
-    from openai import OpenAI
+    # litellm supports 100+ providers (OpenAI, Anthropic, Gemini, etc.)
+    # via a single completion() interface.
+    from litellm import completion as _litellm_completion
 
-    # Create a client using the API key from the environment.
-    # We create a new client per call (not per module) because:
-    #   1. It's stateless — no connection pooling needed for our call volume.
-    #   2. It picks up env var changes without restart.
-    #   3. It's simpler than managing a global client instance.
-    client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-
-    # Build the API call kwargs.
-    kwargs: dict[str, Any] = {
-        "model": model,
-        "messages": messages,
-        "temperature": temperature,
-        "max_tokens": max_tokens,
-    }
-
-    # JSON mode: tells the LLM to return valid JSON.
-    # This is critical for agents that parse the response as structured data.
-    # Without it, the LLM might return markdown, explanations, or code blocks
-    # mixed with JSON, causing parse failures.
-    if json_mode:
-        kwargs["response_format"] = {"type": "json_object"}
-
-    response = client.chat.completions.create(**kwargs)
-
-    # Extract the text content from the response.
-    # The OpenAI SDK returns a ChatCompletion object; we just want the text.
+    response = _litellm_completion(
+        model=model,
+        messages=messages,
+        temperature=temperature,
+        max_tokens=max_tokens,
+        **({"response_format": {"type": "json_object"}} if json_mode else {}),
+    )
     return response.choices[0].message.content or ""
