@@ -430,5 +430,23 @@ COMPLETE_TOOL = {
     },
 }
 
+RECALL_EPISODES_TOOL = {
+    "type": "function",
+    "function": {
+        "name": "recall_episodes",
+        "description": (
+            "Search past correction episodes for lessons learned.\n"
+            "* Use EARLY in investigation when you see a familiar pattern.\n"
+            "* Returns up to 3 past corrections. Proceed normally if none found.\n"
+            "* Do NOT call more than twice per task."
+        ),
+        "parameters": {
+            "type": "object",
+            "properties": {"query": {"type": "string", "description": "Describe the current problem or error pattern."}},
+            "required": ["query"],
+        },
+    },
+}
+
 # The full tool set passed to litellm on every completion() call
-TOOLS = [BASH_TOOL, EDITOR_TOOL, COMPLETE_TOOL]
+TOOLS = [BASH_TOOL, EDITOR_TOOL, COMPLETE_TOOL, RECALL_EPISODES_TOOL]

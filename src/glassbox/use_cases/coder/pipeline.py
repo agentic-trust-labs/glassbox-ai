@@ -2,6 +2,7 @@
 The _solve agent runs an autonomous loop: litellm + subprocess + str_replace_editor.
 Tools are vendored from Anthropic (MIT). Prompt borrowed from OpenAI's GPT-4.1 guide."""
 import json, logging, os, subprocess
+from pathlib import Path
 
 from glassbox.use_cases.coder.tools import TOOLS, handle_editor, MAX_RESPONSE_LEN
 
@@ -70,6 +71,19 @@ When the fix is verified and all tests pass, call the `complete` tool with a sum
 - Make minimal, targeted changes.
 """
 
+_RULES_PATH = Path(__file__).parent / "RULES.md"
+
+
+def _load_rules(base: str) -> str:
+    """Append RULES.md to system prompt. Missing file = no-op."""
+    if not _RULES_PATH.is_file():
+        return base
+    try:
+        txt = _RULES_PATH.read_text().strip()
+    except Exception:
+        return base
+    return base + f"\n\n# Learned Rules\n{txt}\n" if txt else base
+
 
 def build_pipeline():
     return {"classifying": _classify, "solving": _solve, "reviewing": _review,
@@ -88,7 +102,8 @@ def _solve(ctx, **kw):
     model = ctx.config["model"]
     cwd = ctx.config.get("repo_root", os.getcwd())
     prompt_path = ctx.config.get("prompt_file", "")
-    system = open(prompt_path).read() if prompt_path and os.path.isfile(prompt_path) else SYSTEM_PROMPT
+    base = open(prompt_path).read() if prompt_path and os.path.isfile(prompt_path) else SYSTEM_PROMPT
+    system = _load_rules(base)
     messages = [
         {"role": "system", "content": system},
         {"role": "user", "content": (
@@ -166,6 +181,16 @@ def _solve(ctx, **kw):
                     log.error("[solve] Step %d | ERROR: %s", step + 1, e)
                 messages.append({"role": "tool", "tool_call_id": tc.id, "content": out})
 
+            elif name == "recall_episodes":
+                log.info("[solve] Step %d | recall: %s", step + 1, args.get("query", "")[:80])
+                try:
+                    from glassbox.use_cases.coder.memory.episodes import search
+                    eps = search(args.get("query", ""))
+                    out = "\n".join(f"- [{e['instance_id']}] {e['correction']}" for e in eps) if eps else "No past corrections found."
+                except Exception:
+                    out = "Episode retrieval unavailable."
+                messages.append({"role": "tool", "tool_call_id": tc.id, "content": out})
+
             else:
                 log.warning("[solve] Step %d | unknown tool: %s", step + 1, name)
                 messages.append({"role": "tool", "tool_call_id": tc.id,
@@ -195,8 +220,13 @@ def _review(ctx, **kw):
     if "reject" in resp:
         log.info("[review] Rejected")
         return {"event": "rejected", "detail": f"Human rejected: {resp}"}
-    log.info("[review] Guidance received — re-solving")
+    log.info("[review] Guidance received \u2014 re-solving")
     ctx.config["task"] += f"\n\nHuman feedback: {resp}"
+    try:
+        from glassbox.use_cases.coder.memory.episodes import append
+        append(instance_id=ctx.config.get("task", "")[:60], summary=ctx.config.get("task", "")[:200], correction=resp[:500])
+    except Exception as e:
+        log.warning("[review] Episode capture failed: %s", e)
     return {"event": "guidance", "detail": f"Human guided: {resp[:80]}"}
 
 
