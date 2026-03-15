@@ -71,7 +71,7 @@ def solve_instance(instance: dict, repo_root: str) -> str:
                        state="received", config=config)
     engine = Engine(transitions=TRANSITIONS, pipeline=build_pipeline(), pause_states=PAUSE_STATES)
 
-    state, _ = engine.run(ctx, state="received")
+    state, _ = engine.run(ctx, state="classifying")
     if state == "reviewing":
         state, _ = engine.run(ctx, state="reviewing")
 
