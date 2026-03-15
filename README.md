@@ -6,268 +6,201 @@
 
 > **Trust is earned, not assumed.** 💎
 
-[![PyPI](https://img.shields.io/pypi/v/glassbox-ai)](https://pypi.org/project/glassbox-ai/)
-[![Tests](https://img.shields.io/badge/tests-66%20passed-brightgreen)]()
 [![Python](https://img.shields.io/badge/python-3.11%2B-blue)]()
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)]()
-[![Live Tracker](https://img.shields.io/badge/live-performance%20tracker-blueviolet)](https://agentic-trust-labs.github.io/glassbox-ai/dashboard/)
 
-We are building trust infrastructure for autonomous AI agents. When AI acts on your behalf - writing code, reviewing pull requests, auditing systems, managing workflows - you need more than accuracy. You need accountability, transparency, and trust that evolves with every interaction.
+An orchestration platform for autonomous coding agents - built for enterprise problems where every ticket is worth hundreds of dollars in engineer time. GlassBox makes **auditability**, **human oversight**, and **continuous improvement** first-class concerns, not afterthoughts.
 
-GlassBox is a **lean orchestration platform** for autonomous agents. At its core is a state machine engine: agents are plain functions, use cases are self-contained folders, and every state transition is logged in an append-only audit trail. You can look inside the box and see exactly what happened, what was decided, and why. Not a black box. A glass box.
-
-```
-Any task arrives  →  Engine classifies and routes to the right pipeline
-                  →  Agents run as plain functions, return events
-                  →  State machine drives transitions, logs every step
-                  →  Human checkpoints are first-class states, not afterthoughts
-                  →  Full audit trail ships with every result
-```
-
-The platform is domain-agnostic. The same engine, the same agent contracts, the same audit model - applied to any problem where an AI needs to act autonomously on your behalf.
+Most agent frameworks optimize for autonomy. We optimize for **trust**.
 
 ---
 
-## 🏗️ How It Works
+## The Problem
 
-GlassBox v0.5 is an **OS + Apps** platform. The core engine is completely decoupled from what agents do - it only knows: states exist, transitions connect them, and agents are functions that return events.
+Enterprise engineering teams face a growing paradox: AI coding agents are powerful enough to ship real fixes, but too unreliable to trust without oversight. A single bad merge can cost hours of debugging. A hallucinated API call can break production.
 
-```
-          ┌─────────────────────────────────────────────────────┐
-          │              Task arrives (any domain)               │
-          └──────────────────────┬──────────────────────────────┘
-                                 │
-          ┌──────────────────────▼──────────────────────────────┐
-          │  GlassBox Engine (core)                             │
-          │  state machine - transitions - audit trail           │
-          │  never imports from agents, tools, or use cases      │
-          └──────┬───────────────┬───────────────┬──────────────┘
-                 │               │               │
-         ┌───────▼───────┐ ┌─────▼──────┐ ┌─────▼────────┐
-         │  Agents        │ │  Tools     │ │  Use Cases   │
-         │  plain funcs   │ │  stateless │ │  self-       │
-         │  return events │ │  utilities │ │  contained   │
-         └───────┬───────┘ └─────┬──────┘ └─────┬─────────┘
-                 └───────────────┴───────────────┘
-                                 │
-          ┌──────────────────────▼──────────────────────────────┐
-          │  Audit Trail                                        │
-          │  every step: state, event, agent, timestamp, detail  │
-          └──────────────────────┬──────────────────────────────┘
-                                 │
-          ┌──────────────────────▼──────────────────────────────┐
-          │  Human-in-the-Loop (first-class checkpoints)        │
-          │  pause states in the machine, not bolt-on features   │
-          │  engine resumes from the right state with context    │
-          └─────────────────────────────────────────────────────┘
-```
-
-**The key design principle:** adding a new use case means adding a folder. No core changes. The engine doesn't need to know it exists.
-
-```python
-# Every agent is a plain function - same contract across all use cases
-def run(ctx: AgentContext, **kwargs) -> dict:
-    return {"event": "classified", "detail": "Easy fix, high confidence"}
-
-# Engine drives the state machine
-engine.run(ctx, state="received")
-# Logs every step automatically - no agent opt-in required
-```
-
-**Platform capabilities:**
-- **Lean orchestration** - state machine engine with explicit transitions, no magic
-- **Full audit trail** - every state, event, agent, and timestamp logged automatically
-- **Human checkpoints** - `awaiting_author` is a real pause state, not a workaround
-- **Retry with memory** - `_back` routing returns to the exact failed state
-- **Author routing** - `_route` lets the author's reply determine the next state
-- **Modular use cases** - each use case is a self-contained folder: states, pipeline, settings, templates
+Current tools treat human oversight as a speed bump. GlassBox treats it as the engine.
 
 ---
 
-## 📁 Project Structure
+## How GlassBox Works
+
+GlassBox is a state machine that orchestrates autonomous agents with five first-class guarantees:
+
+### 1. Full Auditability
+Every state transition, every tool call, every LLM response - logged in an append-only audit trail. When a patch ships, you can trace exactly what happened, what was decided, and why. No black boxes.
+
+### 2. Human-in-the-Loop (HITL)
+Human checkpoints are real pause states in the machine, not bolt-on features. The engine pauses, waits for human input, and resumes from the exact right state with full context. Reviewers see the agent's reasoning, not just its output.
+
+### 3. Continuous Improvement
+Every human correction is captured as a structured episode. Rules evolve over time. The agent gets better with every interaction - not through fine-tuning, but through accumulated experience:
+
+- **RULES.md** - 27 rules bootstrapped from top SWE-bench agents (Codex CLI, OpenHands, Augment Code), injected into every prompt
+- **episodes.jsonl** - Append-only store of human corrections, searchable by the agent via a recall tool
+- **Reflection loop** - Failed patches become learning signals, not just retries
+
+### 4. Transparency
+The agent's system prompt, rules, episodes, and decision log are all readable files in the repo. No hidden weights, no opaque embeddings. You can read every rule the agent follows, edit them, and version-control them alongside your code.
+
+### 5. Reliability
+Deterministic state machine with explicit transitions. No probabilistic routing, no hidden fallbacks. If the agent gets stuck, it escalates - it doesn't silently guess. Patches are stripped of artifacts, validated against test suites in Docker, and only shipped after human review.
 
 ```
-glassbox-ai/
-├── src/glassbox/                     # Orchestration platform (v0.5)
-│   ├── core/
-│   │   ├── engine.py                 #   State machine: step(), run(), audit trail
-│   │   ├── state.py                  #   BaseState enum + BASE_TRANSITIONS
-│   │   └── models.py                 #   AgentContext, AuditEntry, TriageResult
-│   │
-│   ├── agents/                       # Shared agent pool (one copy, never duplicated)
-│   │   ├── classifier.py             #   Routes tasks to easy / medium / hard / skip
-│   │   ├── localizer.py              #   Ranks files by relevance
-│   │   ├── fix_generator.py          #   Generates line-number edits
-│   │   ├── test_validator.py         #   Syntax check + pytest runner
-│   │   ├── planner.py                #   Decomposes tasks into ordered steps
-│   │   ├── conversationalist.py      #   Parses author intent from comments
-│   │   ├── reviewer.py               #   Claude-based review (model diversity)
-│   │   └── researcher.py             #   Research report for hard tasks (Phase 4 stub)
-│   │
-│   ├── tools/                        # Shared tool pool (stateless utilities)
-│   │   ├── llm.py                    #   OpenAI client wrapper
-│   │   ├── state_store.py            #   Persists state between webhook-resumed runs
-│   │   ├── github_client.py          #   gh CLI wrapper: issues, comments, PRs, branches
-│   │   ├── code_editor.py            #   Line-number editing engine
-│   │   ├── file_reader.py            #   Safe repo file reading
-│   │   └── test_runner.py            #   pytest runner with failure parsing
-│   │
-│   ├── use_cases/                    # Use case apps (self-contained, plug in on top of core)
-│   │   └── github_issues/            #   UC-01: Coding Agent (see Use Cases below)
-│   │       ├── states.py             #     17 transitions: easy + medium + hard pipelines
-│   │       ├── pipeline.py           #     Maps each state to its agent function
-│   │       ├── settings.py           #     18 config keys with defaults
-│   │       └── templates/            #     4 YAML fix templates
-│   │
-│   ├── cli.py                        # Entry point: python -m glassbox.cli <issue>
-│   └── server.py                     # MCP server stub (Phase 4)
-│
-├── github-app/app/                   # GitHub App webhook server (deployed on Render)
-│   ├── main.py                       #   FastAPI app + health endpoint
-│   ├── webhook.py                    #   HMAC signature verification + dispatch
-│   ├── handlers.py                   #   Issue / comment event routing
-│   ├── runner.py                     #   Clone, install, run agent, cleanup
-│   ├── auth.py                       #   JWT-based GitHub App auth
-│   ├── github_api.py                 #   Async GitHub API client
-│   ├── rate_limiter.py               #   Daily rate limiting with exempt orgs
-│   └── config.py                     #   Pydantic settings, fail-fast validation
-│
-├── tests/
-│   ├── unit/
-│   │   ├── test_engine.py            #   30+ tests: transitions, retry, routing, audit
-│   │   └── test_agents.py            #   11 tests: each agent with mocked LLM
-│   └── integration/
-│       ├── test_e2e.py               #   8 full pipeline runs (easy, medium, hard)
-│       └── test_contracts.py         #   Event contract verification per agent
-│
-├── docs/
-│   ├── index.html                    #   Landing page (GitHub Pages)
-│   ├── dashboard/                    #   Live performance tracker
-│   └── architecture/                 #   RFCs: adaptive complexity, failure analysis
-│
-└── pyproject.toml                    # Package config, CLI entry point
+Task arrives  ->  Engine classifies and routes
+              ->  Agent loop: bash + str_replace_editor + LLM reasoning
+              ->  Patch produced, new files stripped automatically
+              ->  Docker evaluation (swebench harness)
+              ->  Human review checkpoint
+              ->  If rejected: correction captured as episode, agent re-runs with guidance
+              ->  Rules evolve, next run is smarter
 ```
 
 ---
 
-## � Use Cases
+## Architecture
 
-Use cases are self-contained folders that plug into the engine. Each one defines its own states, which agents run at which state, and its own config. The core never changes.
+```
+        +---------------------------------------------------+
+        |              GlassBox Engine (core)                |
+        |  state machine - transitions - audit trail         |
+        |  ~260 lines. never imports from use cases.         |
+        +--------+------------------+-----------------------+
+                 |                  |
+        +--------v--------+  +-----v---------+
+        |   Agent Loop     |  |   HITL Memory  |
+        |  bash, editor,   |  |  RULES.md      |
+        |  LLM (litellm)   |  |  episodes.jsonl |
+        |  recall_episodes  |  |  recall tool    |
+        +--------+--------+  +-----+---------+
+                 |                  |
+        +--------v------------------v-----------+
+        |          Use Case: Coder               |
+        |  pipeline.py  - agent loop + tools     |
+        |  settings.py  - model, limits, config  |
+        |  states.py    - transitions            |
+        |  RULES.md     - 27 learned rules       |
+        |  memory/      - episode store           |
+        +--------+------------------------------+
+                 |
+        +--------v------------------------------+
+        |  SWE-bench Evaluation (Docker)         |
+        |  swebench harness, per-instance        |
+        |  containers, test-verified results     |
+        +---------------------------------------+
+```
+
+**Adding a use case = adding a folder.** The engine never changes.
 
 ---
 
-### UC-01 — Coding Agent (GitHub Issues)
+## The Coder Agent
 
-**Status: live.** Label any GitHub issue `glassbox-agent` - the agent classifies it by complexity and routes it through the right pipeline, then ships a tested PR or posts a research report.
+An autonomous coding agent that fixes bugs from real-world open-source repositories. Evaluated on SWE-bench Verified - the industry standard benchmark.
+
+**Tools:** bash, str_replace_editor, complete, recall_episodes
+**Prompt:** Borrowed from OpenAI's GPT-4.1 guide (persistence + tool-calling + planning = +20% on SWE-bench)
+**Rules:** 27 rules from 7 top SWE-bench agents (Codex CLI, OpenHands, Augment Code, Cursor, Aider, Claude Code, mini-swe-agent)
+**Evaluation:** Docker containers via swebench harness - same setup used by every leaderboard submission
+
+### HITL Learning in Action
 
 ```
-Issue labeled  → 🔍 Classifier routes to easy / medium / hard
-               →   [easy]   Localizer → FixGenerator → TestValidator → PR
-               →   [medium] Planner decomposes → step-by-step execution → integrate → PR
-               →   [hard]   Researcher posts analysis → Author guides → agent acts
-               → 💬 Author can comment at any checkpoint to redirect
-               → 🦋 PR ships with full audit trail attached
+Run 1:  Agent produces patch for astropy-14508
+        -> Docker eval: target test passes, but test_invalid_float_cards2 regresses
+        -> HITL diagnosis: str() shortcut produces lowercase 'e', FITS requires uppercase 'E'
+        -> Episode captured in episodes.jsonl
+
+Run 2:  Agent sees the correction in its prompt
+        -> Produces improved patch with proper guard
+        -> Episode library grows, future similar bugs benefit
 ```
 
-**65 agent issues. 33 PRs merged. 7/7 bug eval first-try. ~32s turnaround.** See [live performance tracker](https://agentic-trust-labs.github.io/glassbox-ai/dashboard/) and [CHANGELOG](CHANGELOG.md).
+**First end-to-end HITL run (3 instances):**
 
-#### The agents
+| Instance | Patch | Steps | Cost | Eval Result | HITL Correction |
+|----------|-------|-------|------|-------------|-----------------|
+| astropy-14365 | 619 chars | 10 | $0.13 | Tests failed (incomplete fix) | "re.IGNORECASE alone insufficient - write path needs uppercase too" |
+| astropy-14539 | 1251 chars | 29 | $0.66 | Tests failed (wrong approach) | "VLA padding wrong - use element-wise comparison for object-dtype" |
+| astropy-14508 | 514 chars | 9 | $0.09 | Target test passed, regression | "str() gives lowercase e, FITS needs uppercase E - use .16G format" |
 
-<p align="center">
-  <img src="docs/assets/agents/owl.svg" width="64" height="64" alt="Classifier">&nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="docs/assets/agents/beaver.svg" width="64" height="64" alt="FixGenerator">&nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="docs/assets/agents/hawk.svg" width="64" height="64" alt="TestValidator">&nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="docs/assets/agents/glasswing.svg" width="64" height="64" alt="Pull Request">
-</p>
-
-| Agent | Role | Notes |
-|-------|------|-------|
-| 🔍 **Classifier** | Routes to easy / medium / hard / skip | Core agent - gatekept |
-| 📍 **Localizer** | Ranks files by relevance to the issue | LLM-based, returns ranked list |
-| 🔧 **FixGenerator** | Generates line-number edits | No string matching - edit by line |
-| ✅ **TestValidator** | Syntax check + full pytest run | Returns passed / failed + failure detail |
-| 📋 **Planner** | Decomposes medium issues into steps | Escalates to hard if too complex |
-| 💬 **Conversationalist** | Parses author intent from comments | Keyword-based, no LLM needed |
-| 🔬 **Reviewer** | Code review before PR | Claude-based for model diversity |
-| 📊 **Researcher** | Research report for hard issues | Phase 4 - stub in current release |
-
-#### Three pipelines
-
-**Easy** - fully automated, single file, clear scope:
-```
-received → classifying → easy_localizing → easy_fixing → easy_testing → creating_pr → done
-```
-
-**Medium** - multi-step with optional human checkpoints:
-```
-received → classifying → med_planning → med_step_executing → med_step_testing
-                                            ↑ (more steps loop)       ↓ (last step)
-                                                               med_integrating → creating_pr → done
-```
-
-**Hard** - research first, author-guided execution:
-```
-received → classifying → hard_researching → hard_report_posted → hard_author_guided
-                                                                     ↓ try_fix → med_planning
-                                                                     ↓ more_research → hard_researching
-                                                                     ↓ manual → done
-```
-
-#### Results
-
-| Eval | Scope | Result | PRs |
-|------|-------|--------|-----|
-| 🔍 Bug eval (7 seeded bugs) | E01-E15 injected via BugFactory | **7/7 first-try, 100%** | [#53](https://github.com/agentic-trust-labs/glassbox-ai/pull/53) [#55](https://github.com/agentic-trust-labs/glassbox-ai/pull/55) [#57](https://github.com/agentic-trust-labs/glassbox-ai/pull/57) [#59](https://github.com/agentic-trust-labs/glassbox-ai/pull/59) [#61](https://github.com/agentic-trust-labs/glassbox-ai/pull/61) [#63](https://github.com/agentic-trust-labs/glassbox-ai/pull/63) [#65](https://github.com/agentic-trust-labs/glassbox-ai/pull/65) |
-| 🔧 Feature improvements | Comment UX, dep pinning, workflow fixes | **26 shipped** | [#71](https://github.com/agentic-trust-labs/glassbox-ai/pull/71) [#72](https://github.com/agentic-trust-labs/glassbox-ai/pull/72) [#88](https://github.com/agentic-trust-labs/glassbox-ai/pull/88)-[#125](https://github.com/agentic-trust-labs/glassbox-ai/pull/125) |
-| 🦋 End-to-end (all issues) | 65 agent issues across v1 + v2 | **33 merged, 51%** | 33 PRs total |
-
-👉 [**Live Performance Tracker**](https://agentic-trust-labs.github.io/glassbox-ai/dashboard/) - conversion funnel, TAT breakdown, failure diagnostics, all updated in real-time.
+**Total cost: $0.88 for 3 instances.** Every failure becomes a learning signal.
 
 ---
 
-### UC-02 and beyond
+## Honest Comparison
 
-The platform is designed to support any domain where an AI agent needs to act autonomously. Adding a use case means adding a folder under `use_cases/` with its own states, pipeline, and settings. No core changes required.
+We believe in transparency - including about where we fall short.
 
-Future use cases under consideration: PR review pipelines, security audit agents, dependency update automation, cross-repo refactoring.
+| Capability | Devin | OpenHands | Augment Code | Codex CLI | **GlassBox** |
+|---|:---:|:---:|:---:|:---:|:---:|
+| **Autonomous bug fixing** | 🟢 | 🟢 | 🟢 | 🟢 | 🟢 |
+| **SWE-bench score** | 🟢 undisclosed | 🟢 37% | 🟢 65% | 🟢 ~70% | 🔴 **0% (3 instances, WIP)** |
+| **Sandboxed execution** | 🟢 | 🟢 | 🟢 | 🟢 | 🟡 **Local + Docker eval** |
+| **Multi-language support** | 🟢 | 🟢 | 🟢 | 🟢 | 🟡 **Python only (for now)** |
+| **State machine audit trail** | 🔴 | 🔴 | 🔴 | 🔴 | 🟢 |
+| **Human checkpoints (first-class)** | 🟡 Partial | 🔴 | 🔴 | 🔴 | 🟢 |
+| **HITL learning (corrections become rules)** | 🔴 | 🔴 | 🔴 | 🔴 | 🟢 |
+| **Transparent rules (readable, editable, versioned)** | 🔴 | 🔴 | 🟡 | 🟡 AGENTS.md | 🟢 |
+| **Episode memory (past corrections searchable)** | 🔴 | 🔴 | 🔴 | 🔴 | 🟢 |
+| **Enterprise audit compliance** | 🟡 | 🔴 | 🔴 | 🔴 | 🟢 |
+| **Open source** | 🔴 | 🟢 | 🟡 Partial | 🟢 | 🟢 |
+
+**Where we're behind** (and working on it):
+- 🔴 **SWE-bench score:** 0% on 3 instances vs 65%+ for leaders. We're early. The infrastructure is built, the scores will follow as we iterate with HITL corrections and stronger models.
+- 🟡 **Sandboxing:** Agent runs locally, evaluation in Docker. Full Docker sandboxing for inference is planned.
+- 🟡 **Language coverage:** Python-only today. The architecture is language-agnostic but tooling isn't.
+
+**Where we lead:**
+- No other open-source agent has first-class HITL learning where human corrections become persistent rules
+- No other agent ships a readable, version-controlled rule file that evolves with every interaction
+- No other agent has an append-only episode store that the agent can search during problem-solving
 
 ---
 
-## 🏆 Why GlassBox
+## Quick Start
 
-| Capability | Devin | SWE-agent | OpenHands | **GlassBox** |
-|-----------|-------|-----------|-----------|-------------|
-| Autonomous task execution | ✅ | ✅ | ✅ | ✅ |
-| Domain-agnostic orchestration | ❌ | ❌ | ❌ | ✅ |
-| State machine audit trail | ❌ | ❌ | ❌ | ✅ |
-| Human checkpoints (first-class) | Partial | ❌ | ❌ | ✅ |
-| Adaptive complexity routing | ❌ | ❌ | ❌ | ✅ |
-| Reflexion memory | ❌ | ❌ | Partial | ✅ |
-| Pluggable use cases | ❌ | ❌ | ❌ | ✅ |
-| Open source | ❌ | ✅ | ✅ | ✅ |
+```bash
+# Clone and set up
+git clone https://github.com/agentic-trust-labs/glassbox-ai.git
+cd glassbox-ai
+python3.11 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
 
-**What makes GlassBox different:**
-1. **Transparent** - every state transition logged, every result ships with a full audit trail
-2. **Lean** - the core engine is ~260 lines. Agents are plain functions. No framework lock-in.
-3. **Human-first** - author checkpoints are first-class pause states in the machine, not afterthoughts
-4. **Modular** - adding a use case = adding a folder. The engine never needs to change.
-5. **Learning** - failures become Reflexion memory, not just retries
+# Set your API key
+cp .env.example .env
+# Edit .env: OPENAI_API_KEY=sk-... and GLASSBOX_MODEL=gpt-4o
+
+# Run on a SWE-bench instance
+.venv/bin/python src/glassbox/use_cases/coder/run_swebench.py \
+    --dataset SWE-bench/SWE-bench_Verified \
+    --split test \
+    --instance_ids astropy__astropy-14365 \
+    --output predictions.json
+
+# Evaluate with Docker
+DOCKER_HOST=unix://$HOME/.docker/run/docker.sock \
+.venv/bin/python -m swebench.harness.run_evaluation \
+    --dataset_name SWE-bench/SWE-bench_Verified \
+    --predictions_path predictions.json \
+    --max_workers 1 \
+    --run_id my_eval
+```
 
 ---
 
-## 🔗 Research
+## Research
 
-Built on peer-reviewed research across multi-agent systems, trust, and AI safety:
+Built on peer-reviewed research:
 
-- **Multi-Agent Debate** - [Du et al. NeurIPS 2024](https://arxiv.org/abs/2305.14325), [ChatEval, ICLR 2024](https://arxiv.org/abs/2308.07201)
-- **Trust and Reputation** - [EigenTrust, WWW 2003](https://dl.acm.org/doi/10.1145/775152.775242), [LLM-as-Judge Survey 2024](https://arxiv.org/abs/2411.15594)
+- **HITL for Agents** - [HULA, ICSE 2025](https://arxiv.org) - 54% said code had defects without human oversight
 - **Self-Correction** - [Reflexion, NeurIPS 2023](https://arxiv.org/abs/2303.11366), [Self-Refine, NeurIPS 2023](https://arxiv.org/abs/2303.17651)
-- **AI Safety** - [AI Safety via Debate, 2018](https://arxiv.org/abs/1805.00899), [Constitutional AI, 2022](https://arxiv.org/abs/2212.08073), [Scalable Oversight, NeurIPS 2024](https://proceedings.neurips.cc/paper_files/paper/2024/file/899511e37a8e01e1bd6f6f1d377cc250-Paper-Conference.pdf)
-- **Grounding** - [FACTS, DeepMind 2024](https://deepmind.google/blog/facts-grounding-a-new-benchmark-for-evaluating-the-factuality-of-large-language-models/), [MiniCheck, EMNLP 2024](https://arxiv.org/abs/2404.10774)
+- **Agent Prompting** - [OpenAI GPT-4.1 Guide](https://developers.openai.com/cookbook/examples/gpt4-1_prompting_guide/) - persistence + tool-calling + planning
+- **Trust** - [EigenTrust, WWW 2003](https://dl.acm.org/doi/10.1145/775152.775242), [AI Safety via Debate, 2018](https://arxiv.org/abs/1805.00899)
 
 ---
 
-## 📜 License
+## License
 
 MIT
 
