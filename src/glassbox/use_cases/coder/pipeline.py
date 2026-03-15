@@ -92,7 +92,15 @@ def _solve(ctx, **kw):
     messages = [
         {"role": "system", "content": system},
         {"role": "user", "content": (
-            f"The repository is at: {cwd}\n\n"
+            # Working directory instruction borrowed from mini-swe-agent's instance_template:
+            # "MODIFY: Regular source code files in /testbed
+            #  (this is the working directory for all your subsequent commands)"
+            # Source: mini-swe-agent.com/latest/usage/swebench/
+            f"<uploaded_files>\n{cwd}\n</uploaded_files>\n\n"
+            f"I've uploaded the repository to {cwd}. "
+            f"MODIFY only source code files in {cwd} — this is the working directory "
+            f"for all your subsequent commands. "
+            f"Do NOT modify test files.\n\n"
             f"Please fix the following issue:\n\n{ctx.config.get('task', '')}"
         )},
     ]
