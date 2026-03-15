@@ -1,45 +1,69 @@
 """Coder pipeline - maps states to agent functions.
-The _solve agent contains a 25-line autonomous loop: litellm + subprocess.
-System prompt loaded from file or built-in default."""
+The _solve agent runs an autonomous loop: litellm + subprocess + str_replace_editor.
+Tools are vendored from Anthropic (MIT). Prompt borrowed from OpenAI's GPT-4.1 guide."""
 import json, logging, os, subprocess
+
+from glassbox.use_cases.coder.tools import TOOLS, handle_editor, MAX_RESPONSE_LEN
 
 log = logging.getLogger("glassbox.coder")
 
-SYSTEM_PROMPT = (
-    "You are an expert software engineering agent tasked with fixing a GitHub issue.\n"
-    "You MUST fully resolve the issue. Do NOT stop until the fix is complete and verified.\n"
-    "If you are not sure about the code, use bash to READ FILES and gather information — do NOT guess.\n"
-    "Plan extensively before each function call. Reflect extensively on the results of each command.\n\n"
-    "Workflow:\n"
-    "1. Explore the repository structure to understand the codebase\n"
-    "2. Find the relevant files using grep/find — read them carefully\n"
-    "3. Create a minimal script to reproduce the bug and confirm the error\n"
-    "4. Identify the root cause, then EDIT THE SOURCE FILES to fix it\n"
-    "5. Re-run the reproduction script to confirm the bug is fixed\n"
-    "6. Run targeted existing tests to check for regressions\n"
-    "7. Think about edge cases and handle them\n"
-    "8. When fully done, run: echo GLASSBOX_TASK_COMPLETE\n\n"
-    "CRITICAL RULES:\n"
-    "- You MUST actually EDIT source files. Exploring without editing is NOT solving.\n"
-    "- After reading files, you must proceed to make the fix. Do not give up.\n"
-    "- cd is NOT persistent between commands. Always prefix with cd /path/to/repo if needed.\n"
-    "- For files >200 lines, use sed -n 'START,ENDp' to view specific ranges.\n"
-    "- Do NOT modify test files. Only edit source/library code.\n"
-    "- Make minimal, targeted changes. Avoid unnecessary refactoring.\n"
-    "- If tests fail after your fix, analyze the failure and iterate — do NOT give up.\n"
-    "- Pipe large outputs through head -100 to avoid truncation."
-)
+# ──────────────────────────────────────────────────────────────────────────────
+# System Prompt — borrowed from OpenAI's GPT-4.1 Prompting Guide (public)
+# Source: https://developers.openai.com/cookbook/examples/gpt4-1_prompting_guide/
+#
+# The 3 magic ingredients proven to add ~20% on SWE-bench Verified:
+#   1. Persistence  — "keep going until fully solved"
+#   2. Tool-calling — "use tools to read files, do NOT guess"
+#   3. Planning     — "plan before each call, reflect on outcomes"
+# ──────────────────────────────────────────────────────────────────────────────
+SYSTEM_PROMPT = """\
+You will be tasked to fix an issue from an open-source repository. \
+Your thinking should be thorough and so it's fine if it's very long. \
+You can think step by step before and after each action you decide to take.
 
-BASH_TOOL = [{"type": "function", "function": {
-    "name": "bash", "description": (
-        "Run a shell command. State is NOT persistent between calls (no cd). "
-        "Output is truncated to 10000 chars. For large files use sed -n '1,100p'. "
-        "Avoid commands with huge output; pipe through head -200 if uncertain."),
-    "parameters": {"type": "object",
-                   "properties": {"command": {"type": "string", "description": "The bash command to run"}},
-                   "required": ["command"]}}}]
+You MUST keep going until the issue is fully resolved. Only call the `complete` \
+tool when you are sure the problem is solved. \
+NEVER end your turn without having solved the problem.
 
-MAX_OUTPUT = 10000
+If you are not sure about file content or codebase structure, use your tools to \
+read files and gather information — do NOT guess or make up an answer.
+
+You MUST plan extensively before each function call, and reflect extensively on \
+the outcomes of the previous function calls. DO NOT do this entire process by \
+making function calls only, as this can impair your ability to solve the problem \
+and think insightfully.
+
+# Workflow
+
+## 1. Understand the Problem
+Carefully read the issue and think hard about what is required before touching any code.
+
+## 2. Investigate the Codebase
+- Use bash (grep, find) to locate relevant files.
+- Use str_replace_editor with command=view to read files. Do NOT use bash cat/sed for reading.
+- Identify the root cause of the problem.
+
+## 3. Reproduce the Bug
+Create a minimal script to reproduce the error and execute it with bash to confirm the error.
+
+## 4. Fix the Code
+- Use str_replace_editor with command=str_replace to make targeted edits.
+- Make small, incremental changes. Do NOT refactor unnecessarily.
+- Do NOT modify test files. Only edit source/library code.
+
+## 5. Verify the Fix
+- Re-run your reproduction script to confirm the bug is fixed.
+- Run existing tests with bash to check for regressions.
+- Think about edge cases and handle them.
+
+## 6. Complete
+When the fix is verified and all tests pass, call the `complete` tool with a summary.
+
+# Rules
+- If tests fail after your fix, analyze the failure and iterate — do NOT give up.
+- The repository root is your working directory. Use absolute paths with str_replace_editor.
+- Make minimal, targeted changes.
+"""
 
 
 def build_pipeline():
@@ -60,66 +84,84 @@ def _solve(ctx, **kw):
     cwd = ctx.config.get("repo_root", os.getcwd())
     prompt_path = ctx.config.get("prompt_file", "")
     system = open(prompt_path).read() if prompt_path and os.path.isfile(prompt_path) else SYSTEM_PROMPT
-    messages = [{"role": "system", "content": system},
-                {"role": "user", "content": f"Solve this issue in {cwd}:\n\n{ctx.config.get('task', '')}"}]
+    messages = [
+        {"role": "system", "content": system},
+        {"role": "user", "content": (
+            f"The repository is at: {cwd}\n\n"
+            f"Please fix the following issue:\n\n{ctx.config.get('task', '')}"
+        )},
+    ]
     log.info("[solve] Starting agent loop | model=%s step_limit=%d repo=%s",
              model, ctx.config.get("step_limit", 30), cwd)
-    NUDGE_AT_STEP = 10  # if no file edit by this step, inject a reminder
 
     cost = 0.0
     step = 0
     done = False
-    nudged = False
     for step in range(ctx.config.get("step_limit", 30)):
-        # At step 10, check git diff — if nothing changed, the agent is only reading. Nudge it.
-        if not nudged and step == NUDGE_AT_STEP:
-            check = subprocess.run("git add -N . && git diff HEAD --stat", shell=True,
-                                   cwd=cwd, capture_output=True, text=True)
-            if not check.stdout.strip():
-                nudge = ("You have spent 10 steps reading files. You now have enough context. "
-                         "STOP reading. START editing source files now to fix the issue. "
-                         "Use sed -i or write a Python script to apply your change. "
-                         "Do NOT read any more files unless absolutely necessary.")
-                messages.append({"role": "user", "content": nudge})
-                log.warning("[solve] Nudge injected at step %d — no file edits yet", step + 1)
-                nudged = True
-
         log.info("[solve] Step %d | messages=%d cost=$%.4f", step + 1, len(messages), cost)
-        resp = completion(model=model, messages=messages, tools=BASH_TOOL,
-                          tool_choice="required", max_tokens=16000)
+        # No tool_choice="required" — let the model stop naturally or call complete
+        resp = completion(model=model, messages=messages, tools=TOOLS, max_tokens=16000)
         step_cost = getattr(resp, "_hidden_params", {}).get("response_cost", 0) or 0
         cost += step_cost
         msg = resp.choices[0].message
         messages.append(msg)
+
         if not getattr(msg, "tool_calls", None):
-            log.warning("[solve] Step %d | no tool calls despite tool_choice=required — stopping", step + 1)
+            log.info("[solve] Step %d | no tool calls — model finished", step + 1)
             break
+
         for tc in msg.tool_calls:
-            cmd = json.loads(tc.function.arguments).get("command", "")
-            log.info("[solve] Step %d | bash: %s", step + 1, cmd[:120])
-            if "GLASSBOX_TASK_COMPLETE" in cmd:
-                log.info("[solve] Task complete sentinel received")
+            name = tc.function.name
+            args = json.loads(tc.function.arguments)
+
+            if name == "complete":
+                # Augment Code's CompleteTool pattern — clean exit mechanism
+                log.info("[solve] complete tool called: %s", args.get("result", "")[:120])
                 done = True
+                messages.append({"role": "tool", "tool_call_id": tc.id,
+                                  "content": "Task marked as complete."})
                 break
-            try:
-                r = subprocess.run(cmd, shell=True, cwd=cwd, capture_output=True, text=True, timeout=120)
-                out = (r.stdout + r.stderr).strip()
-                if len(out) > MAX_OUTPUT:
-                    half = MAX_OUTPUT // 2
-                    out = out[:half] + f"\n\n[...truncated {len(out) - MAX_OUTPUT} chars...]\n\n" + out[-half:]
-                out = out or "(no output)"
-                log.debug("[solve] Step %d | output (%d chars): %s", step + 1, len(out), out[:200])
-            except subprocess.TimeoutExpired:
-                out = "Error: command timed out after 120s. Try a less expensive command."
-                log.warning("[solve] Step %d | TIMEOUT: %s", step + 1, cmd[:80])
-            except Exception as e:
-                out = f"Error: {e}"
-                log.error("[solve] Step %d | ERROR: %s", step + 1, e)
-            messages.append({"role": "tool", "tool_call_id": tc.id, "content": out})
+
+            elif name == "str_replace_editor":
+                # Anthropic's str_replace_editor — vendored in tools.py (MIT)
+                log.info("[solve] Step %d | editor %s: %s",
+                         step + 1, args.get("command"), args.get("path", "")[:80])
+                result = handle_editor(cwd=cwd, **args)
+                log.info("[solve] Step %d | editor result: %s", step + 1, result[:120])
+                messages.append({"role": "tool", "tool_call_id": tc.id, "content": result})
+
+            elif name == "bash":
+                cmd = args.get("command", "")
+                log.info("[solve] Step %d | bash: %s", step + 1, cmd[:120])
+                try:
+                    r = subprocess.run(cmd, shell=True, cwd=cwd, capture_output=True,
+                                       text=True, timeout=120)
+                    out = (r.stdout + r.stderr).strip()
+                    if len(out) > MAX_RESPONSE_LEN:
+                        half = MAX_RESPONSE_LEN // 2
+                        out = (out[:half]
+                               + f"\n\n[...truncated {len(out) - MAX_RESPONSE_LEN} chars...]\n\n"
+                               + out[-half:])
+                    out = out or "(no output)"
+                    log.debug("[solve] Step %d | output (%d chars): %s",
+                              step + 1, len(out), out[:200])
+                except subprocess.TimeoutExpired:
+                    out = "Error: command timed out after 120s. Try a simpler command."
+                    log.warning("[solve] Step %d | TIMEOUT: %s", step + 1, cmd[:80])
+                except Exception as e:
+                    out = f"Error: {e}"
+                    log.error("[solve] Step %d | ERROR: %s", step + 1, e)
+                messages.append({"role": "tool", "tool_call_id": tc.id, "content": out})
+
+            else:
+                log.warning("[solve] Step %d | unknown tool: %s", step + 1, name)
+                messages.append({"role": "tool", "tool_call_id": tc.id,
+                                  "content": f"Error: unknown tool '{name}'"})
+
         if done:
             break
-    # git diff only shows changes to tracked files; git diff HEAD also catches new files.
-    # We add untracked files first so they appear in the diff.
+
+    # git diff HEAD catches both edited tracked files and new untracked files
     subprocess.run("git add -N .", shell=True, cwd=cwd, capture_output=True)
     diff = subprocess.run("git diff HEAD", shell=True, cwd=cwd, capture_output=True, text=True)
     patch = diff.stdout.strip()
