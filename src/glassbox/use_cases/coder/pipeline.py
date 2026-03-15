@@ -102,7 +102,10 @@ def _solve(ctx, **kw):
             messages.append({"role": "tool", "tool_call_id": tc.id, "content": out})
         if done:
             break
-    diff = subprocess.run("git diff", shell=True, cwd=cwd, capture_output=True, text=True)
+    # git diff only shows changes to tracked files; git diff HEAD also catches new files.
+    # We add untracked files first so they appear in the diff.
+    subprocess.run("git add -N .", shell=True, cwd=cwd, capture_output=True)
+    diff = subprocess.run("git diff HEAD", shell=True, cwd=cwd, capture_output=True, text=True)
     patch = diff.stdout.strip()
     event = "solved" if patch else "stuck"
     log.info("[solve] Done | event=%s steps=%d cost=$%.4f patch=%d chars",
