@@ -64,10 +64,26 @@ def _solve(ctx, **kw):
                 {"role": "user", "content": f"Solve this issue in {cwd}:\n\n{ctx.config.get('task', '')}"}]
     log.info("[solve] Starting agent loop | model=%s step_limit=%d repo=%s",
              model, ctx.config.get("step_limit", 30), cwd)
+    NUDGE_AT_STEP = 10  # if no file edit by this step, inject a reminder
+
     cost = 0.0
     step = 0
     done = False
+    nudged = False
     for step in range(ctx.config.get("step_limit", 30)):
+        # At step 10, check git diff — if nothing changed, the agent is only reading. Nudge it.
+        if not nudged and step == NUDGE_AT_STEP:
+            check = subprocess.run("git add -N . && git diff HEAD --stat", shell=True,
+                                   cwd=cwd, capture_output=True, text=True)
+            if not check.stdout.strip():
+                nudge = ("You have spent 10 steps reading files. You now have enough context. "
+                         "STOP reading. START editing source files now to fix the issue. "
+                         "Use sed -i or write a Python script to apply your change. "
+                         "Do NOT read any more files unless absolutely necessary.")
+                messages.append({"role": "user", "content": nudge})
+                log.warning("[solve] Nudge injected at step %d — no file edits yet", step + 1)
+                nudged = True
+
         log.info("[solve] Step %d | messages=%d cost=$%.4f", step + 1, len(messages), cost)
         resp = completion(model=model, messages=messages, tools=BASH_TOOL,
                           tool_choice="required", max_tokens=16000)
