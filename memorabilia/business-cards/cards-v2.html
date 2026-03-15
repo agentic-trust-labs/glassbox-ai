@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Business Cards v2 - 10 Variants - Sourabh | GlassBox AI</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #111;
+    color: #ccc;
+    font-family: 'Inter', sans-serif;
+    padding: 30px 20px;
+    line-height: 1.6;
+  }
+  h1 { text-align: center; font-size: 1.4rem; color: #4ade80; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 6px; }
+  .page-sub { text-align: center; font-size: 0.75rem; color: #555; margin-bottom: 40px; letter-spacing: 1px; }
+
+  /* ============ VENDOR SECTION ============ */
+  .vendor-section {
+    max-width: 900px; margin: 0 auto 50px; background: #0a0a0a;
+    border: 1px solid #1e1e1e; border-radius: 12px; padding: 30px;
+  }
+  .vendor-section h2 {
+    color: #4ade80; font-size: 0.85rem; letter-spacing: 3px;
+    text-transform: uppercase; margin-bottom: 20px;
+    padding-bottom: 10px; border-bottom: 1px solid #1a1a1a;
+  }
+  .vendor-section h3 { color: #fff; font-size: 0.8rem; margin: 18px 0 10px; letter-spacing: 1px; }
+  .vendor-section table { width: 100%; border-collapse: collapse; font-size: 0.72rem; margin-bottom: 10px; }
+  .vendor-section td { padding: 8px 14px; border-bottom: 1px solid #141414; vertical-align: top; }
+  .vendor-section td:first-child { color: #666; width: 180px; white-space: nowrap; }
+  .vendor-section td:last-child { color: #aaa; }
+  .accent { color: #4ade80; font-weight: 600; }
+  .warn { color: #f87171; }
+  .vendor-section ul { padding-left: 20px; font-size: 0.72rem; color: #888; }
+  .vendor-section ul li { margin-bottom: 6px; }
+  .vendor-section p { font-size: 0.72rem; color: #777; margin-bottom: 8px; }
+  .script-box {
+    background: #0d1117; border: 1px solid #1e1e1e; border-radius: 8px;
+    padding: 16px 20px; font-family: 'Inter', sans-serif; font-size: 0.7rem;
+    color: #aaa; line-height: 1.9; margin: 10px 0; white-space: pre-line;
+  }
+  .script-box .label { color: #4ade80; font-weight: 600; }
+
+  /* ============ CARDS ============ */
+  .variants-header { text-align: center; margin: 50px 0 30px; }
+  .variants-header h2 { color: #4ade80; font-size: 0.85rem; letter-spacing: 3px; text-transform: uppercase; }
+  .variants-header p { color: #444; font-size: 0.65rem; margin-top: 4px; }
+
+  .cards-grid {
+    display: flex; flex-wrap: wrap; gap: 40px;
+    justify-content: center; max-width: 1400px; margin: 0 auto;
+  }
+  .card-pair { display: flex; flex-direction: column; gap: 12px; align-items: center; }
+  .card-pair .variant-label {
+    font-size: 0.55rem; color: #4ade80; letter-spacing: 4px;
+    text-transform: uppercase; font-weight: 700;
+  }
+  .card-pair .side-label {
+    font-size: 0.4rem; color: #333; letter-spacing: 3px;
+    text-transform: uppercase; margin-bottom: 2px;
+  }
+
+  /* Business card: 3.5" x 2" = 336px x 192px screen preview */
+  .card {
+    width: 336px; height: 192px; border-radius: 8px;
+    position: relative; overflow: hidden; display: flex;
+  }
+
+  /* Shared text styles */
+  .c-name { font-size: 1.05rem; font-weight: 700; color: #fff; letter-spacing: 1px; }
+  .c-project { font-size: 0.44rem; color: #4ade80; letter-spacing: 2px; text-transform: uppercase; margin-top: 2px; }
+  .c-tagline { font-size: 0.34rem; color: rgba(74,222,128,0.7); letter-spacing: 0.8px; margin-top: 4px; }
+  .c-contact { font-size: 0.34rem; color: #666; letter-spacing: 0.3px; line-height: 1.9; }
+  .c-contact a { color: #58a6ff; text-decoration: none; }
+  .c-wa { color: #25d366; }
+  .c-hiphop {
+    display: inline-block; font-size: 0.28rem; color: #c084fc;
+    border: 1px solid rgba(192,132,252,0.3); border-radius: 3px;
+    padding: 2px 6px; letter-spacing: 1.5px; text-transform: uppercase; margin-top: 5px;
+  }
+  .c-repo { font-size: 0.3rem; color: #555; letter-spacing: 0.3px; }
+
+  /* WhatsApp inline icon */
+  .wa-icon {
+    display: inline-block; width: 10px; height: 10px; vertical-align: middle; margin-right: 2px;
+  }
+
+  .print-note {
+    text-align: center; font-size: 0.5rem; color: #333;
+    margin-top: 60px; letter-spacing: 1px; padding-bottom: 40px;
+  }
+</style>
+</head>
+<body>
+
+<h1>Business Cards v2 - Sourabh</h1>
+<p class="page-sub">GlassBox AI - Open Source - 10 Variants</p>
+
+<!-- ═══════════════════════════════════════════════
+     VENDOR REQUIREMENTS
+     ═══════════════════════════════════════════════ -->
+<div class="vendor-section">
+  <h2>1. Print Specs for Vendor</h2>
+  <table>
+    <tr><td>Card Size</td><td><span class="accent">3.5" x 2"</span> (89 x 51 mm)</td></tr>
+    <tr><td>Quantity</td><td><span class="accent">5,200 cards</span> double-sided</td></tr>
+    <tr><td>Resolution</td><td><span class="accent">300 DPI minimum</span></td></tr>
+    <tr><td>File Format</td><td><span class="accent">PDF</span> preferred. High-res PNG at 300 DPI also works.</td></tr>
+    <tr><td>Bleed</td><td><span class="accent">3mm</span> on all sides. Total file: 95 x 57 mm.</td></tr>
+    <tr><td>Safe Zone</td><td><span class="accent">5mm inside</span> from trim - no text here.</td></tr>
+    <tr><td>Color Mode</td><td><span class="accent">CMYK</span> for offset. Rich Black: C60 M40 Y40 K100. Green: C55 M0 Y55 K0.</td></tr>
+    <tr><td>Paper</td><td><span class="accent">350 GSM Art Card</span> + matte lamination both sides.</td></tr>
+    <tr><td>Finish</td><td>Matte lamination (minimum). Spot UV on logo + name (premium option).</td></tr>
+    <tr><td>Corners</td><td>Rounded 2mm (optional, modern look) or standard square.</td></tr>
+    <tr><td>Background</td><td>Near-black #0a0a0a. CMYK Rich Black: C60 M40 Y40 K100.</td></tr>
+  </table>
+</div>
+
+<div class="vendor-section">
+  <h2>2. What to Say at the Print Shop</h2>
+  <div class="script-box"><span class="label">Opening:</span>
+"Bhai, 5,200 business cards chahiye. Double-sided, dark background. Kab tak ho sakta hai?"
+
+<span class="label">Specs:</span>
+"Standard size 3.5 x 2 inch. 350 GSM art card. Matte lamination dono taraf - dark design hai fingerprints na aaye. Rounded corners agar ho sake toh."
+
+<span class="label">File:</span>
+"Design PDF mein dunga 300 DPI. 3mm bleed rakha hai. CMYK chahiye ya RGB?"
+
+<span class="label">Color Proof:</span>
+"Ek mint green color hai - pehle 5-10 cards proof print karo, color confirm karunga, phir bulk."
+
+<span class="label">Pricing:</span>
+"5,200 ke liye kya rate? Matte lamination include hai ya alag? Rounded corners extra?"
+
+<span class="label">Timeline:</span>
+"Jaldi chahiye - 1-2 din mein ho sakta hai kya?"</div>
+</div>
+
+<div class="vendor-section">
+  <h2>3. Card Content (Final)</h2>
+  <table>
+    <tr><td>Name</td><td><span class="accent">Sourabh</span></td></tr>
+    <tr><td>Project</td><td><span class="accent">GlassBox AI</span></td></tr>
+    <tr><td>Tagline</td><td><span class="accent">Open source approach to build trustable agents for scalable solutions</span></td></tr>
+    <tr><td>LinkedIn</td><td><span class="accent">linkedin.com/in/sourabhgupta16</span></td></tr>
+    <tr><td>GitHub</td><td><span class="accent">github.com/agentic-trust-labs/glassbox-ai</span></td></tr>
+    <tr><td>WhatsApp</td><td><span class="accent">+91-7627089241</span> (prefers WhatsApp)</td></tr>
+    <tr><td>Collab</td><td><span style="color:#c084fc;">Open invitation for hip-hop collaboration</span></td></tr>
+  </table>
+  <p style="margin-top:12px; color:#555;">Budget estimate: Rs 8,000-15,000 for matte lamination. Rs 15,000-25,000 with spot UV.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     10 DESIGN VARIANTS
+     ═══════════════════════════════════════════════ -->
+<div class="variants-header">
+  <h2>10 Design Variants</h2>
+  <p>3.5" x 2" (89 x 51mm) at 300 DPI. Front + Back for each.</p>
+</div>
+
+<div class="cards-grid">
+
+  <!-- ══════════════ VARIANT 01: CLASSIC DARK ══════════════ -->
+  <div class="card-pair">
+    <div class="variant-label">01 - Classic Dark</div>
+
+    <div class="side-label">front</div>
+    <div class="card" style="background:#0a0a0a; flex-direction:column; justify-content:center; padding:0 24px;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
+        <svg width="32" height="32" viewBox="0 0 150 150" fill="none">
+          <line x1="75" y1="24" x2="75" y2="125" stroke="#4ade80" stroke-width="8"/>
+          <path d="M75 36 Q24 28 14 60 Q10 80 46 88 Q66 90 75 74 Z" fill="#143d28" stroke="#4ade80" stroke-width="4"/>
+          <path d="M75 36 Q126 28 136 60 Q140 80 104 88 Q84 90 75 74 Z" fill="#143d28" stroke="#4ade80" stroke-width="4"/>
+          <path d="M75 78 Q36 84 24 106 Q28 120 54 114 Q70 110 75 96 Z" fill="#122e20" stroke="#4ade80" stroke-width="3.5"/>
+          <path d="M75 78 Q114 84 126 106 Q122 120 96 114 Q80 110 75 96 Z" fill="#122e20" stroke="#4ade80" stroke-width="3.5"/>
+        </svg>
+        <div>
+          <div class="c-name">Sourabh</div>
+          <div class="c-project">GlassBox AI</div>
+        </div>
+      </div>
+      <div class="c-tagline">Open source approach to build trustable agents for scalable solutions</div>
+      <div class="c-contact" style="margin-top:8px;">
+        <svg class="wa-icon" viewBox="0 0 24 24" fill="#25d366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.555 4.126 1.528 5.86L.06 23.487l5.78-1.516A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.82c-1.975 0-3.844-.533-5.45-1.46l-.39-.232-4.047 1.062 1.08-3.946-.254-.404A9.82 9.82 0 012.18 12c0-5.422 4.398-9.82 9.82-9.82 5.422 0 9.82 4.398 9.82 9.82 0 5.422-4.398 9.82-9.82 9.82z"/></svg>
+        <span class="c-wa">+91-7627089241</span> <span style="color:#444; font-size:0.28rem;">(prefers WhatsApp)</span><br>
+        <span style="color:#58a6ff;">linkedin.com/in/sourabhgupta16</span>
+      </div>
+      <div class="c-hiphop">Open for Hip-Hop Collab</div>
+    </div>
+
+    <div class="side-label">back</div>
+    <div class="card" style="background:#0a0a0a; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
+      <svg width="56" height="56" viewBox="0 0 150 150" fill="none">
+        <line x1="75" y1="24" x2="75" y2="125" stroke="#4ade80" stroke-width="8"/>
+        <path d="M75 30 Q56 14 48 6" fill="none" stroke="#4ade80" stroke-width="4"/><circle cx="48" cy="6" r="7" fill="#4ade80"/>
+        <path d="M75 30 Q94 14 102 6" fill="none" stroke="#4ade80" stroke-width="4"/><circle cx="102" cy="6" r="7" fill="#4ade80"/>
+        <path d="M75 36 Q24 28 14 60 Q10 80 46 88 Q66 90 75 74 Z" fill="#143d28" stroke="#4ade80" stroke-width="4"/>
+        <path d="M75 36 Q126 28 136 60 Q140 80 104 88 Q84 90 75 74 Z" fill="#143d28" stroke="#4ade80" stroke-width="4"/>
+        <path d="M75 78 Q36 84 24 106 Q28 120 54 114 Q70 110 75 96 Z" fill="#122e20" stroke="#4ade80" stroke-width="3.5"/>
+        <path d="M75 78 Q114 84 126 106 Q122 120 96 114 Q80 110 75 96 Z" fill="#122e20" stroke="#4ade80" stroke-width="3.5"/>
+      </svg>
+      <div style="font-size:0.6rem; font-weight:700; color:#fff; letter-spacing:2px; margin-top:8px;">GLASSBOX AI</div>
+      <div style="font-size:0.3rem; color:#4ade80; letter-spacing:1px; margin-top:3px; max-width:200px;">open source approach to build trustable agents for scalable solutions</div>
+      <div class="c-repo" style="margin-top:6px;">github.com/agentic-trust-labs/glassbox-ai</div>
+    </div>
+  </div>
+
+  <!-- ══════════════ VARIANT 02: GREEN ACCENT BAR ══════════════ -->
+  <div class="card-pair">
+    <div class="variant-label">02 - Green Bar</div>
+
+    <div class="side-label">front</div>
+    <div class="card" style="background:#0a0a0a; flex-direction:row;">
+      <div style="width:5px; background:#4ade80; flex-shrink:0;"></div>
+      <div style="padding:18px 16px; display:flex; flex-direction:column; justify-content:center;">
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+          <svg width="26" height="26" viewBox="0 0 150 150" fill="none">
+            <path d="M75 36 Q24 28 14 60 Q10 80 46 88 Q66 90 75 74 Z" fill="#143d28" stroke="#4ade80" stroke-width="4"/>
+            <path d="M75 36 Q126 28 136 60 Q140 80 104 88 Q84 90 75 74 Z" fill="#143d28" stroke="#4ade80" stroke-width="4"/>
+            <path d="M75 78 Q36 84 24 106 Q28 120 54 114 Q70 110 75 96 Z" fill="#122e20" stroke="#4ade80" stroke-width="3.5"/>
+            <path d="M75 78 Q114 84 126 106 Q122 120 96 114 Q80 110 75 96 Z" fill="#122e20" stroke="#4ade80" stroke-width="3.5"/>
+          </svg>
+          <div class="c-name">Sourabh</div>
+        </div>
+        <div class="c-project">GlassBox AI</div>
+        <div class="c-tagline" style="max-width:220px;">Open source approach to build trustable agents for scalable solutions</div>
+        <div class="c-contact" style="margin-top:8px;">
+          <span class="c-wa">+91-7627089241</span> <span style="color:#444; font-size:0.26rem;">WhatsApp</span><br>
+          <span style="color:#58a6ff;">linkedin.com/in/sourabhgupta16</span><br>
+          <span style="color:#555;">github.com/agentic-trust-labs/glassbox-ai</span>
+        </div>
+        <div class="c-hiphop" style="margin-top:4px;">Hip-Hop Collab Open</div>
+      </div>
+    </div>
+
+    <div class="side-label">back</div>
+    <div class="card" style="background:#0a0a0a; flex-direction:row;">
+      <div style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+        <svg width="48" height="48" viewBox="0 0 150 150" fill="none">
+          <line x1="75" y1="24" x2="75" y2="125" stroke="#4ade80" stroke-width="8"/>
+          <path d="M75 36 Q24 28 14 60 Q10 80 46 88 Q66 90 75 74 Z" fill="#143d28" stroke="#4ade80" stroke-width="4"/>
+          <path d="M75 36 Q126 28 136 60 Q140 80 104 88 Q84 90 75 74 Z" fill="#143d28" stroke="#4ade80" stroke-width="4"/>
+          <path d="M75 78 Q36 84 24 106 Q28 120 54 114 Q70 110 75 96 Z" fill="#122e20" stroke="#4ade80" stroke-width="3.5"/>
+          <path d="M75 78 Q114 84 126 106 Q122 120 96 114 Q80 110 75 96 Z" fill="#122e20" stroke="#4ade80" stroke-width="3.5"/>
+        </svg>
+        <div style="font-size:0.5rem; font-weight:700; color:#fff; letter-spacing:2px; margin-top:6px;">GLASSBOX AI</div>
+        <div style="font-size:0.28rem; color:#4ade80; letter-spacing:1px; margin-top:2px;">Trustable Agents</div>
+      </div>
+      <div style="width:5px; background:#4ade80; flex-shrink:0;"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════ VARIANT 03: DIAGONAL ══════════════ -->
+  <div class="card-pair">
+    <div class="variant-label">03 - Diagonal</div>
+
+    <div class="side-label">front</div>
+    <div class="card" style="background:linear-gradient(135deg, #0a0a0a 58%, #0f2318 58%); flex-direction:column; justify-content:center; padding:0 24px;">
+      <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+        <svg width="28" height="28" viewBox="0 0 150 150" fill="none">
+          <path d="M75 36 Q24 28 14 60 Q10 80 46 88 Q66 90 75 74 Z" fill="#143d28" stroke="#4ade80" stroke-width="4"/>
+          <path d="M75 36 Q126 28 136 60 Q140 80 104 88 Q84 90 75 74 Z" fill="#143d28" stroke="#4ade80" stroke-width="4"/>
+          <path d="M75 78 Q36 84 24 106 Q28 120 54 114 Q70 110 75 96 Z" fill="#122e20" stroke="#4ade80" stroke-width="3.5"/>
+          <path d="M75 78 Q114 84 126 106 Q122 120 96 114 Q80 110 75 96 Z" fill="#122e20" stroke="#4ade80" stroke-width="3.5"/>
+        </svg>
+        <div>
+          <div class="c-name">Sourabh</div>
+          <div class="c-project">GlassBox AI</div>
+        </div>
+      </div>
+      <div class="c-tagline" style="max-width:200px;">Open source approach to build trustable agents for scalable solutions</div>
+      <div class="c-contact" style="margin-top:6px;">
+        <span class="c-wa">+91-7627089241</span> <span style="color:#444; font-size:0.26rem;">WhatsApp</span> &nbsp;|&nbsp; <span style="color:#58a6ff;">in/sourabhgupta16</span>
+      </div>
+      <div class="c-hiphop">Open for Hip-Hop Collab</div>
+    </div>
+
+    <div class="side-label">back</div>
+    <div class="card" style="background:linear-gradient(135deg, #0f2318 42%, #0a0a0a 42%); display:flex; align-items:center; justify-content:center;">
+      <div style="text-align:center;">
+        <svg width="50" height="50" viewBox="0 0 150 150" fill="none">
+          <line x1="75" y1="24" x2="75" y2="125" stroke="#4ade80" stroke-width="8"/>
+          <path d="M75 36 Q24 28 14 60 Q10 80 46 88 Q66 90 75 74 Z" fill="#143d28" stroke="#4ade80" stroke-width="4"/>
+          <path d="M75 36 Q126 28 136 60 Q140 80 104 88 Q84 90 75 74 Z" fill="#143d28" stroke="#4ade80" stroke-width="4"/>
+          <path d="M75 78 Q36 84 24 106 Q28 120 54 114 Q70 110 75 96 Z" fill="#122e20" stroke="#4ade80" stroke-width="3.5"/>
+          <path d="M75 78 Q114 84 126 106 Q122 120 96 114 Q80 110 75 96 Z" fill="#122e20" stroke="#4ade80" stroke-width="3.5"/>
+        </svg>
+        <div style="font-size:0.55rem; font-weight:700; color:#fff; letter-spacing:2px; margin-top:6px;">GLASSBOX AI</div>
+        <div class="c-repo" style="margin-top:4px;">github.com/agentic-trust-labs/glassbox-ai</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ VARIANT 04: MINIMAL WHITE ══════════════ -->
+  <div class="card-pair">
+    <div class="variant-label">04 - Clean White</div>
+
+    <div class="side-label">front</div>
+    <div class="card" style="background:#fafafa; flex-direction:column; justify-content:center; padding:0 24px; border:1px solid #ddd;">
+      <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+        <svg width="28" height="28" viewBox="0 0 150 150" fill="none">
+          <path d="M75 36 Q24 28 14 60 Q10 80 46 88 Q66 90 75 74 Z" fill="#d4f5e2" stroke="#16a34a" stroke-width="4"/>
+          <path d="M75 36 Q126 28 136 60 Q140 80 104 88 Q84 90 75 74 Z" fill="#d4f5e2" stroke="#16a34a" stroke-width="4"/>
+          <path d="M75 78 Q36 84 24 106 Q28 120 54 114 Q70 110 75 96 Z" fill="#e8faf0" stroke="#16a34a" stroke-width="3.5"/>
+          <path d="M75 78 Q114 84 126 106 Q122 120 96 114 Q80 110 75 96 Z" fill="#e8faf0" stroke="#16a34a" stroke-width="3.5"/>
+        </svg>
+        <div>
+          <div style="font-size:1.05rem; font-weight:700; color:#111; letter-spacing:1px;">Sourabh</div>
+          <div style="font-size:0.44rem; color:#16a34a; letter-spacing:2px; text-transform:uppercase;">GlassBox AI</div>
+        </div>
+      </div>
+      <div style="font-size:0.34rem; color:#16a34a; opacity:0.8; letter-spacing:0.5px; margin-top:2px; max-width:220px;">Open source approach to build trustable agents for scalable solutions</div>
+      <div style="font-size:0.34rem; color:#666; margin-top:8px; line-height:1.9;">
+        <span style="color:#25d366;">+91-7627089241</span> <span style="color:#aaa; font-size:0.26rem;">WhatsApp</span><br>
+        <span style="color:#0a66c2;">linkedin.com/in/sourabhgupta16</span>
+      </div>
+      <div style="display:inline-block; font-size:0.28rem; color:#7c3aed; border:1px solid rgba(124,58,237,0.25); border-radius:3px; padding:2px 6px; letter-spacing:1.5px; text-transform:uppercase; margin-top:4px;">Hip-Hop Collab Open</div>
+    </div>
+
+    <div class="side-label">back</div>
+    <div class="card" style="background:#fafafa; flex-direction:column; align-items:center; justify-content:center; text-align:center; border:1px solid #ddd;">
+      <svg width="50" height="50" viewBox="0 0 150 150" fill="none">
+        <line x1="75" y1="24" x2="75" y2="125" stroke="#16a34a" stroke-width="8"/>
+        <path d="M75 36 Q24 28 14 60 Q10 80 46 88 Q66 90 75 74 Z" fill="#d4f5e2" stroke="#16a34a" stroke-width="4"/>
+        <path d="M75 36 Q126 28 136 60 Q140 80 104 88 Q84 90 75 74 Z" fill="#d4f5e2" stroke="#16a34a" stroke-width="4"/>
+        <path d="M75 78 Q36 84 24 106 Q28 120 54 114 Q70 110 75 96 Z" fill="#e8faf0" stroke="#16a34a" stroke-width="3.5"/>
+        <path d="M75 78 Q114 84 126 106 Q122 120 96 114 Q80 110 75 96 Z" fill="#e8faf0" stroke="#16a34a" stroke-width="3.5"/>
+      </svg>
+      <div style="font-size:0.55rem; font-weight:700; color:#111; letter-spacing:2px; margin-top:6px;">GLASSBOX AI</div>
+      <div style="font-size:0.28rem; color:#16a34a; letter-spacing:0.8px; margin-top:3px; max-width:180px;">open source approach to build trustable agents for scalable solutions</div>
+      <div style="font-size:0.28rem; color:#888; margin-top:5px;">github.com/agentic-trust-labs/glassbox-ai</div>
+    </div>
+  </div>
+
+  <!-- ══════════════ VARIANT 05: CODE TERMINAL ══════════════ -->
+  <div class="card-pair">
+    <div class="variant-label">05 - Terminal</div>
+
+    <div class="side-label">front</div>
+    <div class="card" style="background:#0d1117; border:1px solid #30363d; flex-direction:column; padding:0;">
+      <div style="height:20px; background:#161b22; border-bottom:1px solid #30363d; display:flex; align-items:center; padding:0 10px; gap:5px; flex-shrink:0;">
+        <div style="width:7px; height:7px; border-radius:50%; background:#ff5f57;"></div>
+        <div style="width:7px; height:7px; border-radius:50%; background:#ffbd2e;"></div>
+        <div style="width:7px; height:7px; border-radius:50%; background:#28c840;"></div>
+        <span style="font-size:0.32rem; color:#555; margin-left:6px; font-family:'JetBrains Mono',monospace;">sourabh@glassbox ~</span>
+      </div>
+      <div style="padding:10px 14px; font-family:'JetBrains Mono',monospace; font-size:0.36rem; line-height:2.1; flex:1; display:flex; flex-direction:column; justify-content:center;">
+        <div><span style="color:#4ade80;">$</span> <span style="color:#fff;">whoami</span></div>
+        <div style="color:#aaa;">Sourabh - GlassBox AI</div>
+        <div><span style="color:#4ade80;">$</span> <span style="color:#fff;">cat mission.txt</span></div>
+        <div style="color:#4ade80; font-size:0.32rem;">Open source - trustable agents - scalable solutions</div>
+        <div><span style="color:#4ade80;">$</span> <span style="color:#fff;">echo $CONTACT</span></div>
+        <div><span style="color:#25d366;">wa.me/917627089241</span> &nbsp;<span style="color:#58a6ff;">in/sourabhgupta16</span></div>
+        <div><span style="color:#4ade80;">$</span> <span style="color:#c084fc;">echo "hip-hop collab? let's go"</span></div>
+      </div>
+    </div>
+
+    <div class="side-label">back</div>
+    <div class="card" style="background:#0d1117; border:1px solid #30363d; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
+      <svg width="46" height="46" viewBox="0 0 150 150" fill="none">
+        <line x1="75" y1="24" x2="75" y2="125" stroke="#4ade80" stroke-width="8"/>
+        <path d="M75 36 Q24 28 14 60 Q10 80 46 88 Q66 90 75 74 Z" fill="#143d28" stroke="#4ade80" stroke-width="4"/>
+        <path d="M75 36 Q126 28 136 60 Q140 80 104 88 Q84 90 75 74 Z" fill="#143d28" stroke="#4ade80" stroke-width="4"/>
+        <path d="M75 78 Q36 84 24 106 Q28 120 54 114 Q70 110 75 96 Z" fill="#122e20" stroke="#4ade80" stroke-width="3.5"/>
+        <path d="M75 78 Q114 84 126 106 Q122 120 96 114 Q80 110 75 96 Z" fill="#122e20" stroke="#4ade80" stroke-width="3.5"/>
+      </svg>
+      <div style="font-family:'JetBrains Mono',monospace; font-size:0.38rem; color:#7ee787; margin-top:6px;">from glassbox import transparency</div>
+      <div class="c-repo" style="margin-top:5px;">github.com/agentic-trust-labs/glassbox-ai</div>
+    </div>
+  </div>
+
+  <!-- ══════════════ VARIANT 06: GLOW ══════════════ -->
+  <div class="card-pair">
+    <div class="variant-label">06 - Glow</div>
+
+    <div class="side-label">front</div>
+    <div class="card" style="background:radial-gradient(ellipse at 25% 50%, rgba(74,222,128,0.12) 0%, #0a0a0a 70%); flex-direction:column; justify-content:center; padding:0 24px;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:4px;">
+        <svg width="34" height="34" viewBox="0 0 150 150" fill="none" style="filter:drop-shadow(0 0 8px rgba(74,222,128,0.4));">
+          <path d="M75 36 Q24 28 14 60 Q10 80 46 88 Q66 90 75 74 Z" fill="#143d28" stroke="#4ade80" stroke-width="4"/>
+          <path d="M75 36 Q126 28 136 60 Q140 80 104 88 Q84 90 75 74 Z" fill="#143d28" stroke="#4ade80" stroke-width="4"/>
+          <path d="M75 78 Q36 84 24 106 Q28 120 54 114 Q70 110 75 96 Z" fill="#122e20" stroke="#4ade80" stroke-width="3.5"/>
+          <path d="M75 78 Q114 84 126 106 Q122 120 96 114 Q80 110 75 96 Z" fill="#122e20" stroke="#4ade80" stroke-width="3.5"/>
+        </svg>
+        <div>
+          <div class="c-name" style="text-shadow:0 0 20px rgba(74,222,128,0.3);">Sourabh</div>
+          <div class="c-project">GlassBox AI</div>
+        </div>
+      </div>
+      <div class="c-tagline" style="max-width:220px;">Open source approach to build trustable agents for scalable solutions</div>
+      <div class="c-contact" style="margin-top:8px;">
+        <span class="c-wa">+91-7627089241</span> <span style="color:#444; font-size:0.26rem;">WhatsApp</span><br>
+        <span style="color:#58a6ff;">linkedin.com/in/sourabhgupta16</span>
+      </div>
+      <div class="c-hiphop">Hip-Hop Collab Open</div>
+    </div>
+
+    <div class="side-label">back</div>
+    <div class="card" style="background:radial-gradient(ellipse at 70% 50%, rgba(74,222,128,0.15) 0%, #0a0a0a 70%); display:flex; align-items:center; justify-content:center;">
+      <div style="text-align:center;">
+        <svg width="56" height="56" viewBox="0 0 150 150" fill="none" style="filter:drop-shadow(0 0 12px rgba(74,222,128,0.5));">
+          <line x1="75" y1="24" x2="75" y2="125" stroke="#4ade80" stroke-width="8"/>
+          <path d="M75 30 Q56 14 48 6" fill="none" stroke="#4ade80" stroke-width="4"/><circle cx="48" cy="6" r="7" fill="#4ade80"/>
+          <path d="M75 30 Q94 14 102 6" fill="none" stroke="#4ade80" stroke-width="4"/><circle cx="102" cy="6" r="7" fill="#4ade80"/>
+          <path d="M75 36 Q24 28 14 60 Q10 80 46 88 Q66 90 75 74 Z" fill="#143d28" stroke="#4ade80" stroke-width="4"/>
+          <path d="M75 36 Q126 28 136 60 Q140 80 104 88 Q84 90 75 74 Z" fill="#143d28" stroke="#4ade80" stroke-width="4"/>
+          <path d="M75 78 Q36 84 24 106 Q28 120 54 114 Q70 110 75 96 Z" fill="#122e20" stroke="#4ade80" stroke-width="3.5"/>
+          <path d="M75 78 Q114 84 126 106 Q122 120 96 114 Q80 110 75 96 Z" fill="#122e20" stroke="#4ade80" stroke-width="3.5"/>
+        </svg>
+        <div style="font-size:0.55rem; font-weight:700; color:#fff; letter-spacing:2px; margin-top:6px; text-shadow:0 0 15px rgba(74,222,128,0.4);">GLASSBOX AI</div>
+        <div class="c-repo" style="margin-top:4px;">github.com/agentic-trust-labs/glassbox-ai</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ VARIANT 07: RAPPER BOLD ══════════════ -->
+  <div class="card-pair">
+    <div class="variant-label">07 - Rapper Edition</div>
+
+    <div class="side-label">front</div>
+    <div class="card" style="background:#0a0a0a; border:2px solid #4ade80; flex-direction:column; justify-content:center; padding:0 24px;">
+      <div class="c-name" style="font-size:1.15rem; font-weight:800; letter-spacing:3px;">SOURABH</div>
+      <div class="c-project" style="margin-top:1px;">GlassBox AI</div>
+      <div style="height:2px; width:60px; background:linear-gradient(90deg, #4ade80, #c084fc); margin:6px 0; border-radius:1px;"></div>
+      <div class="c-tagline" style="color:#fff; opacity:0.5; max-width:220px;">Open source - trustable agents - scalable solutions</div>
+      <div class="c-contact" style="margin-top:6px;">
+        <span class="c-wa">+91-7627089241</span> <span style="color:#444; font-size:0.26rem;">WhatsApp</span> &nbsp;|&nbsp; <span style="color:#58a6ff;">in/sourabhgupta16</span>
+      </div>
+      <div style="display:inline-block; font-size:0.3rem; color:#c084fc; border:1px solid #c084fc; border-radius:3px; padding:2px 8px; letter-spacing:2px; text-transform:uppercase; margin-top:5px; font-weight:700;">Hip-Hop Collab - Open Invitation</div>
+    </div>
+
+    <div class="side-label">back</div>
+    <div class="card" style="background:#0a0a0a; border:2px solid #4ade80; display:flex; align-items:center; justify-content:center;">
+      <div style="text-align:center;">
+        <svg width="50" height="50" viewBox="0 0 150 150" fill="none">
+          <line x1="75" y1="24" x2="75" y2="125" stroke="#4ade80" stroke-width="8"/>
+          <path d="M75 36 Q24 28 14 60 Q10 80 46 88 Q66 90 75 74 Z" fill="#143d28" stroke="#4ade80" stroke-width="4"/>
+          <path d="M75 36 Q126 28 136 60 Q140 80 104 88 Q84 90 75 74 Z" fill="#143d28" stroke="#4ade80" stroke-width="4"/>
+          <path d="M75 78 Q36 84 24 106 Q28 120 54 114 Q70 110 75 96 Z" fill="#122e20" stroke="#4ade80" stroke-width="3.5"/>
+          <path d="M75 78 Q114 84 126 106 Q122 120 96 114 Q80 110 75 96 Z" fill="#122e20" stroke="#4ade80" stroke-width="3.5"/>
+        </svg>
+        <div style="font-size:0.5rem; font-weight:800; color:#fff; letter-spacing:3px; margin-top:6px;">GLASSBOX AI</div>
+        <div style="height:2px; width:40px; background:linear-gradient(90deg, #4ade80, #c084fc); margin:5px auto; border-radius:1px;"></div>
+        <div style="font-size:0.28rem; color:#c084fc; letter-spacing:1.5px;">CODE. RAP. BUILD. REPEAT.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ VARIANT 08: DUAL COLUMN ══════════════ -->
+  <div class="card-pair">
+    <div class="variant-label">08 - Dual Column</div>
+
+    <div class="side-label">front</div>
+    <div class="card" style="background:#0a0a0a; flex-direction:row;">
+      <div style="width:42%; background:#0f1a14; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:14px;">
+        <svg width="38" height="38" viewBox="0 0 150 150" fill="none">
+          <line x1="75" y1="24" x2="75" y2="125" stroke="#4ade80" stroke-width="8"/>
+          <path d="M75 36 Q24 28 14 60 Q10 80 46 88 Q66 90 75 74 Z" fill="#143d28" stroke="#4ade80" stroke-width="4"/>
+          <path d="M75 36 Q126 28 136 60 Q140 80 104 88 Q84 90 75 74 Z" fill="#143d28" stroke="#4ade80" stroke-width="4"/>
+          <path d="M75 78 Q36 84 24 106 Q28 120 54 114 Q70 110 75 96 Z" fill="#122e20" stroke="#4ade80" stroke-width="3.5"/>
+          <path d="M75 78 Q114 84 126 106 Q122 120 96 114 Q80 110 75 96 Z" fill="#122e20" stroke="#4ade80" stroke-width="3.5"/>
+        </svg>
+        <div style="font-size:0.4rem; font-weight:700; color:#4ade80; letter-spacing:2px; margin-top:6px;">GLASSBOX</div>
+        <div style="font-size:0.4rem; font-weight:700; color:#fff; letter-spacing:2px;">AI</div>
+      </div>
+      <div style="width:58%; display:flex; flex-direction:column; justify-content:center; padding:14px 16px;">
+        <div class="c-name">Sourabh</div>
+        <div class="c-tagline" style="margin-top:2px; max-width:160px; font-size:0.3rem;">Open source - trustable agents for scalable solutions</div>
+        <div style="height:1px; width:35px; background:#222; margin:6px 0;"></div>
+        <div class="c-contact" style="margin:0; font-size:0.32rem;">
+          <span class="c-wa">+91-7627089241</span> <span style="color:#444; font-size:0.24rem;">WA</span><br>
+          <span style="color:#58a6ff;">in/sourabhgupta16</span>
+        </div>
+        <div class="c-hiphop" style="margin-top:4px; font-size:0.26rem;">Hip-Hop Collab Open</div>
+      </div>
+    </div>
+
+    <div class="side-label">back</div>
+    <div class="card" style="background:#0a0a0a; display:flex; align-items:center; justify-content:center;">
+      <div style="text-align:center;">
+        <div style="font-size:0.32rem; color:#4ade80; letter-spacing:3px; text-transform:uppercase; margin-bottom:6px;">Open Source</div>
+        <svg width="46" height="46" viewBox="0 0 150 150" fill="none">
+          <line x1="75" y1="24" x2="75" y2="125" stroke="#4ade80" stroke-width="8"/>
+          <path d="M75 36 Q24 28 14 60 Q10 80 46 88 Q66 90 75 74 Z" fill="#143d28" stroke="#4ade80" stroke-width="4"/>
+          <path d="M75 36 Q126 28 136 60 Q140 80 104 88 Q84 90 75 74 Z" fill="#143d28" stroke="#4ade80" stroke-width="4"/>
+          <path d="M75 78 Q36 84 24 106 Q28 120 54 114 Q70 110 75 96 Z" fill="#122e20" stroke="#4ade80" stroke-width="3.5"/>
+          <path d="M75 78 Q114 84 126 106 Q122 120 96 114 Q80 110 75 96 Z" fill="#122e20" stroke="#4ade80" stroke-width="3.5"/>
+        </svg>
+        <div style="font-size:0.32rem; color:#4ade80; letter-spacing:3px; text-transform:uppercase; margin-top:6px;">Trustable Agents</div>
+        <div class="c-repo" style="margin-top:6px;">github.com/agentic-trust-labs/glassbox-ai</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ VARIANT 09: CENTERED BADGE ══════════════ -->
+  <div class="card-pair">
+    <div class="variant-label">09 - Badge</div>
+
+    <div class="side-label">front</div>
+    <div class="card" style="background:#0a0a0a; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
+      <div style="border:1.5px solid #4ade80; border-radius:50%; width:48px; height:48px; display:flex; align-items:center; justify-content:center; margin-bottom:6px;">
+        <svg width="26" height="26" viewBox="0 0 150 150" fill="none">
+          <path d="M75 36 Q24 28 14 60 Q10 80 46 88 Q66 90 75 74 Z" fill="#143d28" stroke="#4ade80" stroke-width="4"/>
+          <path d="M75 36 Q126 28 136 60 Q140 80 104 88 Q84 90 75 74 Z" fill="#143d28" stroke="#4ade80" stroke-width="4"/>
+          <path d="M75 78 Q36 84 24 106 Q28 120 54 114 Q70 110 75 96 Z" fill="#122e20" stroke="#4ade80" stroke-width="3.5"/>
+          <path d="M75 78 Q114 84 126 106 Q122 120 96 114 Q80 110 75 96 Z" fill="#122e20" stroke="#4ade80" stroke-width="3.5"/>
+        </svg>
+      </div>
+      <div style="font-size:0.9rem; font-weight:800; color:#fff; letter-spacing:2px;">SOURABH</div>
+      <div class="c-project" style="margin-top:1px;">GlassBox AI</div>
+      <div class="c-tagline" style="max-width:220px; margin-top:3px;">Open source - trustable agents for scalable solutions</div>
+      <div style="display:flex; gap:8px; margin-top:6px; align-items:center; flex-wrap:wrap; justify-content:center;">
+        <span style="font-size:0.32rem; color:#25d366;">+91-7627089241</span>
+        <span style="font-size:0.32rem; color:#58a6ff;">in/sourabhgupta16</span>
+      </div>
+      <div class="c-hiphop" style="margin-top:4px; font-size:0.26rem;">Open Hip-Hop Collab Invitation</div>
+    </div>
+
+    <div class="side-label">back</div>
+    <div class="card" style="background:#0a0a0a; display:flex; align-items:center; justify-content:center;">
+      <div style="border:2px solid #4ade80; border-radius:50%; width:96px; height:96px; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+        <svg width="36" height="36" viewBox="0 0 150 150" fill="none">
+          <line x1="75" y1="24" x2="75" y2="125" stroke="#4ade80" stroke-width="8"/>
+          <path d="M75 36 Q24 28 14 60 Q10 80 46 88 Q66 90 75 74 Z" fill="#143d28" stroke="#4ade80" stroke-width="4"/>
+          <path d="M75 36 Q126 28 136 60 Q140 80 104 88 Q84 90 75 74 Z" fill="#143d28" stroke="#4ade80" stroke-width="4"/>
+          <path d="M75 78 Q36 84 24 106 Q28 120 54 114 Q70 110 75 96 Z" fill="#122e20" stroke="#4ade80" stroke-width="3.5"/>
+          <path d="M75 78 Q114 84 126 106 Q122 120 96 114 Q80 110 75 96 Z" fill="#122e20" stroke="#4ade80" stroke-width="3.5"/>
+        </svg>
+        <div style="font-size:0.3rem; font-weight:700; color:#fff; letter-spacing:2px; margin-top:3px;">GLASSBOX AI</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ VARIANT 10: HIP-HOP COLLAB SPECIAL ══════════════ -->
+  <div class="card-pair">
+    <div class="variant-label">10 - Hip-Hop Special</div>
+
+    <div class="side-label">front</div>
+    <div class="card" style="background:linear-gradient(180deg, #0a0a0a 0%, #0a0a0a 60%, #1a0a2e 100%); flex-direction:column; justify-content:center; padding:0 24px;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:2px;">
+        <svg width="30" height="30" viewBox="0 0 150 150" fill="none" style="filter:drop-shadow(0 0 6px rgba(192,132,252,0.3));">
+          <path d="M75 36 Q24 28 14 60 Q10 80 46 88 Q66 90 75 74 Z" fill="#1a0f28" stroke="#c084fc" stroke-width="4"/>
+          <path d="M75 36 Q126 28 136 60 Q140 80 104 88 Q84 90 75 74 Z" fill="#1a0f28" stroke="#c084fc" stroke-width="4"/>
+          <path d="M75 78 Q36 84 24 106 Q28 120 54 114 Q70 110 75 96 Z" fill="#150d22" stroke="#c084fc" stroke-width="3.5"/>
+          <path d="M75 78 Q114 84 126 106 Q122 120 96 114 Q80 110 75 96 Z" fill="#150d22" stroke="#c084fc" stroke-width="3.5"/>
+        </svg>
+        <div>
+          <div class="c-name" style="font-weight:800; letter-spacing:2px;">SOURABH</div>
+          <div class="c-project">GlassBox AI</div>
+        </div>
+      </div>
+      <div style="height:2px; width:100%; background:linear-gradient(90deg, #4ade80 0%, #c084fc 50%, transparent 100%); margin:5px 0; border-radius:1px;"></div>
+      <div class="c-tagline" style="max-width:220px;">Open source approach to build trustable agents for scalable solutions</div>
+      <div class="c-contact" style="margin-top:6px;">
+        <span class="c-wa">+91-7627089241</span> <span style="color:#444; font-size:0.26rem;">WhatsApp</span> &nbsp;|&nbsp; <span style="color:#58a6ff;">in/sourabhgupta16</span>
+      </div>
+      <div style="margin-top:5px; padding:3px 10px; background:linear-gradient(90deg, rgba(74,222,128,0.12), rgba(192,132,252,0.12)); border-radius:3px; display:inline-block;">
+        <span style="font-size:0.3rem; color:#c084fc; letter-spacing:1.5px; font-weight:600;">OPEN INVITATION - HIP-HOP COLLABORATION</span>
+      </div>
+    </div>
+
+    <div class="side-label">back</div>
+    <div class="card" style="background:linear-gradient(180deg, #0a0a0a 0%, #1a0a2e 100%); display:flex; align-items:center; justify-content:center;">
+      <div style="text-align:center;">
+        <div style="display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:6px;">
+          <svg width="42" height="42" viewBox="0 0 150 150" fill="none" style="filter:drop-shadow(0 0 8px rgba(74,222,128,0.4));">
+            <line x1="75" y1="24" x2="75" y2="125" stroke="#4ade80" stroke-width="8"/>
+            <path d="M75 36 Q24 28 14 60 Q10 80 46 88 Q66 90 75 74 Z" fill="#143d28" stroke="#4ade80" stroke-width="4"/>
+            <path d="M75 36 Q126 28 136 60 Q140 80 104 88 Q84 90 75 74 Z" fill="#143d28" stroke="#4ade80" stroke-width="4"/>
+            <path d="M75 78 Q36 84 24 106 Q28 120 54 114 Q70 110 75 96 Z" fill="#122e20" stroke="#4ade80" stroke-width="3.5"/>
+            <path d="M75 78 Q114 84 126 106 Q122 120 96 114 Q80 110 75 96 Z" fill="#122e20" stroke="#4ade80" stroke-width="3.5"/>
+          </svg>
+          <div style="text-align:left;">
+            <div style="font-size:0.48rem; font-weight:700; color:#fff; letter-spacing:2px;">GLASSBOX AI</div>
+            <div style="font-size:0.28rem; color:#4ade80; letter-spacing:1px;">open source - trustable agents</div>
+          </div>
+        </div>
+        <div style="height:1px; width:80px; background:linear-gradient(90deg, #4ade80, #c084fc); margin:0 auto 6px; border-radius:1px;"></div>
+        <div style="font-size:0.28rem; color:#c084fc; letter-spacing:2px; text-transform:uppercase;">Code meets rhythm</div>
+        <div class="c-repo" style="margin-top:4px;">github.com/agentic-trust-labs/glassbox-ai</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="print-note">
+  Pick your favorite. Export each side at 1050 x 600px (300 DPI equivalent).<br>
+  Ask vendor for 5-10 proof cards before the full 5,200 bulk run.
+</div>
+
+</body>
+</html>

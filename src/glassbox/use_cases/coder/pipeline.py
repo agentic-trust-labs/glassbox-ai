@@ -85,6 +85,23 @@ def _load_rules(base: str) -> str:
     return base + f"\n\n# Learned Rules\n{txt}\n" if txt else base
 
 
+def _strip_new_files(patch: str) -> str:
+    """Remove 'new file' hunks from a git diff, keeping only modifications to existing files."""
+    import re
+    parts = re.split(r'(?=^diff --git )', patch, flags=re.MULTILINE)
+    kept = []
+    for part in parts:
+        if not part.strip():
+            continue
+        if 'new file mode' in part:
+            continue
+        kept.append(part)
+    result = ''.join(kept)
+    if result and not result.endswith('\n'):
+        result += '\n'
+    return result
+
+
 def build_pipeline():
     return {"classifying": _classify, "solving": _solve, "reviewing": _review,
             "retrying": _retry, "asking_author": _ask_author, "creating_pr": _create_pr}
@@ -202,7 +219,7 @@ def _solve(ctx, **kw):
     # git diff HEAD catches both edited tracked files and new untracked files
     subprocess.run("git add -N .", shell=True, cwd=cwd, capture_output=True)
     diff = subprocess.run("git diff HEAD", shell=True, cwd=cwd, capture_output=True, text=True)
-    patch = diff.stdout.strip()
+    patch = _strip_new_files(diff.stdout.strip())
     event = "solved" if patch else "stuck"
     log.info("[solve] Done | event=%s steps=%d cost=$%.4f patch=%d chars",
              event, step + 1, cost, len(patch))

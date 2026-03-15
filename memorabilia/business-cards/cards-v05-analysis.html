@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>V05 Analysis — Reasoning, Gaps, Vibes, Plan</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#f8f9fa;color:#222;font-family:'Inter',sans-serif;padding:30px 20px;line-height:1.7}
+.c{max-width:860px;margin:0 auto}
+h1{font-size:1.3rem;font-weight:900;color:#111;margin-bottom:2px}
+h2{font-size:0.95rem;font-weight:800;color:#15803d;margin:28px 0 10px;padding-bottom:4px;border-bottom:2px solid #4ade80}
+h3{font-size:0.78rem;font-weight:700;color:#333;margin:14px 0 6px}
+p{font-size:0.72rem;color:#444;margin-bottom:6px}
+.sub{font-size:0.6rem;color:#888;margin-bottom:24px}
+table{width:100%;border-collapse:collapse;margin:10px 0 16px;font-size:0.65rem}
+th{background:#15803d;color:#fff;padding:7px 8px;text-align:left;font-weight:600;font-size:0.6rem}
+td{padding:6px 8px;border-bottom:1px solid #e5e7eb;vertical-align:top}
+tr:nth-child(even){background:#f0fdf4}
+.score{font-weight:700;text-align:center}
+.s5{color:#16a34a}.s4{color:#65a30d}.s3{color:#d97706}.s2{color:#ea580c}.s1{color:#dc2626}
+.box{background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:14px 16px;margin:8px 0}
+.box-green{background:#f0fdf4;border-color:#bbf7d0}
+.box-red{background:#fef2f2;border-color:#fecaca}
+.box-amber{background:#fffbeb;border-color:#fde68a}
+.box-blue{background:#eff6ff;border-color:#bfdbfe}
+.tag{display:inline-block;padding:2px 7px;border-radius:3px;font-size:0.55rem;font-weight:600;margin-right:3px}
+.tag-pass{background:#bbf7d0;color:#166534}
+.tag-fail{background:#fecaca;color:#991b1b}
+.tag-partial{background:#fde68a;color:#92400e}
+.tag-idea{background:#bfdbfe;color:#1e40af}
+ul{padding-left:16px;margin:4px 0 8px}
+li{font-size:0.68rem;color:#444;margin-bottom:3px}
+li strong{color:#111}
+.emoji{font-size:0.8rem}
+.vibe-card{background:#fff;border:1px solid #e5e7eb;border-radius:6px;padding:10px 14px;margin:5px 0;display:flex;align-items:center;gap:10px}
+.vibe-num{font-size:0.55rem;color:#16a34a;font-weight:700;min-width:20px}
+.vibe-text{font-size:0.72rem;color:#333;font-style:italic;font-weight:500}
+.vibe-mood{font-size:0.55rem;color:#888;margin-left:auto}
+</style>
+</head>
+<body>
+<div class="c">
+
+<h1>🔬 V05 Green Gradient — Full Analysis & Reasoning</h1>
+<p class="sub">Being the GlassBox. Showing all reasoning. Every score. Every gap. Every fix.</p>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2>📋 1. WHAT YOU TOLD ME (Your Exact Requirements)</h2>
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<div class="box">
+<table>
+<tr><th>#</th><th>Requirement</th><th>Source</th><th>Priority</th></tr>
+<tr><td>R1</td><td><strong>V05 Green Gradient is the direction</strong> — green gradient brand side, frosted personal side</td><td>Your pick</td><td>🔴 Must</td></tr>
+<tr><td>R2</td><td><strong>"GlassBox AI" text must look GLASSY</strong> — use glassmorphism CSS, not plain text</td><td>Your feedback</td><td>🔴 Must</td></tr>
+<tr><td>R3</td><td><strong>Everything BIGGER</strong> — tagline, GitHub link, all text. It's too small right now</td><td>Your feedback</td><td>🔴 Must</td></tr>
+<tr><td>R4</td><td><strong>GitHub repo link HIGHLIGHTED</strong> — make it prominent, not small grey text</td><td>Your feedback</td><td>🔴 Must</td></tr>
+<tr><td>R5</td><td><strong>Remove QR code</strong> — nobody uses them</td><td>Your feedback</td><td>🔴 Must</td></tr>
+<tr><td>R6</td><td><strong>Personal side is too empty/small</strong> — fill it, maintain same vibe as brand side</td><td>Your feedback</td><td>🔴 Must</td></tr>
+<tr><td>R7</td><td><strong>Open invitation for collaboration</strong> — not just "open for collab" but a real vibe</td><td>Your feedback</td><td>🔴 Must</td></tr>
+<tr><td>R8</td><td><strong>Email: sourabharsh@gmail.com</strong></td><td>Your input</td><td>🔴 Must</td></tr>
+<tr><td>R9</td><td><strong>"10 years in AI, ML & everything Agentic"</strong> — incorporate experience</td><td>Your feedback</td><td>🟡 Should</td></tr>
+<tr><td>R10</td><td><strong>Both sides same vibe</strong> — consistent feel, not one side fancy one side boring</td><td>Your feedback</td><td>🔴 Must</td></tr>
+<tr><td>R11</td><td><strong>Looks classy and nice</strong> — current text doesn't look premium. Logo does, text doesn't</td><td>Your feedback</td><td>🔴 Must</td></tr>
+<tr><td>R12</td><td><strong>The butterfly is good</strong> — transparent, glass-like. Keep it.</td><td>Your feedback</td><td>✅ Done</td></tr>
+<tr><td>R13</td><td><strong>No duplication</strong> — brand side = GlassBox AI. Personal side = Sourabh Gupta.</td><td>Previous</td><td>✅ Done</td></tr>
+<tr><td>R14</td><td><strong>No IIT Alumni, no black text</strong></td><td>Previous</td><td>✅ Done</td></tr>
+</table>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2>📊 2. SCORING V05 CURRENT STATE — What Works, What Doesn't</h2>
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<table>
+<tr><th>Element</th><th>Score</th><th>✅ What Works</th><th>❌ What Doesn't</th><th>🔧 Fix</th></tr>
+<tr>
+  <td><strong>Butterfly logo</strong></td>
+  <td class="score s5">⭐⭐⭐⭐⭐ 5/5</td>
+  <td>Transparent, glassy, beautiful on green gradient. Glass highlights work perfectly.</td>
+  <td>Nothing — you love it</td>
+  <td>Keep as is</td>
+</tr>
+<tr>
+  <td><strong>Green gradient bg</strong></td>
+  <td class="score s4">⭐⭐⭐⭐ 4/5</td>
+  <td>Says "transparent, growth, trust." Good vibe.</td>
+  <td>Maybe too much solid green?</td>
+  <td>Fine-tune gradient. Add subtle glass texture.</td>
+</tr>
+<tr>
+  <td><strong>"GlassBox AI" text</strong></td>
+  <td class="score s1">⭐ 1/5</td>
+  <td>Text is there</td>
+  <td>Plain white text. Doesn't look glassy AT ALL. Just looks like any tech company.</td>
+  <td>🔴 Glassmorphism effect: frosted panel behind text, blur, glass border, maybe text shadow</td>
+</tr>
+<tr>
+  <td><strong>Tagline size</strong></td>
+  <td class="score s2">⭐⭐ 2/5</td>
+  <td>Says the right thing</td>
+  <td>Way too small. Can barely read it. Doesn't command attention.</td>
+  <td>🔴 Make 2x bigger. Bolder weight. More spacing.</td>
+</tr>
+<tr>
+  <td><strong>GitHub repo link</strong></td>
+  <td class="score s1">⭐ 1/5</td>
+  <td>Link exists</td>
+  <td>Tiny grey text at bottom. Nobody will see it. This is a KEY element.</td>
+  <td>🔴 Make it a highlighted element. Bigger. Maybe in a glass pill/badge. White on green.</td>
+</tr>
+<tr>
+  <td><strong>Collab invitation</strong></td>
+  <td class="score s1">⭐ 1/5</td>
+  <td>N/A — not present on V05</td>
+  <td>Missing entirely. No "come work with us" energy.</td>
+  <td>🔴 Add strong collab invitation line</td>
+</tr>
+<tr>
+  <td><strong>Personal side — Name</strong></td>
+  <td class="score s3">⭐⭐⭐ 3/5</td>
+  <td>Green, not black. Readable.</td>
+  <td>Could be bigger. Doesn't feel premium.</td>
+  <td>🟡 Bigger, maybe 2-tone green, better spacing</td>
+</tr>
+<tr>
+  <td><strong>Personal side — Vibe tagline</strong></td>
+  <td class="score s2">⭐⭐ 2/5</td>
+  <td>Has one</td>
+  <td>Generic. Needs to be more YOU.</td>
+  <td>🔴 Pick from 5 options below</td>
+</tr>
+<tr>
+  <td><strong>Personal side — Contacts</strong></td>
+  <td class="score s3">⭐⭐⭐ 3/5</td>
+  <td>Full words, readable</td>
+  <td>Small text. Could be more styled.</td>
+  <td>🟡 Bigger, better layout</td>
+</tr>
+<tr>
+  <td><strong>Personal side — Fullness</strong></td>
+  <td class="score s1">⭐ 1/5</td>
+  <td>—</td>
+  <td>QR code removed = huge empty space. Feels incomplete.</td>
+  <td>🔴 Fill with: experience, collab invitation, butterfly accent, or bigger layout</td>
+</tr>
+<tr>
+  <td><strong>Both sides same vibe</strong></td>
+  <td class="score s2">⭐⭐ 2/5</td>
+  <td>Both frosted green</td>
+  <td>Brand side feels bold, personal side feels like an afterthought</td>
+  <td>🔴 Personal side needs same level of design attention</td>
+</tr>
+<tr>
+  <td><strong>Overall classiness</strong></td>
+  <td class="score s2">⭐⭐ 2/5</td>
+  <td>Direction is right</td>
+  <td>Text treatment is boring. No glass effect on text. Feels like a draft, not a final card.</td>
+  <td>🔴 Glassmorphism, typography, spacing, visual polish</td>
+</tr>
+</table>
+
+<div class="box box-red">
+<h3>🚨 Overall V05 Score: 24/60 (40%) — Direction good, execution needs major work</h3>
+<p><strong>Root cause:</strong> The BUTTERFLY looks glassy. The TEXT does not. The card is half-designed. The butterfly carries the whole card, and the text is letting it down.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2>🎯 3. THE GAPS — Ranked by Impact</h2>
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<table>
+<tr><th>Rank</th><th>Gap</th><th>Impact</th><th>Effort</th><th>Fix Strategy</th></tr>
+<tr>
+  <td>🥇 1</td>
+  <td><strong>"GlassBox AI" text is plain</strong> — doesn't look like glass</td>
+  <td class="score s1">CRITICAL</td>
+  <td>Medium</td>
+  <td>Glassmorphism panel: rgba(255,255,255,0.2) bg, backdrop-filter:blur, 1px white border, subtle shadow. Text becomes frosted glass.</td>
+</tr>
+<tr>
+  <td>🥈 2</td>
+  <td><strong>Personal side empty/boring</strong></td>
+  <td class="score s1">CRITICAL</td>
+  <td>Medium</td>
+  <td>Fill with: bigger name, vibe tagline, "10 yrs AI/ML/Agentic", collab invite, contacts bigger. Maybe small butterfly watermark.</td>
+</tr>
+<tr>
+  <td>🥉 3</td>
+  <td><strong>GitHub repo link invisible</strong></td>
+  <td class="score s2">HIGH</td>
+  <td>Easy</td>
+  <td>Put in a glass pill badge. White text on semi-transparent panel. Make it a hero element, not footer text.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><strong>All text too small</strong></td>
+  <td class="score s2">HIGH</td>
+  <td>Easy</td>
+  <td>Bump all font sizes 1.5-2x. Tagline especially.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><strong>No collab invitation</strong></td>
+  <td class="score s3">MEDIUM</td>
+  <td>Easy</td>
+  <td>Add warm, inviting line. See 10 options below.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><strong>Both sides don't match in quality</strong></td>
+  <td class="score s3">MEDIUM</td>
+  <td>Medium</td>
+  <td>Apply same glassmorphism to personal side. Same gradient. Same polish level.</td>
+</tr>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2>✨ 4. VIBE DESCRIPTIONS — 5 Options for Your Personal Tagline</h2>
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<p>These go under your name on the personal side. Each has a different energy:</p>
+
+<div class="vibe-card">
+  <div class="vibe-num">V1</div>
+  <div class="vibe-text">"nerd trying to fix trust in AI"</div>
+  <div class="vibe-mood">🧠 Self-deprecating · Authentic · Relatable</div>
+</div>
+<div class="vibe-card" style="border-color:#4ade80">
+  <div class="vibe-num">V2</div>
+  <div class="vibe-text">"10 years of AI. Now making it transparent."</div>
+  <div class="vibe-mood">💎 Credible · Direct · Mission-driven</div>
+</div>
+<div class="vibe-card">
+  <div class="vibe-num">V3</div>
+  <div class="vibe-text">"building AI you can look inside"</div>
+  <div class="vibe-mood">🔍 Clever · GlassBox pun · Visual</div>
+</div>
+<div class="vibe-card">
+  <div class="vibe-num">V4</div>
+  <div class="vibe-text">"if AI can't explain itself, I'll fix that"</div>
+  <div class="vibe-mood">🔥 Bold · Confident · Problem-solver</div>
+</div>
+<div class="vibe-card">
+  <div class="vibe-num">V5</div>
+  <div class="vibe-text">"a decade in AI/ML — now on a trust mission"</div>
+  <div class="vibe-mood">🎯 Experienced · Purpose · Serious</div>
+</div>
+
+<table>
+<tr><th>Vibe</th><th>Credibility</th><th>Personality</th><th>GlassBox Fit</th><th>Memorability</th><th>Total</th></tr>
+<tr><td><strong>V1</strong> nerd trying to fix trust</td><td class="score s4">4</td><td class="score s5">5</td><td class="score s4">4</td><td class="score s5">5</td><td class="score s4"><strong>18/20</strong></td></tr>
+<tr><td><strong>V2</strong> 10 years. Now transparent.</td><td class="score s5">5</td><td class="score s3">3</td><td class="score s5">5</td><td class="score s4">4</td><td class="score s4"><strong>17/20</strong></td></tr>
+<tr><td><strong>V3</strong> AI you can look inside</td><td class="score s3">3</td><td class="score s4">4</td><td class="score s5">5</td><td class="score s4">4</td><td class="score s4"><strong>16/20</strong></td></tr>
+<tr><td><strong>V4</strong> if AI can't explain, I'll fix</td><td class="score s4">4</td><td class="score s5">5</td><td class="score s4">4</td><td class="score s5">5</td><td class="score s4"><strong>18/20</strong></td></tr>
+<tr><td><strong>V5</strong> decade in AI, trust mission</td><td class="score s5">5</td><td class="score s3">3</td><td class="score s4">4</td><td class="score s3">3</td><td class="score s3"><strong>15/20</strong></td></tr>
+</table>
+
+<div class="box box-green">
+<p><strong>🏆 Top picks: V1 and V4 tied at 18/20.</strong> V1 is more humble/relatable. V4 is more bold/confident. Both are memorable. V2 is the safest corporate pick.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2>🤝 5. OPEN COLLAB INVITATION — 10 Vibes</h2>
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<p>This goes on the brand side. It's the "call to action" — why should someone engage?</p>
+
+<div class="vibe-card">
+  <div class="vibe-num">C1</div>
+  <div class="vibe-text">"Star the repo. Raise an issue. Let's build."</div>
+  <div class="vibe-mood">⚡ Action-oriented · GitHub-native</div>
+</div>
+<div class="vibe-card">
+  <div class="vibe-num">C2</div>
+  <div class="vibe-text">"Open source project. Open invitation."</div>
+  <div class="vibe-mood">🚪 Clean · Welcoming · Simple</div>
+</div>
+<div class="vibe-card" style="border-color:#4ade80">
+  <div class="vibe-num">C3</div>
+  <div class="vibe-text">"Fork it. Break it. Make it better."</div>
+  <div class="vibe-mood">🔥 Dev culture · Bold · Hacker energy</div>
+</div>
+<div class="vibe-card">
+  <div class="vibe-num">C4</div>
+  <div class="vibe-text">"The best AI agents are built together."</div>
+  <div class="vibe-mood">🤝 Collaborative · Warm · Inclusive</div>
+</div>
+<div class="vibe-card">
+  <div class="vibe-num">C5</div>
+  <div class="vibe-text">"Transparency is a team sport."</div>
+  <div class="vibe-mood">💎 Clever · Punchy · Thematic</div>
+</div>
+<div class="vibe-card">
+  <div class="vibe-num">C6</div>
+  <div class="vibe-text">"We build in public. You're invited."</div>
+  <div class="vibe-mood">🌍 Indie hacker · Modern · Open</div>
+</div>
+<div class="vibe-card">
+  <div class="vibe-num">C7</div>
+  <div class="vibe-text">"Come for the code. Stay for the trust."</div>
+  <div class="vibe-mood">✨ Catchy · Dual meaning · Memorable</div>
+</div>
+<div class="vibe-card">
+  <div class="vibe-num">C8</div>
+  <div class="vibe-text">"Your next PR could change AI trust forever."</div>
+  <div class="vibe-mood">🚀 Aspirational · Developer · Epic</div>
+</div>
+<div class="vibe-card">
+  <div class="vibe-num">C9</div>
+  <div class="vibe-text">"Open minds build open systems."</div>
+  <div class="vibe-mood">🧘 Philosophical · Deep · Clean</div>
+</div>
+<div class="vibe-card">
+  <div class="vibe-num">C10</div>
+  <div class="vibe-text">"Nothing to hide. Everything to build."</div>
+  <div class="vibe-mood">💪 Confident · GlassBox DNA · Strong</div>
+</div>
+
+<table>
+<tr><th>Collab Vibe</th><th>Energy</th><th>Clarity</th><th>GlassBox Fit</th><th>Would someone act?</th><th>Total</th></tr>
+<tr><td><strong>C1</strong> Star. Issue. Build.</td><td class="score s4">4</td><td class="score s5">5</td><td class="score s3">3</td><td class="score s5">5</td><td class="score s4"><strong>17</strong></td></tr>
+<tr><td><strong>C2</strong> Open source. Open invitation.</td><td class="score s3">3</td><td class="score s5">5</td><td class="score s4">4</td><td class="score s3">3</td><td class="score s3"><strong>15</strong></td></tr>
+<tr><td><strong>C3</strong> Fork. Break. Better.</td><td class="score s5">5</td><td class="score s5">5</td><td class="score s3">3</td><td class="score s4">4</td><td class="score s4"><strong>17</strong></td></tr>
+<tr><td><strong>C4</strong> Built together.</td><td class="score s4">4</td><td class="score s4">4</td><td class="score s4">4</td><td class="score s3">3</td><td class="score s3"><strong>15</strong></td></tr>
+<tr><td><strong>C5</strong> Team sport.</td><td class="score s4">4</td><td class="score s5">5</td><td class="score s5">5</td><td class="score s3">3</td><td class="score s4"><strong>17</strong></td></tr>
+<tr><td><strong>C6</strong> Build in public. Invited.</td><td class="score s4">4</td><td class="score s5">5</td><td class="score s4">4</td><td class="score s4">4</td><td class="score s4"><strong>17</strong></td></tr>
+<tr><td><strong>C7</strong> Code. Trust.</td><td class="score s5">5</td><td class="score s4">4</td><td class="score s5">5</td><td class="score s4">4</td><td class="score s5"><strong>18</strong> 🏆</td></tr>
+<tr><td><strong>C8</strong> PR changes trust.</td><td class="score s5">5</td><td class="score s3">3</td><td class="score s4">4</td><td class="score s3">3</td><td class="score s3"><strong>15</strong></td></tr>
+<tr><td><strong>C9</strong> Open minds.</td><td class="score s3">3</td><td class="score s4">4</td><td class="score s4">4</td><td class="score s2">2</td><td class="score s3"><strong>13</strong></td></tr>
+<tr><td><strong>C10</strong> Nothing to hide.</td><td class="score s5">5</td><td class="score s5">5</td><td class="score s5">5</td><td class="score s4">4</td><td class="score s5"><strong>19</strong> 🏆🏆</td></tr>
+</table>
+
+<div class="box box-green">
+<p><strong>🏆 Winner: C10 "Nothing to hide. Everything to build." (19/20)</strong> — This IS GlassBox DNA. Glass = nothing hidden. Build = open source. Perfect.</p>
+<p><strong>🥈 Runner-up: C7 "Come for the code. Stay for the trust." (18/20)</strong> — Catchy, dual meaning, memorable.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2>🔧 6. THE FIX PLAN — Exactly What Changes in Each Variant</h2>
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<div class="box box-blue">
+<h3>🔑 Core Fix: Glassmorphism on "GlassBox AI" Text</h3>
+<p>The text sits inside a frosted glass panel:</p>
+<ul>
+  <li><strong>Background:</strong> rgba(255,255,255,0.15-0.25) — semi-transparent white</li>
+  <li><strong>Backdrop-filter:</strong> blur(12px) — frosted glass effect</li>
+  <li><strong>Border:</strong> 1px solid rgba(255,255,255,0.3) — glass edge catching light</li>
+  <li><strong>Border-radius:</strong> 8-12px — smooth glass panel</li>
+  <li><strong>Box-shadow:</strong> inset 0 1px 0 rgba(255,255,255,0.2) — top highlight like real glass</li>
+  <li><strong>Text:</strong> White, 900 weight, letter-spacing, bigger size</li>
+</ul>
+</div>
+
+<div class="box box-blue">
+<h3>🔑 Core Fix: GitHub Repo Link as Glass Pill Badge</h3>
+<p>Not small grey text. A highlighted glass pill:</p>
+<ul>
+  <li>Semi-transparent white pill shape with blur</li>
+  <li><strong>★ github.com/agentic-trust-labs/glassbox-ai</strong> in bold</li>
+  <li>Bigger font size, prominent placement</li>
+</ul>
+</div>
+
+<div class="box box-blue">
+<h3>🔑 Core Fix: Personal Side — No QR, Filled With Content</h3>
+<p>Without QR code, fill the space with:</p>
+<ul>
+  <li><strong>Bigger name</strong> — 2x current size</li>
+  <li><strong>Vibe tagline</strong> — prominent italic</li>
+  <li><strong>"10 years in AI, ML & everything Agentic"</strong> — experience line</li>
+  <li><strong>Contacts bigger</strong> — each on its own line, readable</li>
+  <li><strong>Small butterfly watermark</strong> — ties to brand side</li>
+  <li><strong>Same gradient/glassmorphism</strong> — matches brand side quality</li>
+</ul>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2>📐 7. THE 10 VARIANTS — What Each One Explores</h2>
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<p>All 10 share the V05 green gradient base. Each explores a different combination of fixes:</p>
+
+<table>
+<tr><th>#</th><th>Variant Name</th><th>Brand Side Approach</th><th>Personal Side Approach</th><th>Vibe Tagline</th><th>Collab Line</th></tr>
+<tr>
+  <td><strong>F01</strong></td>
+  <td>Full Glassmorphism</td>
+  <td>Butterfly + glass panel with "GlassBox AI" + glass pill repo link</td>
+  <td>Green gradient, glass panel with name, bigger contacts, butterfly watermark</td>
+  <td>V1: nerd trying to fix trust</td>
+  <td>C10: Nothing to hide</td>
+</tr>
+<tr>
+  <td><strong>F02</strong></td>
+  <td>Bold Confidence</td>
+  <td>Large butterfly, HUGE text, tagline as big subheading</td>
+  <td>HUGE name, bold tagline, contacts as styled list</td>
+  <td>V4: if AI can't explain, I'll fix</td>
+  <td>C7: Come for code, stay for trust</td>
+</tr>
+<tr>
+  <td><strong>F03</strong></td>
+  <td>Balanced Glass</td>
+  <td>Medium butterfly, glass panel text, glass pill repo, collab line bottom</td>
+  <td>Glass panel name, experience + contacts, small butterfly accent</td>
+  <td>V2: 10 years. Now transparent.</td>
+  <td>C10: Nothing to hide</td>
+</tr>
+<tr>
+  <td><strong>F04</strong></td>
+  <td>Type Hero</td>
+  <td>MASSIVE "GlassBox AI" in glass panel, small butterfly, big tagline</td>
+  <td>MASSIVE name, tagline, contacts spread full width</td>
+  <td>V1: nerd trying to fix trust</td>
+  <td>C3: Fork. Break. Better.</td>
+</tr>
+<tr>
+  <td><strong>F05</strong></td>
+  <td>Butterfly Dominant</td>
+  <td>Butterfly 60% of space, text at bottom in glass bar</td>
+  <td>Name top, butterfly watermark behind, contacts bottom</td>
+  <td>V3: AI you can look inside</td>
+  <td>C6: Build in public. Invited.</td>
+</tr>
+<tr>
+  <td><strong>F06</strong></td>
+  <td>Split Glass Panels</td>
+  <td>Two glass panels: top = butterfly+name, bottom = tagline+repo+collab</td>
+  <td>Two glass panels: top = name+tagline, bottom = contacts</td>
+  <td>V4: if AI can't explain, I'll fix</td>
+  <td>C5: Team sport</td>
+</tr>
+<tr>
+  <td><strong>F07</strong></td>
+  <td>Centered Zen</td>
+  <td>All centered: butterfly → text → tagline → repo → collab. Vertical flow.</td>
+  <td>All centered: name → tagline → divider → contacts. Vertical flow.</td>
+  <td>V2: 10 years. Now transparent.</td>
+  <td>C10: Nothing to hide</td>
+</tr>
+<tr>
+  <td><strong>F08</strong></td>
+  <td>Left-Aligned Pro</td>
+  <td>All left-aligned: butterfly top-left, text below, repo in glass pill left</td>
+  <td>All left-aligned: name top, tagline, contacts stacked left</td>
+  <td>V1: nerd trying to fix trust</td>
+  <td>C7: Come for code, stay for trust</td>
+</tr>
+<tr>
+  <td><strong>F09</strong></td>
+  <td>Green Bar Bottom</td>
+  <td>White butterfly area top 70%, green glass bar bottom with text+repo</td>
+  <td>Name+tagline top 60%, green glass bar bottom with contacts</td>
+  <td>V5: decade in AI, trust mission</td>
+  <td>C1: Star. Issue. Build.</td>
+</tr>
+<tr>
+  <td><strong>F10</strong></td>
+  <td>Maximum Glass</td>
+  <td>Everything in overlapping glass panels. Most glassmorphism. Most premium.</td>
+  <td>Glass panels stacked. Experience + contacts. Most polished.</td>
+  <td>V4: if AI can't explain, I'll fix</td>
+  <td>C10: Nothing to hide</td>
+</tr>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2>📊 8. PREDICTED SCORES — Before Building</h2>
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<p>Based on the fixes each variant applies, here's how I predict they'll score:</p>
+
+<table>
+<tr><th>Variant</th><th>Glass Feel</th><th>Text Size</th><th>Repo Visibility</th><th>Personal Side</th><th>Classiness</th><th>Vibe Match</th><th>Total /30</th></tr>
+<tr><td><strong>F01</strong> Full Glassmorphism</td><td class="score s5">5</td><td class="score s4">4</td><td class="score s5">5</td><td class="score s4">4</td><td class="score s5">5</td><td class="score s5">5</td><td class="score s5"><strong>28</strong> 🏆</td></tr>
+<tr><td><strong>F02</strong> Bold Confidence</td><td class="score s3">3</td><td class="score s5">5</td><td class="score s4">4</td><td class="score s4">4</td><td class="score s4">4</td><td class="score s4">4</td><td class="score s4"><strong>24</strong></td></tr>
+<tr><td><strong>F03</strong> Balanced Glass</td><td class="score s4">4</td><td class="score s4">4</td><td class="score s4">4</td><td class="score s4">4</td><td class="score s4">4</td><td class="score s4">4</td><td class="score s4"><strong>24</strong></td></tr>
+<tr><td><strong>F04</strong> Type Hero</td><td class="score s3">3</td><td class="score s5">5</td><td class="score s4">4</td><td class="score s4">4</td><td class="score s3">3</td><td class="score s3">3</td><td class="score s3"><strong>22</strong></td></tr>
+<tr><td><strong>F05</strong> Butterfly Dominant</td><td class="score s4">4</td><td class="score s3">3</td><td class="score s3">3</td><td class="score s4">4</td><td class="score s4">4</td><td class="score s4">4</td><td class="score s3"><strong>22</strong></td></tr>
+<tr><td><strong>F06</strong> Split Panels</td><td class="score s5">5</td><td class="score s4">4</td><td class="score s4">4</td><td class="score s5">5</td><td class="score s4">4</td><td class="score s4">4</td><td class="score s4"><strong>26</strong></td></tr>
+<tr><td><strong>F07</strong> Centered Zen</td><td class="score s4">4</td><td class="score s4">4</td><td class="score s4">4</td><td class="score s4">4</td><td class="score s5">5</td><td class="score s5">5</td><td class="score s4"><strong>26</strong></td></tr>
+<tr><td><strong>F08</strong> Left-Aligned Pro</td><td class="score s3">3</td><td class="score s4">4</td><td class="score s4">4</td><td class="score s4">4</td><td class="score s4">4</td><td class="score s3">3</td><td class="score s3"><strong>22</strong></td></tr>
+<tr><td><strong>F09</strong> Green Bar Bottom</td><td class="score s3">3</td><td class="score s4">4</td><td class="score s4">4</td><td class="score s4">4</td><td class="score s3">3</td><td class="score s3">3</td><td class="score s3"><strong>21</strong></td></tr>
+<tr><td><strong>F10</strong> Maximum Glass</td><td class="score s5">5</td><td class="score s4">4</td><td class="score s5">5</td><td class="score s5">5</td><td class="score s5">5</td><td class="score s5">5</td><td class="score s5"><strong>29</strong> 🏆🏆</td></tr>
+</table>
+
+<div class="box box-green">
+<h3>🏆 Top 3 Predicted Winners:</h3>
+<ul>
+  <li><strong>F10 Maximum Glass (29/30)</strong> — Most glassmorphism, most premium, most "GlassBox" feel</li>
+  <li><strong>F01 Full Glassmorphism (28/30)</strong> — Clean glassmorphism, well-balanced</li>
+  <li><strong>F07 Centered Zen (26/30)</strong> — Elegant, balanced, calm transparency</li>
+</ul>
+<p>Building all 10 now. Will score them again AFTER building with actual visual assessment.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2>✅ 9. CONFIRMED INPUTS</h2>
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<table>
+<tr><th>Field</th><th>Value</th><th>Status</th></tr>
+<tr><td><strong>Email</strong></td><td>sourabharsh@gmail.com</td><td>✅ Confirmed</td></tr>
+<tr><td><strong>WhatsApp</strong></td><td>+91-7627089241</td><td>✅ Confirmed</td></tr>
+<tr><td><strong>LinkedIn</strong></td><td>linkedin.com/in/sourabhgupta16</td><td>✅ Confirmed</td></tr>
+<tr><td><strong>GitHub</strong></td><td>github.com/agentic-trust-labs/glassbox-ai</td><td>✅ Confirmed</td></tr>
+<tr><td><strong>Name</strong></td><td>Sourabh Gupta</td><td>✅ Confirmed</td></tr>
+<tr><td><strong>Experience</strong></td><td>10 years in AI, ML & everything Agentic</td><td>✅ Confirmed</td></tr>
+<tr><td><strong>Vibe tagline</strong></td><td>5 options above — YOUR PICK NEEDED</td><td>⏳ Waiting</td></tr>
+<tr><td><strong>Collab line</strong></td><td>10 options above — YOUR PICK NEEDED</td><td>⏳ Waiting</td></tr>
+<tr><td><strong>QR code</strong></td><td>REMOVED</td><td>✅ Done</td></tr>
+<tr><td><strong>IIT Alumni</strong></td><td>REMOVED</td><td>✅ Done</td></tr>
+<tr><td><strong>Photo</strong></td><td>SKIPPED — credentials speak</td><td>✅ Done</td></tr>
+</table>
+
+<div class="box box-amber">
+<h3>⏳ Next Step: Building All 10 Cards</h3>
+<p>I have the requirements, the gaps, the fix plan, the vibes scored. Now I build. You can also pick your favorite vibe tagline and collab line while I build — or I'll use the top-scored ones as defaults.</p>
+</div>
+
+</div>
+</body>
+</html>

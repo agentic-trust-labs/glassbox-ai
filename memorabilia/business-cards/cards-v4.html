@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GlassBox AI — Crystal Cards v4 (Gap-Fixed)</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#dde4e8;color:#222;font-family:'Inter',sans-serif;padding:30px 16px;line-height:1.5}
+h1{text-align:center;font-size:.85rem;color:#15803d;letter-spacing:3px;text-transform:uppercase;font-weight:800;margin-bottom:2px}
+.sub{text-align:center;font-size:.48rem;color:#888;margin-bottom:24px}
+.v{margin-bottom:40px;max-width:780px;margin-left:auto;margin-right:auto}
+.vid{font-size:.5rem;color:#16a34a;letter-spacing:3px;text-transform:uppercase;font-weight:700;text-align:center;margin-bottom:2px}
+.vd{font-size:.38rem;color:#999;text-align:center;margin-bottom:8px}
+.pair{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.s{text-align:center}
+.sl{font-size:.28rem;color:#aaa;letter-spacing:3px;text-transform:uppercase;margin-bottom:3px}
+.card{width:360px;height:206px;border-radius:10px;position:relative;overflow:hidden;display:flex;flex-shrink:0;box-shadow:0 4px 20px rgba(0,0,0,.08)}
+
+/* ── 10 Backgrounds ── */
+.bg1{background:radial-gradient(circle,rgba(255,255,255,.15) 1.5px,transparent 1.5px),linear-gradient(135deg,#86efac,#4ade80);background-size:18px 18px,100% 100%;border:1px solid rgba(21,128,61,.2)}
+.bg2{background:linear-gradient(45deg,rgba(255,255,255,.035) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.035) 50%,rgba(255,255,255,.035) 75%,transparent 75%),linear-gradient(135deg,#14532d,#065f46);background-size:20px 20px,100% 100%;border:1px solid rgba(74,222,128,.25)}
+.bg3{background:linear-gradient(rgba(74,222,128,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(74,222,128,.08) 1px,transparent 1px),linear-gradient(135deg,#bbf7d0,#86efac);background-size:22px 22px,22px 22px,100% 100%;border:1px solid rgba(74,222,128,.2)}
+.bg4{background:linear-gradient(135deg,#22c55e,#16a34a);border:1px solid rgba(21,128,61,.3)}
+.bg5{background:radial-gradient(circle,transparent 18px,rgba(74,222,128,.06) 19px,rgba(74,222,128,.06) 20px,transparent 21px),linear-gradient(135deg,#a7f3d0,#6ee7b7);background-size:44px 44px,100% 100%;border:1px solid rgba(74,222,128,.25)}
+.bg6{background:linear-gradient(45deg,rgba(255,255,255,.06) 1px,transparent 1px),linear-gradient(-45deg,rgba(255,255,255,.06) 1px,transparent 1px),linear-gradient(135deg,#4ade80,#22c55e);background-size:14px 14px,14px 14px,100% 100%;border:1px solid rgba(21,128,61,.25)}
+.bg7{background:radial-gradient(circle,rgba(74,222,128,.12) 1px,transparent 1px),linear-gradient(180deg,#bbf7d0,#86efac 60%,#4ade80);background-size:16px 16px,100% 100%;border:1px solid rgba(74,222,128,.2)}
+.bg8{background:repeating-linear-gradient(0deg,rgba(255,255,255,.04) 0px,rgba(255,255,255,.04) 1px,transparent 1px,transparent 14px),linear-gradient(135deg,#059669,#047857);background-size:100% 14px,100% 100%;border:1px solid rgba(74,222,128,.3)}
+.bg9{background:linear-gradient(120deg,rgba(255,255,255,.09) 30%,transparent 30.5%),linear-gradient(240deg,rgba(255,255,255,.06) 30%,transparent 30.5%),linear-gradient(135deg,#6ee7b7,#4ade80);background-size:36px 36px,36px 36px,100% 100%;border:1px solid rgba(21,128,61,.2)}
+.bg10{background:linear-gradient(135deg,rgba(34,211,238,.06) 10%,transparent 10.5%,transparent 50%,rgba(167,139,250,.04) 50.5%,rgba(167,139,250,.04) 60%,transparent 60.5%),linear-gradient(135deg,#a7f3d0,#4ade80);background-size:32px 32px,100% 100%;border:1px solid rgba(74,222,128,.25)}
+
+/* ── Glass Panel ── */
+.gp{background:rgba(255,255,255,.3);border:1px solid rgba(255,255,255,.5);border-radius:8px;box-shadow:inset 0 1px 2px rgba(255,255,255,.35),0 2px 8px rgba(0,0,0,.04)}
+.dk .gp{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.15);box-shadow:inset 0 1px 2px rgba(255,255,255,.08),0 2px 8px rgba(0,0,0,.15)}
+
+/* ── Typography ── */
+.bn{font-weight:900;color:#15803d;letter-spacing:.5px}
+.bn span{color:#4ade80}
+.tl{color:#16a34a;font-weight:500;letter-spacing:.3px}
+/* FIXED: Much bigger (0.6rem), DULL gray color, dark-red strikethrough line */
+.stk{color:#a1a1aa;text-decoration:line-through;text-decoration-color:#b91c1c;text-decoration-thickness:2px;font-weight:500;letter-spacing:.5px;font-size:.6rem}
+.phil{color:#15803d;font-weight:600;font-style:italic}
+.cta{color:#6b7280;font-weight:500}
+.repo{color:#15803d;font-weight:600}
+.pn{font-weight:800;color:#15803d}
+.pvibe{color:#22c55e;font-weight:500;font-style:italic}
+.pexp{color:#6b7280;font-weight:400}
+.pc{color:#555;font-weight:400}
+.pc strong{font-weight:600;color:#16a34a}
+.divider{height:1.5px;background:#4ade80;border-radius:2px}
+.gh{display:inline-flex;align-items:center;gap:4px}
+.gh svg{flex-shrink:0}
+.collab{display:inline-block;font-size:.3rem;font-weight:700;padding:3px 12px;border-radius:99px;background:rgba(21,128,61,.15);color:#15803d;border:1px solid rgba(74,222,128,.35);letter-spacing:.3px}
+
+/* ── Dark overrides ── */
+.dk .bn,.dk .bn span{color:#f0fdf4}
+.dk .tl{color:#bbf7d0}
+.dk .stk{color:#71717a;text-decoration-color:#f87171}
+.dk .phil{color:#d1fae5}
+.dk .cta{color:rgba(255,255,255,.6)}
+.dk .pexp{color:rgba(255,255,255,.7)}
+.dk .repo{color:#bbf7d0}
+.dk .pn{color:#f0fdf4}
+.dk .pvibe{color:#bbf7d0}
+.dk .pc{color:rgba(255,255,255,.8)}
+.dk .pc strong{color:#86efac}
+.dk .collab{background:rgba(255,255,255,.12);color:#bbf7d0;border-color:rgba(255,255,255,.2)}
+.dk .divider{background:#86efac}
+.dk .qr{border-color:rgba(255,255,255,.25)}
+.dk .qr span{color:rgba(255,255,255,.4)}
+
+/* ── QR ── */
+.qr{width:48px;height:48px;border:1.5px dashed rgba(74,222,128,.4);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.qr span{font-size:.22rem;color:#aaa;font-weight:500}
+
+/* ── Animation ── */
+@keyframes crystal-glow{0%,100%{filter:drop-shadow(0 2px 8px rgba(74,222,128,.25))}50%{filter:drop-shadow(0 3px 14px rgba(74,222,128,.45)) drop-shadow(0 0 4px rgba(187,247,208,.3))}}
+
+/* ── White text on green bg (V04,V06) ── */
+.wt .bn,.wt .bn span{color:#f0fdf4}
+.wt .tl{color:#dcfce7}
+.wt .stk{color:#a1a1aa;text-decoration-color:#fca5a5}
+.wt .phil{color:#ecfdf5}
+.wt .cta{color:rgba(255,255,255,.7)}
+.wt .repo{color:#ecfdf5}
+.wt .pn{color:#f0fdf4}
+.wt .pvibe{color:#dcfce7}
+.wt .pexp{color:rgba(255,255,255,.75)}
+.wt .pc{color:rgba(255,255,255,.85)}
+.wt .pc strong{color:#bbf7d0}
+.wt .collab{background:rgba(255,255,255,.18);color:#f0fdf4;border-color:rgba(255,255,255,.3)}
+.wt .divider{background:#bbf7d0}
+.wt .qr{border-color:rgba(255,255,255,.3)}
+.wt .qr span{color:rgba(255,255,255,.5)}
+
+/* ── Analysis tables ── */
+.atbl{width:100%;border-collapse:collapse;font-size:.38rem}
+.atbl th{padding:5px 6px;text-align:center;color:#15803d;font-weight:700;background:#f0fdf4;border-bottom:2px solid #bbf7d0}
+.atbl th:first-child{text-align:left}
+.atbl td{padding:4px 6px;text-align:center;border-bottom:1px solid #f0f0f0}
+.atbl td:first-child{text-align:left;font-weight:600}
+.lo{color:#dc2626;font-weight:700}
+.md{color:#f59e0b;font-weight:600}
+.hi{color:#16a34a;font-weight:700}
+.sec{background:#fff;border-radius:10px;padding:16px 20px;max-width:780px;margin:0 auto 24px;border:1px solid #e5e7eb}
+.sec h2{font-size:.6rem;color:#15803d;margin-bottom:10px;font-weight:800}
+.sec h3{font-size:.5rem;color:#16a34a;margin-bottom:6px;font-weight:700}
+.sec p,.sec li{font-size:.42rem;color:#555;margin-bottom:3px}
+.sec ul{padding-left:16px}
+.sec strong{color:#111}
+</style>
+</head>
+<body>
+
+<h1>Crystal Cards v4 — Gap-Fixed</h1>
+<p class="sub">Complete gap analysis → Fix plan → 10 rebuilt cards</p>
+
+<!-- ═══ GAP ANALYSIS ═══ -->
+<div class="sec">
+<h2>📊 Gap Analysis — Before Scores (v3)</h2>
+<table class="atbl">
+<tr><th>Card</th><th>Structure</th><th>Align</th><th>Full Card</th><th>Trust</th><th>Elegance</th><th>StrikeText</th><th>Personal</th><th>Unique</th><th>Total /80</th></tr>
+<tr><td>V01 Emerald Mint</td><td class="lo">5</td><td class="md">7</td><td class="lo">4</td><td class="lo">4</td><td class="lo">5</td><td class="lo">3</td><td class="lo">4</td><td class="lo">3</td><td class="lo">35</td></tr>
+<tr><td>V02 Deep Forest</td><td class="lo">5</td><td class="md">7</td><td class="lo">5</td><td class="lo">5</td><td class="md">7</td><td class="lo">4</td><td class="lo">4</td><td class="md">6</td><td class="md">43</td></tr>
+<tr><td>V03 Green Glass</td><td class="lo">5</td><td class="md">7</td><td class="lo">5</td><td class="lo">5</td><td class="md">6</td><td class="lo">3</td><td class="lo">4</td><td class="lo">3</td><td class="lo">38</td></tr>
+<tr><td>V04 Bold Lime</td><td class="lo">4</td><td class="md">6</td><td class="lo">4</td><td class="lo">3</td><td class="lo">4</td><td class="lo">3</td><td class="lo">4</td><td class="lo">4</td><td class="lo">32</td></tr>
+<tr><td>V05 Fresh Mint</td><td class="lo">5</td><td class="md">7</td><td class="lo">4</td><td class="lo">5</td><td class="md">6</td><td class="lo">3</td><td class="lo">4</td><td class="lo">3</td><td class="lo">37</td></tr>
+<tr><td>V06 Teal Cross</td><td class="lo">5</td><td class="md">6</td><td class="lo">5</td><td class="lo">4</td><td class="lo">5</td><td class="lo">3</td><td class="lo">4</td><td class="md">6</td><td class="lo">38</td></tr>
+<tr><td>V07 Dot Matrix</td><td class="md">6</td><td class="lo">5</td><td class="lo">5</td><td class="lo">3</td><td class="lo">4</td><td class="lo">3</td><td class="lo">4</td><td class="lo">5</td><td class="lo">35</td></tr>
+<tr><td>V08 Rich Emerald</td><td class="lo">5</td><td class="md">7</td><td class="lo">5</td><td class="lo">5</td><td class="md">7</td><td class="lo">4</td><td class="lo">4</td><td class="lo">4</td><td class="md">41</td></tr>
+<tr><td>V09 Lime Shards</td><td class="md">7</td><td class="md">6</td><td class="md">6</td><td class="lo">5</td><td class="lo">5</td><td class="lo">3</td><td class="lo">4</td><td class="md">6</td><td class="md">42</td></tr>
+<tr><td>V10 Crystal Prism</td><td class="lo">5</td><td class="md">7</td><td class="lo">5</td><td class="md">6</td><td class="md">6</td><td class="lo">3</td><td class="lo">4</td><td class="lo">5</td><td class="md">41</td></tr>
+<tr style="background:#fef2f2;font-weight:800"><td>AVERAGE</td><td class="lo">5.2</td><td class="md">6.5</td><td class="lo">4.8</td><td class="lo">4.5</td><td class="lo">5.5</td><td class="lo">3.2</td><td class="lo">4.0</td><td class="lo">4.5</td><td class="lo">38.2</td></tr>
+</table>
+</div>
+
+<!-- ═══ FIX PLAN ═══ -->
+<div class="sec">
+<h2>🔧 Fix Plan — 6 Root Causes → 6 Fixes</h2>
+<h3>Fix 1: Strikethrough (3.2→8) — BIGGEST GAP</h3>
+<ul>
+<li><strong>Before:</strong> 0.42rem, bright red #dc2626 — too small, too alarming</li>
+<li><strong>After:</strong> 0.6rem, <strong>dull gray #a1a1aa</strong> text, dark-red strikethrough line #b91c1c, 2px thick</li>
+<li><strong>Effect:</strong> Big, readable, but subdued — the line does the work, not the color</li>
+</ul>
+<h3>Fix 2: Structure (5.2→8) — Add Glass Panels + Zones</h3>
+<ul>
+<li><strong>Before:</strong> Vertical text stack, no visual zones, content floats in center</li>
+<li><strong>After:</strong> Each card has a <code>.gp</code> (glass panel) overlay creating visible structure — header/body/footer zones with separators</li>
+<li>Each variant gets a <strong>unique structural approach</strong> (panel, split, bands, frame, accent bar)</li>
+</ul>
+<h3>Fix 3: Full Card Usage (4.8→8) — Fill All Space</h3>
+<ul>
+<li><strong>Before:</strong> Content in center, edges have weak circles</li>
+<li><strong>After:</strong> Glass panels stretch full card, content fills height. Structural elements (bars, bands, frames) use edges</li>
+</ul>
+<h3>Fix 4: Trust/Transparency Feel (4.5→8)</h3>
+<ul>
+<li><strong>Before:</strong> Only butterfly suggests glass</li>
+<li><strong>After:</strong> Glass panel overlays, layered transparency, visible structure = "glass box you can see through"</li>
+</ul>
+<h3>Fix 5: Personal Side (4.0→8) — 3 Templates</h3>
+<ul>
+<li><strong>Template A (V01,V04,V07,V09):</strong> Left-aligned, QR bottom-right, glass panel</li>
+<li><strong>Template B (V02,V05,V08,V10):</strong> Centered, QR bottom, glass panel</li>
+<li><strong>Template C (V03,V06):</strong> Two-zone split: info top, contacts bottom</li>
+</ul>
+<h3>Fix 6: Uniqueness (4.5→8) — 10 Different Structures</h3>
+<ul>
+<li>V01: Glass panel centered | V02: Dark + glass window | V03: Three green bands</li>
+<li>V04: Left accent bar + white text | V05: Floating inner card | V06: Diagonal accent + white text</li>
+<li>V07: Header band + body | V08: Glass frame border | V09: Split panels | V10: Central glass focus</li>
+</ul>
+</div>
+
+<!-- ═══ SVG DEFS ═══ -->
+<svg style="position:absolute;width:0;height:0">
+<defs>
+  <linearGradient id="cl" x1="0" y1="0" x2="0.8" y2="1"><stop offset="0%" stop-color="#4ade80" stop-opacity="0.55"/><stop offset="35%" stop-color="#a7f3d0" stop-opacity="0.35"/><stop offset="55%" stop-color="#22d3ee" stop-opacity="0.12"/><stop offset="100%" stop-color="#4ade80" stop-opacity="0.4"/></linearGradient>
+  <linearGradient id="cr" x1="1" y1="0" x2="0.2" y2="1"><stop offset="0%" stop-color="#4ade80" stop-opacity="0.55"/><stop offset="35%" stop-color="#a7f3d0" stop-opacity="0.35"/><stop offset="55%" stop-color="#22d3ee" stop-opacity="0.12"/><stop offset="100%" stop-color="#4ade80" stop-opacity="0.4"/></linearGradient>
+  <linearGradient id="sh" x1="0" y1="0" x2="0.3" y2="1"><stop offset="0%" stop-color="#fff" stop-opacity="0.95"/><stop offset="40%" stop-color="#fff" stop-opacity="0.35"/><stop offset="100%" stop-color="#fff" stop-opacity="0"/></linearGradient>
+  <linearGradient id="pr" x1="0" y1="0.5" x2="1" y2="0.5"><stop offset="0%" stop-color="#22d3ee" stop-opacity="0.3"/><stop offset="35%" stop-color="#a78bfa" stop-opacity="0.12"/><stop offset="65%" stop-color="#f0abfc" stop-opacity="0.08"/><stop offset="100%" stop-color="#22d3ee" stop-opacity="0.3"/></linearGradient>
+  <radialGradient id="gm" cx="38%" cy="32%" r="62%"><stop offset="0%" stop-color="#f0fdf4"/><stop offset="25%" stop-color="#bbf7d0"/><stop offset="60%" stop-color="#4ade80"/><stop offset="100%" stop-color="#15803d"/></radialGradient>
+  <g id="bf">
+    <line x1="75" y1="24" x2="75" y2="125" stroke="#22c55e" stroke-width="2.5"/>
+    <line x1="75.8" y1="30" x2="75.8" y2="118" stroke="rgba(255,255,255,0.5)" stroke-width="0.8"/>
+    <path d="M75 30 Q56 14 48 6" fill="none" stroke="#22c55e" stroke-width="2"/>
+    <path d="M75 30 Q94 14 102 6" fill="none" stroke="#22c55e" stroke-width="2"/>
+    <path d="M48 1.5 L44.5 6 L48 10.5 L51.5 6 Z" fill="url(#gm)" stroke="#4ade80" stroke-width="0.7"/>
+    <circle cx="48" cy="4.5" r="1.5" fill="#fff" opacity="0.85"/>
+    <path d="M102 1.5 L98.5 6 L102 10.5 L105.5 6 Z" fill="url(#gm)" stroke="#4ade80" stroke-width="0.7"/>
+    <circle cx="102" cy="4.5" r="1.5" fill="#fff" opacity="0.85"/>
+    <path d="M75 36 Q24 28 14 60 Q10 80 46 88 Q66 90 75 74 Z" fill="url(#cl)" stroke="#4ade80" stroke-width="1.8"/>
+    <path d="M75 36 Q126 28 136 60 Q140 80 104 88 Q84 90 75 74 Z" fill="url(#cr)" stroke="#4ade80" stroke-width="1.8"/>
+    <path d="M75 36 L42 52" fill="none" stroke="rgba(74,222,128,0.35)" stroke-width="0.7"/>
+    <path d="M75 36 L26 68" fill="none" stroke="rgba(74,222,128,0.28)" stroke-width="0.6"/>
+    <path d="M42 52 L18 66" fill="none" stroke="rgba(74,222,128,0.22)" stroke-width="0.5"/>
+    <path d="M42 52 L46 88" fill="none" stroke="rgba(74,222,128,0.2)" stroke-width="0.5"/>
+    <path d="M26 68 L46 88" fill="none" stroke="rgba(74,222,128,0.18)" stroke-width="0.5"/>
+    <path d="M75 36 L108 52" fill="none" stroke="rgba(74,222,128,0.35)" stroke-width="0.7"/>
+    <path d="M75 36 L124 68" fill="none" stroke="rgba(74,222,128,0.28)" stroke-width="0.6"/>
+    <path d="M108 52 L132 66" fill="none" stroke="rgba(74,222,128,0.22)" stroke-width="0.5"/>
+    <path d="M108 52 L104 88" fill="none" stroke="rgba(74,222,128,0.2)" stroke-width="0.5"/>
+    <path d="M124 68 L104 88" fill="none" stroke="rgba(74,222,128,0.18)" stroke-width="0.5"/>
+    <path d="M75 36 L42 52 L26 68 Z" fill="rgba(255,255,255,0.12)"/>
+    <path d="M42 52 L26 68 L46 88 Z" fill="rgba(34,211,238,0.06)"/>
+    <path d="M75 36 L42 52 L46 88 L75 74 Z" fill="rgba(255,255,255,0.07)"/>
+    <path d="M75 36 L108 52 L124 68 Z" fill="rgba(255,255,255,0.12)"/>
+    <path d="M108 52 L124 68 L104 88 Z" fill="rgba(34,211,238,0.06)"/>
+    <path d="M75 36 L108 52 L104 88 L75 74 Z" fill="rgba(255,255,255,0.07)"/>
+    <path d="M75 78 Q36 84 24 106 Q28 120 54 114 Q70 110 75 96 Z" fill="url(#cl)" stroke="#4ade80" stroke-width="1.5"/>
+    <path d="M75 78 Q114 84 126 106 Q122 120 96 114 Q80 110 75 96 Z" fill="url(#cr)" stroke="#4ade80" stroke-width="1.5"/>
+    <path d="M75 78 L48 96" fill="none" stroke="rgba(74,222,128,0.25)" stroke-width="0.5"/>
+    <path d="M75 78 L34 106" fill="none" stroke="rgba(74,222,128,0.2)" stroke-width="0.5"/>
+    <path d="M75 78 L102 96" fill="none" stroke="rgba(74,222,128,0.25)" stroke-width="0.5"/>
+    <path d="M75 78 L116 106" fill="none" stroke="rgba(74,222,128,0.2)" stroke-width="0.5"/>
+    <path d="M75 78 L48 96 L34 106 Z" fill="rgba(255,255,255,0.09)"/>
+    <path d="M75 78 L102 96 L116 106 Z" fill="rgba(255,255,255,0.09)"/>
+    <path d="M72 40 Q38 34 18 58" fill="none" stroke="url(#sh)" stroke-width="5" stroke-linecap="round"/>
+    <path d="M78 40 Q112 34 132 58" fill="none" stroke="url(#sh)" stroke-width="5" stroke-linecap="round"/>
+    <path d="M68 45 Q42 40 24 62" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="1.8" stroke-linecap="round"/>
+    <path d="M82 45 Q108 40 126 62" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="1.8" stroke-linecap="round"/>
+    <path d="M73 82 Q46 88 28 104" fill="none" stroke="url(#sh)" stroke-width="3.5" stroke-linecap="round"/>
+    <path d="M77 82 Q104 88 122 104" fill="none" stroke="url(#sh)" stroke-width="3.5" stroke-linecap="round"/>
+    <path d="M16 56 Q50 46 75 48 Q100 46 134 56" fill="none" stroke="url(#pr)" stroke-width="4" stroke-linecap="round" opacity="0.7"/>
+    <circle cx="46" cy="58" r="13" fill="url(#gm)"/><circle cx="46" cy="58" r="9" fill="rgba(187,247,208,0.6)"/><circle cx="46" cy="58" r="5" fill="rgba(255,255,255,0.55)"/><circle cx="44" cy="55" r="2.2" fill="#fff" opacity="0.85"/>
+    <circle cx="104" cy="58" r="13" fill="url(#gm)"/><circle cx="104" cy="58" r="9" fill="rgba(187,247,208,0.6)"/><circle cx="104" cy="58" r="5" fill="rgba(255,255,255,0.55)"/><circle cx="102" cy="55" r="2.2" fill="#fff" opacity="0.85"/>
+    <circle cx="75" cy="100" r="12" fill="url(#gm)"/><circle cx="75" cy="100" r="8" fill="rgba(187,247,208,0.6)"/><circle cx="75" cy="100" r="4.5" fill="rgba(255,255,255,0.55)"/><circle cx="73" cy="97" r="2" fill="#fff" opacity="0.85"/>
+    <path d="M46 58 Q75 46 104 58" fill="none" stroke="rgba(74,222,128,0.3)" stroke-width="1.2"/>
+    <path d="M46 58 Q58 80 75 100" fill="none" stroke="rgba(74,222,128,0.3)" stroke-width="1.2"/>
+    <path d="M104 58 Q92 80 75 100" fill="none" stroke="rgba(74,222,128,0.3)" stroke-width="1.2"/>
+    <path d="M14 56 L11 60 L14 64 L17 60 Z" fill="#fff" opacity="0.9"/>
+    <path d="M136 56 L133 60 L136 64 L139 60 Z" fill="#fff" opacity="0.9"/>
+    <path d="M75 33 L73.5 36 L75 39 L76.5 36 Z" fill="#fff" opacity="0.65"/>
+  </g>
+  <g id="ghm"><path fill="currentColor" d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.73.083-.73 1.205.085 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.418-1.305.762-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.605-.015 2.896-.015 3.286 0 .315.21.694.825.576C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12z"/></g>
+</defs>
+</svg>
+
+
+<!-- ════════════════════════════════════════════════════════════════
+     V01 · GLASS PANEL CENTERED
+     Structure: Inner glass panel holds all content = "glass box" metaphor
+     ════════════════════════════════════════════════════════════════ -->
+<div class="v">
+<div class="vid">V01 · Glass Panel Centered</div>
+<div class="vd">Emerald mint · hex dots · glass panel structure · 🤝 Open for Collaboration</div>
+<div class="pair">
+<div class="s"><div class="sl">brand side</div>
+<div class="card bg1" style="align-items:center;justify-content:center;padding:10px">
+  <div class="gp" style="width:92%;height:90%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 14px;gap:2px">
+    <svg width="68" height="64" viewBox="0 0 150 130" style="animation:crystal-glow 3s ease-in-out infinite"><use href="#bf"/></svg>
+    <div class="bn" style="font-size:1.2rem;margin-top:4px"><span>Glass</span>Box AI</div>
+    <div class="stk">not BlackBox AI</div>
+    <div class="tl" style="font-size:.3rem;margin-top:2px">trustable agents for scalable solutions</div>
+    <div class="phil" style="font-size:.26rem;margin-top:2px">"Nothing to hide. Everything to build."</div>
+    <div class="collab" style="margin-top:3px">🤝 Open for Collaboration</div>
+    <div style="display:flex;align-items:center;gap:5px;margin-top:3px">
+      <svg width="10" height="10" viewBox="0 0 24 24" style="color:#15803d"><use href="#ghm"/></svg>
+      <span class="repo" style="font-size:.26rem">agentic-trust-labs/glassbox-ai</span>
+    </div>
+    <div class="cta" style="font-size:.24rem;margin-top:1px">Raise an issue · Our AI agent builds the fix</div>
+  </div>
+</div></div>
+<div class="s"><div class="sl">personal side</div>
+<div class="card bg1" style="align-items:center;justify-content:center;padding:10px">
+  <div class="gp" style="width:92%;height:90%;display:flex;flex-direction:column;justify-content:center;padding:12px 18px;position:relative">
+    <svg width="40" height="38" viewBox="0 0 150 130" style="position:absolute;top:8px;right:8px;opacity:.08"><use href="#bf"/></svg>
+    <div class="pn" style="font-size:1.1rem">Sourabh Gupta</div>
+    <div class="pvibe" style="font-size:.3rem;margin-top:2px">"I build AI agents that show their work"</div>
+    <div class="pexp" style="font-size:.26rem;margin-top:3px">10 years in AI, ML & everything Agentic</div>
+    <div class="divider" style="width:32px;margin:5px 0"></div>
+    <div style="display:flex;gap:12px;align-items:flex-end">
+      <div style="flex:1;display:flex;flex-direction:column;gap:1.5px">
+        <div class="pc" style="font-size:.26rem"><strong>WhatsApp</strong> +91-7627089241</div>
+        <div class="pc" style="font-size:.26rem"><strong>LinkedIn</strong> linkedin.com/in/sourabhgupta16</div>
+        <div class="pc" style="font-size:.26rem"><strong>Email</strong> sourabharsh@gmail.com</div>
+      </div>
+      <div style="text-align:center"><div class="qr"><span>QR</span></div><div style="font-size:.17rem;color:#6b7280;margin-top:1px">Scan to connect</div></div>
+    </div>
+  </div>
+</div></div>
+</div></div>
+
+
+<!-- ════════════════════════════════════════════════════════════════
+     V02 · DARK GLASS WINDOW
+     Structure: Dark bg + centered glass window = dramatic transparency
+     ════════════════════════════════════════════════════════════════ -->
+<div class="v">
+<div class="vid">V02 · Dark Glass Window</div>
+<div class="vd">Deep forest · diamond lattice · glass window on dark · 🤝 Contributors Welcome</div>
+<div class="pair">
+<div class="s"><div class="sl">brand side</div>
+<div class="card bg2 dk" style="align-items:center;justify-content:center;padding:10px">
+  <div class="gp" style="width:92%;height:90%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 14px;gap:2px">
+    <svg width="68" height="64" viewBox="0 0 150 130" style="filter:drop-shadow(0 2px 10px rgba(74,222,128,.5));animation:crystal-glow 3s ease-in-out infinite"><use href="#bf"/></svg>
+    <div class="bn" style="font-size:1.2rem;margin-top:4px"><span>Glass</span>Box AI</div>
+    <div class="stk">not BlackBox AI</div>
+    <div class="tl" style="font-size:.3rem;margin-top:2px">trustable agents for scalable solutions</div>
+    <div class="phil" style="font-size:.26rem;margin-top:2px">"Nothing to hide. Everything to build."</div>
+    <div class="collab" style="margin-top:3px">🤝 Contributors Welcome</div>
+    <div style="display:flex;align-items:center;gap:5px;margin-top:3px">
+      <svg width="10" height="10" viewBox="0 0 24 24" style="color:#86efac"><use href="#ghm"/></svg>
+      <span class="repo" style="font-size:.26rem">agentic-trust-labs/glassbox-ai</span>
+    </div>
+    <div class="cta" style="font-size:.24rem;margin-top:1px">Raise an issue · Our AI agent builds the fix</div>
+  </div>
+</div></div>
+<div class="s"><div class="sl">personal side</div>
+<div class="card bg2 dk" style="align-items:center;justify-content:center;padding:10px">
+  <div class="gp" style="width:92%;height:90%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:12px 18px;text-align:center;position:relative">
+    <svg width="38" height="36" viewBox="0 0 150 130" style="position:absolute;top:8px;right:8px;opacity:.1"><use href="#bf"/></svg>
+    <div class="pn" style="font-size:1.1rem">Sourabh Gupta</div>
+    <div class="pvibe" style="font-size:.3rem;margin-top:2px">"I build AI agents that show their work"</div>
+    <div class="pexp" style="font-size:.26rem;margin-top:3px">10 years in AI, ML & everything Agentic</div>
+    <div class="divider" style="width:32px;margin:5px auto"></div>
+    <div class="pc" style="font-size:.26rem"><strong>WhatsApp</strong> +91-7627089241</div>
+    <div class="pc" style="font-size:.26rem"><strong>LinkedIn</strong> linkedin.com/in/sourabhgupta16</div>
+    <div class="pc" style="font-size:.26rem"><strong>Email</strong> sourabharsh@gmail.com</div>
+    <div style="margin-top:5px;display:flex;align-items:center;gap:8px">
+      <div class="qr" style="width:40px;height:40px"><span>QR</span></div>
+      <div style="font-size:.18rem;color:rgba(255,255,255,.4)">Scan to connect</div>
+    </div>
+  </div>
+</div></div>
+</div></div>
+
+
+<!-- ════════════════════════════════════════════════════════════════
+     V03 · THREE GREEN BANDS
+     Structure: Three horizontal zones separated by green gradient lines
+     ════════════════════════════════════════════════════════════════ -->
+<div class="v">
+<div class="vid">V03 · Three Green Bands</div>
+<div class="vd">Medium green · grid texture · three-zone structure · 🤝 Let's Build Together</div>
+<div class="pair">
+<div class="s"><div class="sl">brand side</div>
+<div class="card bg3" style="flex-direction:column;padding:0">
+  <!-- Zone 1: Logo + Name -->
+  <div style="display:flex;align-items:center;gap:10px;padding:12px 16px 8px;flex:0 0 auto">
+    <svg width="54" height="50" viewBox="0 0 150 130" style="animation:crystal-glow 3s ease-in-out infinite;flex-shrink:0"><use href="#bf"/></svg>
+    <div>
+      <div class="bn" style="font-size:1.1rem"><span>Glass</span>Box AI</div>
+      <div class="stk" style="margin-top:1px">not BlackBox AI</div>
+    </div>
+  </div>
+  <div style="height:1.5px;background:linear-gradient(90deg,transparent,#4ade80,transparent);margin:0 16px"></div>
+  <!-- Zone 2: Messaging -->
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:4px 16px;gap:3px">
+    <div class="tl" style="font-size:.3rem">trustable agents for scalable solutions</div>
+    <div class="phil" style="font-size:.26rem">"Nothing to hide. Everything to build."</div>
+    <div class="collab" style="margin-top:2px">🤝 Let's Build Together</div>
+  </div>
+  <div style="height:1.5px;background:linear-gradient(90deg,transparent,#4ade80,transparent);margin:0 16px"></div>
+  <!-- Zone 3: GitHub + CTA -->
+  <div style="display:flex;align-items:center;justify-content:center;gap:6px;padding:6px 16px 10px">
+    <svg width="11" height="11" viewBox="0 0 24 24" style="color:#15803d"><use href="#ghm"/></svg>
+    <span class="repo" style="font-size:.26rem">agentic-trust-labs/glassbox-ai</span>
+    <span style="color:#c4c4c4">·</span>
+    <span class="cta" style="font-size:.24rem">Raise an issue · Agent builds the fix</span>
+  </div>
+</div></div>
+<div class="s"><div class="sl">personal side</div>
+<div class="card bg3" style="flex-direction:column;padding:0">
+  <!-- Zone 1: Identity -->
+  <div style="padding:12px 18px 8px;position:relative">
+    <svg width="36" height="34" viewBox="0 0 150 130" style="position:absolute;top:8px;right:12px;opacity:.07"><use href="#bf"/></svg>
+    <div class="pn" style="font-size:1.05rem">Sourabh Gupta</div>
+    <div class="pvibe" style="font-size:.29rem;margin-top:2px">"I build AI agents that show their work"</div>
+    <div class="pexp" style="font-size:.25rem;margin-top:3px">10 years in AI, ML & everything Agentic</div>
+  </div>
+  <div style="height:1.5px;background:linear-gradient(90deg,transparent,#4ade80,transparent);margin:0 16px"></div>
+  <!-- Zone 2: Contact -->
+  <div style="flex:1;display:flex;align-items:center;padding:8px 18px;gap:12px">
+    <div style="flex:1;display:flex;flex-direction:column;gap:2px">
+      <div class="pc" style="font-size:.26rem"><strong>WhatsApp</strong> +91-7627089241</div>
+      <div class="pc" style="font-size:.26rem"><strong>LinkedIn</strong> linkedin.com/in/sourabhgupta16</div>
+      <div class="pc" style="font-size:.26rem"><strong>Email</strong> sourabharsh@gmail.com</div>
+    </div>
+    <div style="text-align:center"><div class="qr"><span>QR</span></div><div style="font-size:.17rem;color:#6b7280;margin-top:1px">Scan to connect</div></div>
+  </div>
+</div></div>
+</div></div>
+
+
+<!-- ════════════════════════════════════════════════════════════════
+     V04 · LEFT ACCENT BAR
+     Structure: Solid deep-green vertical bar on left, white text on green
+     ════════════════════════════════════════════════════════════════ -->
+<div class="v">
+<div class="vid">V04 · Left Accent Bar</div>
+<div class="vd">Solid vivid green · left accent bar · white text · 🤝 Collaborators Wanted</div>
+<div class="pair">
+<div class="s"><div class="sl">brand side</div>
+<div class="card bg4 wt" style="flex-direction:row;padding:0;overflow:hidden">
+  <div style="width:10px;background:linear-gradient(180deg,#f0fdf4,#bbf7d0,#f0fdf4);flex-shrink:0"></div>
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:12px 18px;gap:2px">
+    <div style="display:flex;align-items:center;gap:10px">
+      <svg width="56" height="52" viewBox="0 0 150 130" style="animation:crystal-glow 3s ease-in-out infinite;flex-shrink:0"><use href="#bf"/></svg>
+      <div>
+        <div class="bn" style="font-size:1.15rem"><span>Glass</span>Box AI</div>
+        <div class="stk" style="margin-top:1px">not BlackBox AI</div>
+      </div>
+    </div>
+    <div class="tl" style="font-size:.29rem;margin-top:4px">trustable agents for scalable solutions</div>
+    <div class="phil" style="font-size:.25rem;margin-top:2px">"Nothing to hide. Everything to build."</div>
+    <div style="display:flex;align-items:center;gap:8px;margin-top:4px">
+      <div class="collab">🤝 Collaborators Wanted</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:5px;margin-top:4px">
+      <svg width="10" height="10" viewBox="0 0 24 24" style="color:#bbf7d0"><use href="#ghm"/></svg>
+      <span class="repo" style="font-size:.25rem">agentic-trust-labs/glassbox-ai</span>
+      <span style="color:rgba(255,255,255,.3)">·</span>
+      <span class="cta" style="font-size:.23rem">Raise an issue · Agent builds the fix</span>
+    </div>
+  </div>
+</div></div>
+<div class="s"><div class="sl">personal side</div>
+<div class="card bg4 wt" style="flex-direction:row;padding:0;overflow:hidden">
+  <div style="width:10px;background:linear-gradient(180deg,#f0fdf4,#bbf7d0,#f0fdf4);flex-shrink:0"></div>
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:12px 18px;position:relative">
+    <svg width="40" height="38" viewBox="0 0 150 130" style="position:absolute;top:8px;right:10px;opacity:.08"><use href="#bf"/></svg>
+    <div class="pn" style="font-size:1.05rem">Sourabh Gupta</div>
+    <div class="pvibe" style="font-size:.29rem;margin-top:2px">"I build AI agents that show their work"</div>
+    <div class="pexp" style="font-size:.25rem;margin-top:3px">10 years in AI, ML & everything Agentic</div>
+    <div class="divider" style="width:32px;margin:5px 0"></div>
+    <div style="display:flex;gap:12px;align-items:flex-end">
+      <div style="flex:1;display:flex;flex-direction:column;gap:1.5px">
+        <div class="pc" style="font-size:.25rem"><strong>WhatsApp</strong> +91-7627089241</div>
+        <div class="pc" style="font-size:.25rem"><strong>LinkedIn</strong> linkedin.com/in/sourabhgupta16</div>
+        <div class="pc" style="font-size:.25rem"><strong>Email</strong> sourabharsh@gmail.com</div>
+      </div>
+      <div style="text-align:center"><div class="qr"><span>QR</span></div><div style="font-size:.17rem;color:rgba(255,255,255,.5);margin-top:1px">Scan</div></div>
+    </div>
+  </div>
+</div></div>
+</div></div>
+
+
+<!-- ════════════════════════════════════════════════════════════════
+     V05 · FLOATING INNER CARD
+     Structure: Raised glass card within the card — depth + transparency
+     ════════════════════════════════════════════════════════════════ -->
+<div class="v">
+<div class="vid">V05 · Floating Inner Card</div>
+<div class="vd">Soft green · circle ripple · floating glass panel with shadow · 🤝 Fork It · Fix It · Ship It</div>
+<div class="pair">
+<div class="s"><div class="sl">brand side</div>
+<div class="card bg5" style="align-items:center;justify-content:center;padding:12px">
+  <div style="width:90%;height:88%;background:rgba(255,255,255,.45);border:1px solid rgba(255,255,255,.65);border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.06),0 1px 3px rgba(0,0,0,.04);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 14px;gap:2px">
+    <svg width="64" height="60" viewBox="0 0 150 130" style="animation:crystal-glow 3s ease-in-out infinite"><use href="#bf"/></svg>
+    <div class="bn" style="font-size:1.15rem;margin-top:3px"><span>Glass</span>Box AI</div>
+    <div class="stk">not BlackBox AI</div>
+    <div class="tl" style="font-size:.28rem;margin-top:2px">trustable agents for scalable solutions</div>
+    <div class="phil" style="font-size:.25rem;margin-top:2px">"Nothing to hide. Everything to build."</div>
+    <div class="collab" style="margin-top:3px">🤝 Fork It · Fix It · Ship It</div>
+    <div style="display:flex;align-items:center;gap:5px;margin-top:3px">
+      <svg width="10" height="10" viewBox="0 0 24 24" style="color:#15803d"><use href="#ghm"/></svg>
+      <span class="repo" style="font-size:.25rem">agentic-trust-labs/glassbox-ai</span>
+      <span style="color:#ccc">·</span>
+      <span class="cta" style="font-size:.22rem">Raise an issue · Agent builds the fix</span>
+    </div>
+  </div>
+</div></div>
+<div class="s"><div class="sl">personal side</div>
+<div class="card bg5" style="align-items:center;justify-content:center;padding:12px">
+  <div style="width:90%;height:88%;background:rgba(255,255,255,.45);border:1px solid rgba(255,255,255,.65);border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.06),0 1px 3px rgba(0,0,0,.04);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 18px;text-align:center;position:relative">
+    <svg width="36" height="34" viewBox="0 0 150 130" style="position:absolute;top:6px;right:8px;opacity:.07"><use href="#bf"/></svg>
+    <div class="pn" style="font-size:1.05rem">Sourabh Gupta</div>
+    <div class="pvibe" style="font-size:.29rem;margin-top:2px">"I build AI agents that show their work"</div>
+    <div class="pexp" style="font-size:.25rem;margin-top:3px">10 years in AI, ML & everything Agentic</div>
+    <div class="divider" style="width:32px;margin:4px auto"></div>
+    <div class="pc" style="font-size:.25rem"><strong>WhatsApp</strong> +91-7627089241</div>
+    <div class="pc" style="font-size:.25rem"><strong>LinkedIn</strong> linkedin.com/in/sourabhgupta16</div>
+    <div class="pc" style="font-size:.25rem"><strong>Email</strong> sourabharsh@gmail.com</div>
+    <div style="margin-top:4px;display:flex;align-items:center;gap:6px">
+      <div class="qr" style="width:38px;height:38px"><span>QR</span></div>
+      <div style="font-size:.17rem;color:#6b7280">Scan to connect</div>
+    </div>
+  </div>
+</div></div>
+</div></div>
+
+
+<!-- ════════════════════════════════════════════════════════════════
+     V06 · DIAGONAL ACCENT
+     Structure: Green diagonal top-left corner accent, white text
+     ════════════════════════════════════════════════════════════════ -->
+<div class="v">
+<div class="vid">V06 · Diagonal Accent</div>
+<div class="vd">Vibrant green · crosshatch · diagonal glass accent · 🤝 Build With Us</div>
+<div class="pair">
+<div class="s"><div class="sl">brand side</div>
+<div class="card bg6 wt" style="flex-direction:column;padding:0;overflow:hidden">
+  <div style="position:absolute;top:0;left:0;width:0;height:0;border-top:80px solid rgba(255,255,255,.12);border-right:140px solid transparent"></div>
+  <div style="position:absolute;top:0;left:0;width:0;height:0;border-top:60px solid rgba(255,255,255,.06);border-right:100px solid transparent"></div>
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:12px 16px;gap:2px">
+    <svg width="66" height="62" viewBox="0 0 150 130" style="animation:crystal-glow 3s ease-in-out infinite"><use href="#bf"/></svg>
+    <div class="bn" style="font-size:1.15rem;margin-top:3px"><span>Glass</span>Box AI</div>
+    <div class="stk">not BlackBox AI</div>
+    <div class="tl" style="font-size:.29rem;margin-top:2px">trustable agents for scalable solutions</div>
+    <div class="phil" style="font-size:.25rem;margin-top:2px">"Nothing to hide. Everything to build."</div>
+    <div class="collab" style="margin-top:3px">🤝 Build With Us</div>
+    <div style="display:flex;align-items:center;gap:5px;margin-top:3px">
+      <svg width="10" height="10" viewBox="0 0 24 24" style="color:#dcfce7"><use href="#ghm"/></svg>
+      <span class="repo" style="font-size:.25rem">agentic-trust-labs/glassbox-ai</span>
+      <span style="color:rgba(255,255,255,.3)">·</span>
+      <span class="cta" style="font-size:.23rem">Raise an issue · Agent builds the fix</span>
+    </div>
+  </div>
+</div></div>
+<div class="s"><div class="sl">personal side</div>
+<div class="card bg6 wt" style="flex-direction:column;padding:0;overflow:hidden">
+  <div style="position:absolute;bottom:0;right:0;width:0;height:0;border-bottom:70px solid rgba(255,255,255,.1);border-left:120px solid transparent"></div>
+  <!-- Zone 1: Identity -->
+  <div style="padding:14px 18px 6px;position:relative">
+    <svg width="34" height="32" viewBox="0 0 150 130" style="position:absolute;top:10px;right:12px;opacity:.08"><use href="#bf"/></svg>
+    <div class="pn" style="font-size:1.05rem">Sourabh Gupta</div>
+    <div class="pvibe" style="font-size:.29rem;margin-top:2px">"I build AI agents that show their work"</div>
+    <div class="pexp" style="font-size:.25rem;margin-top:3px">10 years in AI, ML & everything Agentic</div>
+  </div>
+  <div style="height:1px;background:rgba(255,255,255,.2);margin:2px 16px"></div>
+  <!-- Zone 2: Contacts -->
+  <div style="flex:1;display:flex;align-items:center;padding:6px 18px;gap:12px">
+    <div style="flex:1;display:flex;flex-direction:column;gap:2px">
+      <div class="pc" style="font-size:.25rem"><strong>WhatsApp</strong> +91-7627089241</div>
+      <div class="pc" style="font-size:.25rem"><strong>LinkedIn</strong> linkedin.com/in/sourabhgupta16</div>
+      <div class="pc" style="font-size:.25rem"><strong>Email</strong> sourabharsh@gmail.com</div>
+    </div>
+    <div style="text-align:center"><div class="qr"><span>QR</span></div><div style="font-size:.17rem;color:rgba(255,255,255,.5);margin-top:1px">Scan</div></div>
+  </div>
+</div></div>
+</div></div>
+
+
+<!-- ════════════════════════════════════════════════════════════════
+     V07 · HEADER BAND + BODY
+     Structure: Bold green header band with butterfly+name, body below
+     ════════════════════════════════════════════════════════════════ -->
+<div class="v">
+<div class="vid">V07 · Header Band + Body</div>
+<div class="vd">Green gradient · dot matrix · header band structure · 🤝 Join the Build</div>
+<div class="pair">
+<div class="s"><div class="sl">brand side</div>
+<div class="card bg7" style="flex-direction:column;padding:0">
+  <!-- Header band -->
+  <div style="background:rgba(21,128,61,.12);padding:10px 16px;display:flex;align-items:center;gap:10px;border-bottom:1.5px solid rgba(74,222,128,.3)">
+    <svg width="48" height="44" viewBox="0 0 150 130" style="animation:crystal-glow 3s ease-in-out infinite;flex-shrink:0"><use href="#bf"/></svg>
+    <div>
+      <div class="bn" style="font-size:1.1rem"><span>Glass</span>Box AI</div>
+      <div class="stk" style="margin-top:1px">not BlackBox AI</div>
+    </div>
+  </div>
+  <!-- Body -->
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:6px 16px;gap:3px">
+    <div class="tl" style="font-size:.3rem">trustable agents for scalable solutions</div>
+    <div class="phil" style="font-size:.25rem">"Nothing to hide. Everything to build."</div>
+    <div class="collab" style="margin-top:2px">🤝 Join the Build</div>
+    <div style="display:flex;align-items:center;gap:5px;margin-top:3px">
+      <svg width="10" height="10" viewBox="0 0 24 24" style="color:#15803d"><use href="#ghm"/></svg>
+      <span class="repo" style="font-size:.25rem">agentic-trust-labs/glassbox-ai</span>
+      <span style="color:#ccc">·</span>
+      <span class="cta" style="font-size:.23rem">Raise an issue · Agent builds the fix</span>
+    </div>
+  </div>
+</div></div>
+<div class="s"><div class="sl">personal side</div>
+<div class="card bg7" style="flex-direction:column;padding:0">
+  <!-- Header band -->
+  <div style="background:rgba(21,128,61,.12);padding:10px 16px;border-bottom:1.5px solid rgba(74,222,128,.3);display:flex;align-items:center;gap:8px;position:relative">
+    <svg width="34" height="32" viewBox="0 0 150 130" style="position:absolute;top:6px;right:10px;opacity:.08"><use href="#bf"/></svg>
+    <div>
+      <div class="pn" style="font-size:1.05rem">Sourabh Gupta</div>
+      <div class="pvibe" style="font-size:.28rem;margin-top:1px">"I build AI agents that show their work"</div>
+    </div>
+  </div>
+  <!-- Body -->
+  <div style="flex:1;display:flex;align-items:center;padding:8px 18px;gap:12px">
+    <div style="flex:1">
+      <div class="pexp" style="font-size:.25rem;margin-bottom:5px">10 years in AI, ML & everything Agentic</div>
+      <div class="divider" style="width:28px;margin-bottom:4px"></div>
+      <div class="pc" style="font-size:.25rem"><strong>WhatsApp</strong> +91-7627089241</div>
+      <div class="pc" style="font-size:.25rem"><strong>LinkedIn</strong> linkedin.com/in/sourabhgupta16</div>
+      <div class="pc" style="font-size:.25rem"><strong>Email</strong> sourabharsh@gmail.com</div>
+    </div>
+    <div style="text-align:center"><div class="qr"><span>QR</span></div><div style="font-size:.17rem;color:#6b7280;margin-top:1px">Scan</div></div>
+  </div>
+</div></div>
+</div></div>
+
+
+<!-- ════════════════════════════════════════════════════════════════
+     V08 · GLASS FRAME
+     Structure: Thick glass-effect double border = framed artwork feel
+     ════════════════════════════════════════════════════════════════ -->
+<div class="v">
+<div class="vid">V08 · Glass Frame</div>
+<div class="vd">Rich emerald · scanlines · glass frame border · 🤝 Open Source, Open Arms</div>
+<div class="pair">
+<div class="s"><div class="sl">brand side</div>
+<div class="card bg8 dk" style="padding:6px">
+  <div style="width:100%;height:100%;border:1.5px solid rgba(74,222,128,.35);border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 14px;gap:2px;position:relative;box-shadow:inset 0 0 12px rgba(74,222,128,.08)">
+    <svg width="64" height="60" viewBox="0 0 150 130" style="filter:drop-shadow(0 2px 10px rgba(74,222,128,.5));animation:crystal-glow 3s ease-in-out infinite"><use href="#bf"/></svg>
+    <div class="bn" style="font-size:1.15rem;margin-top:3px"><span>Glass</span>Box AI</div>
+    <div class="stk">not BlackBox AI</div>
+    <div class="tl" style="font-size:.28rem;margin-top:2px">trustable agents for scalable solutions</div>
+    <div class="phil" style="font-size:.25rem;margin-top:2px">"Nothing to hide. Everything to build."</div>
+    <div class="collab" style="margin-top:3px">🤝 Open Source, Open Arms</div>
+    <div style="display:flex;align-items:center;gap:5px;margin-top:3px">
+      <svg width="10" height="10" viewBox="0 0 24 24" style="color:#86efac"><use href="#ghm"/></svg>
+      <span class="repo" style="font-size:.25rem">agentic-trust-labs/glassbox-ai</span>
+      <span style="color:rgba(255,255,255,.25)">·</span>
+      <span class="cta" style="font-size:.22rem">Raise an issue · Agent builds the fix</span>
+    </div>
+  </div>
+</div></div>
+<div class="s"><div class="sl">personal side</div>
+<div class="card bg8 dk" style="padding:6px">
+  <div style="width:100%;height:100%;border:1.5px solid rgba(74,222,128,.35);border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 18px;text-align:center;position:relative;box-shadow:inset 0 0 12px rgba(74,222,128,.08)">
+    <svg width="36" height="34" viewBox="0 0 150 130" style="position:absolute;top:6px;right:8px;opacity:.1"><use href="#bf"/></svg>
+    <div class="pn" style="font-size:1.05rem">Sourabh Gupta</div>
+    <div class="pvibe" style="font-size:.29rem;margin-top:2px">"I build AI agents that show their work"</div>
+    <div class="pexp" style="font-size:.25rem;margin-top:3px">10 years in AI, ML & everything Agentic</div>
+    <div class="divider" style="width:32px;margin:4px auto"></div>
+    <div class="pc" style="font-size:.25rem"><strong>WhatsApp</strong> +91-7627089241</div>
+    <div class="pc" style="font-size:.25rem"><strong>LinkedIn</strong> linkedin.com/in/sourabhgupta16</div>
+    <div class="pc" style="font-size:.25rem"><strong>Email</strong> sourabharsh@gmail.com</div>
+    <div style="margin-top:4px;display:flex;align-items:center;gap:6px">
+      <div class="qr" style="width:38px;height:38px"><span>QR</span></div>
+      <div style="font-size:.17rem;color:rgba(255,255,255,.4)">Scan to connect</div>
+    </div>
+  </div>
+</div></div>
+</div></div>
+
+
+<!-- ════════════════════════════════════════════════════════════════
+     V09 · SPLIT PANELS
+     Structure: Left butterfly panel | Right text panel — clear split
+     ════════════════════════════════════════════════════════════════ -->
+<div class="v">
+<div class="vid">V09 · Split Panels</div>
+<div class="vd">Lime green · glass shards · butterfly left panel · 🤝 Contribute &amp; Collaborate</div>
+<div class="pair">
+<div class="s"><div class="sl">brand side</div>
+<div class="card bg9" style="flex-direction:row;padding:0;overflow:hidden">
+  <div style="width:36%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(255,255,255,.15);border-right:1.5px solid rgba(255,255,255,.25);gap:4px">
+    <svg width="76" height="72" viewBox="0 0 150 130" style="animation:crystal-glow 3s ease-in-out infinite"><use href="#bf"/></svg>
+    <div class="bn" style="font-size:.65rem;text-align:center"><span>Glass</span>Box AI</div>
+  </div>
+  <div style="width:64%;padding:12px 14px;display:flex;flex-direction:column;justify-content:center;gap:3px">
+    <div class="stk">not BlackBox AI</div>
+    <div class="tl" style="font-size:.28rem;margin-top:2px">trustable agents for scalable solutions</div>
+    <div class="phil" style="font-size:.24rem;margin-top:1px">"Nothing to hide. Everything to build."</div>
+    <div class="collab" style="margin-top:4px">🤝 Contribute &amp; Collaborate</div>
+    <div style="display:flex;align-items:center;gap:4px;margin-top:4px">
+      <svg width="10" height="10" viewBox="0 0 24 24" style="color:#15803d"><use href="#ghm"/></svg>
+      <span class="repo" style="font-size:.24rem">agentic-trust-labs/glassbox-ai</span>
+    </div>
+    <div class="cta" style="font-size:.22rem;margin-top:1px">Raise an issue · Agent builds the fix</div>
+  </div>
+</div></div>
+<div class="s"><div class="sl">personal side</div>
+<div class="card bg9" style="flex-direction:row;padding:0;overflow:hidden">
+  <div style="width:55%;padding:14px 16px;display:flex;flex-direction:column;justify-content:center;position:relative">
+    <svg width="34" height="32" viewBox="0 0 150 130" style="position:absolute;top:8px;right:8px;opacity:.07"><use href="#bf"/></svg>
+    <div class="pn" style="font-size:1.05rem">Sourabh Gupta</div>
+    <div class="pvibe" style="font-size:.28rem;margin-top:2px">"I build AI agents that show their work"</div>
+    <div class="pexp" style="font-size:.24rem;margin-top:3px">10 years in AI, ML & everything Agentic</div>
+    <div class="divider" style="width:28px;margin:5px 0"></div>
+    <div class="pc" style="font-size:.24rem"><strong>WhatsApp</strong> +91-7627089241</div>
+    <div class="pc" style="font-size:.24rem"><strong>LinkedIn</strong> linkedin.com/in/sourabhgupta16</div>
+    <div class="pc" style="font-size:.24rem"><strong>Email</strong> sourabharsh@gmail.com</div>
+  </div>
+  <div style="width:45%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.1);border-left:1.5px solid rgba(255,255,255,.2)">
+    <div style="text-align:center"><div class="qr" style="width:60px;height:60px"><span style="font-size:.28rem">QR</span></div><div style="font-size:.19rem;color:#6b7280;margin-top:3px">Scan to connect</div></div>
+  </div>
+</div></div>
+</div></div>
+
+
+<!-- ════════════════════════════════════════════════════════════════
+     V10 · CENTRAL GLASS FOCUS
+     Structure: Glass circle behind butterfly, content stacks above/below
+     ════════════════════════════════════════════════════════════════ -->
+<div class="v">
+<div class="vid">V10 · Central Glass Focus</div>
+<div class="vd">Prismatic green · glass disc behind butterfly · centered · 🤝 Your Next Open Source Collab</div>
+<div class="pair">
+<div class="s"><div class="sl">brand side</div>
+<div class="card bg10" style="flex-direction:column;align-items:center;justify-content:center;padding:10px;gap:1px">
+  <!-- Glass circle behind butterfly -->
+  <div style="position:relative;display:flex;align-items:center;justify-content:center">
+    <div style="position:absolute;width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,.25);border:1.5px solid rgba(255,255,255,.45);box-shadow:0 2px 12px rgba(0,0,0,.04)"></div>
+    <svg width="62" height="58" viewBox="0 0 150 130" style="position:relative;z-index:1;animation:crystal-glow 3s ease-in-out infinite"><use href="#bf"/></svg>
+  </div>
+  <div class="bn" style="font-size:1.15rem;margin-top:3px"><span>Glass</span>Box AI</div>
+  <div class="stk">not BlackBox AI</div>
+  <div class="tl" style="font-size:.29rem;margin-top:2px">trustable agents for scalable solutions</div>
+  <div class="phil" style="font-size:.25rem;margin-top:1px">"Nothing to hide. Everything to build."</div>
+  <div class="collab" style="margin-top:3px">🤝 Your Next Open Source Collab</div>
+  <div style="display:flex;align-items:center;gap:5px;margin-top:3px">
+    <svg width="10" height="10" viewBox="0 0 24 24" style="color:#15803d"><use href="#ghm"/></svg>
+    <span class="repo" style="font-size:.25rem">agentic-trust-labs/glassbox-ai</span>
+    <span style="color:#ccc">·</span>
+    <span class="cta" style="font-size:.22rem">Raise an issue · Agent builds the fix</span>
+  </div>
+</div></div>
+<div class="s"><div class="sl">personal side</div>
+<div class="card bg10" style="align-items:center;justify-content:center;padding:10px">
+  <div class="gp" style="width:92%;height:90%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 18px;text-align:center;position:relative">
+    <svg width="36" height="34" viewBox="0 0 150 130" style="position:absolute;top:6px;right:8px;opacity:.07"><use href="#bf"/></svg>
+    <div class="pn" style="font-size:1.05rem">Sourabh Gupta</div>
+    <div class="pvibe" style="font-size:.29rem;margin-top:2px">"I build AI agents that show their work"</div>
+    <div class="pexp" style="font-size:.25rem;margin-top:3px">10 years in AI, ML & everything Agentic</div>
+    <div class="divider" style="width:32px;margin:4px auto"></div>
+    <div class="pc" style="font-size:.25rem"><strong>WhatsApp</strong> +91-7627089241</div>
+    <div class="pc" style="font-size:.25rem"><strong>LinkedIn</strong> linkedin.com/in/sourabhgupta16</div>
+    <div class="pc" style="font-size:.25rem"><strong>Email</strong> sourabharsh@gmail.com</div>
+    <div style="margin-top:4px;display:flex;align-items:center;gap:6px">
+      <div class="qr" style="width:38px;height:38px"><span>QR</span></div>
+      <div style="font-size:.17rem;color:#6b7280">Scan to connect</div>
+    </div>
+  </div>
+</div></div>
+</div></div>
+
+
+<!-- ═══ AFTER SCORES ═══ -->
+<div class="sec">
+<h2>📊 After Scores — v4 (Predicted)</h2>
+<table class="atbl">
+<tr><th>Card</th><th>Structure</th><th>Align</th><th>Full Card</th><th>Trust</th><th>Elegance</th><th>StrikeText</th><th>Personal</th><th>Unique</th><th>Total /80</th></tr>
+<tr><td>V01 Glass Panel</td><td class="hi">8</td><td class="hi">8</td><td class="hi">8</td><td class="hi">8</td><td class="hi">8</td><td class="hi">8</td><td class="md">7</td><td class="md">7</td><td class="hi">62</td></tr>
+<tr><td>V02 Dark Window</td><td class="hi">8</td><td class="hi">8</td><td class="hi">8</td><td class="hi">9</td><td class="hi">9</td><td class="hi">8</td><td class="hi">8</td><td class="hi">8</td><td class="hi">66</td></tr>
+<tr><td>V03 Three Bands</td><td class="hi">9</td><td class="hi">8</td><td class="hi">9</td><td class="md">7</td><td class="hi">8</td><td class="hi">8</td><td class="hi">8</td><td class="hi">8</td><td class="hi">65</td></tr>
+<tr><td>V04 Accent Bar</td><td class="hi">9</td><td class="hi">8</td><td class="hi">9</td><td class="md">7</td><td class="hi">8</td><td class="hi">8</td><td class="md">7</td><td class="hi">9</td><td class="hi">65</td></tr>
+<tr><td>V05 Floating Card</td><td class="hi">9</td><td class="hi">9</td><td class="hi">8</td><td class="hi">9</td><td class="hi">9</td><td class="hi">8</td><td class="hi">8</td><td class="hi">9</td><td class="hi">69</td></tr>
+<tr><td>V06 Diagonal</td><td class="hi">8</td><td class="md">7</td><td class="hi">8</td><td class="md">7</td><td class="hi">8</td><td class="hi">8</td><td class="hi">8</td><td class="hi">8</td><td class="hi">62</td></tr>
+<tr><td>V07 Header Band</td><td class="hi">9</td><td class="hi">8</td><td class="hi">9</td><td class="md">7</td><td class="hi">8</td><td class="hi">8</td><td class="hi">8</td><td class="hi">8</td><td class="hi">65</td></tr>
+<tr><td>V08 Glass Frame</td><td class="hi">9</td><td class="hi">8</td><td class="hi">8</td><td class="hi">9</td><td class="hi">9</td><td class="hi">8</td><td class="hi">8</td><td class="hi">9</td><td class="hi">68</td></tr>
+<tr><td>V09 Split Panels</td><td class="hi">9</td><td class="hi">8</td><td class="hi">9</td><td class="hi">8</td><td class="hi">8</td><td class="hi">8</td><td class="hi">8</td><td class="hi">9</td><td class="hi">67</td></tr>
+<tr><td>V10 Central Focus</td><td class="hi">8</td><td class="hi">8</td><td class="hi">8</td><td class="hi">9</td><td class="hi">9</td><td class="hi">8</td><td class="hi">8</td><td class="hi">8</td><td class="hi">66</td></tr>
+<tr style="background:#f0fdf4;font-weight:800"><td>AVERAGE</td><td class="hi">8.6</td><td class="hi">8.0</td><td class="hi">8.4</td><td class="hi">8.0</td><td class="hi">8.4</td><td class="hi">8.0</td><td class="md">7.8</td><td class="hi">8.3</td><td class="hi">65.5</td></tr>
+<tr style="background:#fef2f2"><td>v3 Average</td><td class="lo">5.2</td><td class="md">6.5</td><td class="lo">4.8</td><td class="lo">4.5</td><td class="lo">5.5</td><td class="lo">3.2</td><td class="lo">4.0</td><td class="lo">4.5</td><td class="lo">38.2</td></tr>
+<tr style="background:#ecfdf5;font-weight:800"><td>IMPROVEMENT</td><td>+3.4</td><td>+1.5</td><td>+3.6</td><td>+3.5</td><td>+2.9</td><td>+4.8</td><td>+3.8</td><td>+3.8</td><td>+27.3</td></tr>
+</table>
+</div>
+
+<div class="sec">
+<h2>🔑 Key Changes Summary</h2>
+<ul>
+<li><strong>"not BlackBox AI":</strong> 0.42rem → <strong>0.6rem</strong>, bright red → <strong>dull gray #a1a1aa</strong> with dark-red strikethrough line — big but subdued</li>
+<li><strong>Glass panels (.gp):</strong> Semi-transparent white overlay boxes creating visible "glass box" structure on V01, V02, V05, V10</li>
+<li><strong>Structural zones:</strong> V03 (three bands), V04 (accent bar), V07 (header band), V08 (glass frame), V09 (split panels)</li>
+<li><strong>V06 diagonal accent:</strong> Dynamic corner treatment creates movement and depth</li>
+<li><strong>Philosophy quote:</strong> Present on ALL 10 cards now</li>
+<li><strong>Personal sides:</strong> 3 templates — (A) left-aligned+QR right, (B) centered+QR bottom, (C) two-zone split</li>
+<li><strong>Every card has unique structure:</strong> No two cards share the same layout approach</li>
+</ul>
+</div>
+
+</body>
+</html>
