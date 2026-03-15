@@ -66,21 +66,24 @@ def _solve(ctx, **kw):
              model, ctx.config.get("step_limit", 30), cwd)
     cost = 0.0
     step = 0
+    done = False
     for step in range(ctx.config.get("step_limit", 30)):
         log.info("[solve] Step %d | messages=%d cost=$%.4f", step + 1, len(messages), cost)
-        resp = completion(model=model, messages=messages, tools=BASH_TOOL, max_tokens=16000)
+        resp = completion(model=model, messages=messages, tools=BASH_TOOL,
+                          tool_choice="required", max_tokens=16000)
         step_cost = getattr(resp, "_hidden_params", {}).get("response_cost", 0) or 0
         cost += step_cost
         msg = resp.choices[0].message
         messages.append(msg)
         if not getattr(msg, "tool_calls", None):
-            log.info("[solve] Step %d | no tool calls — agent finished thinking", step + 1)
+            log.warning("[solve] Step %d | no tool calls despite tool_choice=required — stopping", step + 1)
             break
         for tc in msg.tool_calls:
             cmd = json.loads(tc.function.arguments).get("command", "")
             log.info("[solve] Step %d | bash: %s", step + 1, cmd[:120])
             if "GLASSBOX_TASK_COMPLETE" in cmd:
                 log.info("[solve] Task complete sentinel received")
+                done = True
                 break
             try:
                 r = subprocess.run(cmd, shell=True, cwd=cwd, capture_output=True, text=True, timeout=120)
@@ -97,9 +100,8 @@ def _solve(ctx, **kw):
                 out = f"Error: {e}"
                 log.error("[solve] Step %d | ERROR: %s", step + 1, e)
             messages.append({"role": "tool", "tool_call_id": tc.id, "content": out})
-        else:
-            continue
-        break
+        if done:
+            break
     diff = subprocess.run("git diff", shell=True, cwd=cwd, capture_output=True, text=True)
     patch = diff.stdout.strip()
     event = "solved" if patch else "stuck"
