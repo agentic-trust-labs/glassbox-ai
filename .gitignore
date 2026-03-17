@@ -36,3 +36,21 @@ htmlcov/
 
 # Docker
 *.dockerfile.swp
+
+# Experiment outputs (predictions, logs, reports go in experiments/)
+predictions*.json
+glassbox-coder-*.json
+
+# Non-code artifacts
+memorabilia/
+tshirt-design.html
+*.tiff
+
+# SWE-bench reports
+sb-cli-reports/
+
+# Empty data folder
+data/
+
+# Aider cache
+.aider*
