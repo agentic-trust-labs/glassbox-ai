@@ -36,3 +36,10 @@ htmlcov/
 
 # Docker
 *.dockerfile.swp
+
+# Run artifacts — put these in runs/ not root
+predictions*.json
+glassbox-coder-*.json
+
+# Aider cache
+.aider*
