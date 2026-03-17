@@ -4,35 +4,35 @@
 
 # GlassBox AI
 
-> **Trust is earned, not assumed.** 💎
+> We are exploring GlassBox as an orchestration platform for autonomous AI agents, built for enterprise problems where each decision costs hundreds — and each bad one costs more.
 
 [![Python](https://img.shields.io/badge/python-3.11%2B-blue)]()
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)]()
 [![Status](https://img.shields.io/badge/status-early%20stage-orange)]()
 
-GlassBox is an orchestration platform for autonomous AI agents, built for enterprise problems where decisions are consequential and accountability is non-negotiable.
-
-The platform centers on one idea: **auditability, human oversight, and continuous improvement should be structural properties of agent systems - not features you bolt on afterward.**
-
 ---
 
-## Why This Exists
+## The Platform
 
-Enterprise AI agents today are largely black boxes. They take actions, produce outputs, and when something goes wrong, there's no trace of what happened, no mechanism to feed corrections back, and no human with a meaningful checkpoint. Deploy them anyway and you're betting that the model is right. Most of the time, that's not good enough.
+Enterprise AI agents today are largely black boxes. They take actions, produce outputs, and when something goes wrong, there is no trace of what happened, no mechanism to feed corrections back, and no human with a meaningful checkpoint. Existing orchestration tools — LangGraph, CrewAI, AutoGen — solve the wiring problem well. They do not solve the accountability problem. You get a graph of agents; you do not get auditability, you do not get a correction loop, and human oversight is something you bolt on manually if you think of it.
 
-We're building an orchestration layer where:
-- Every action an agent takes is logged in an append-only audit trail
-- Human review is a first-class state in the execution graph, not an external wrapper
-- Corrections from humans are captured, persisted, and fed back into future runs
-- The agent gets measurably better over time without retraining
+GlassBox is an attempt to build the orchestration layer where accountability is structural — not optional, not a plugin, not an afterthought.
 
-The design is domain-agnostic. The same engine, the same audit model, the same HITL mechanism - applied to any enterprise workflow where an AI agent acts autonomously.
+**What it does:**
+- Runs agents as state machines with explicit, traceable transitions
+- Logs every step — state, event, tool call, LLM response, cost, timestamp — in an append-only audit trail. Always on. Not configurable.
+- Treats human review as a first-class pause state: the engine pauses, waits, resumes with full context
+- Captures human corrections and feeds them back into future agent runs as version-controlled rules (`RULES.md`) and a searchable episode store (`episodes.jsonl`)
 
----
+**What it does not do:**
+- It is not a prompt framework, not a RAG library, not a multi-agent chat system
+- It does not replace your LLM or your tools — it orchestrates whatever agent you bring
+- It is not production-ready. It is early stage.
 
-## How the Platform Works
+**How it differs from existing orchestration tools:**
+LangGraph gives you a graph. CrewAI gives you roles. AutoGen gives you message passing. None of them have a structural audit trail tied to the execution model. None of them have HITL as a native state — it is always bolted on. None of them have a mechanism where a human correction in run 1 becomes a rule the agent reads in run 2, without retraining.
 
-GlassBox is a lean state machine engine (~260 lines) that knows one thing: states exist, transitions connect them, and agents are plain functions that return events. Everything else - what the agent does, what tools it has, what the domain is - lives in self-contained use cases.
+The engine itself is ~260 lines. Agents are plain functions that return events. Use cases are self-contained folders. The engine never imports from use cases.
 
 ```
                     +------------------------------------------+
@@ -60,14 +60,8 @@ GlassBox is a lean state machine engine (~260 lines) that knows one thing: state
                     +--------------------------------+
 ```
 
-**Core properties:**
-- **Append-only audit trail** - every state, event, tool call, LLM response, cost, and timestamp is logged. Not configurable. Always on.
-- **HITL as a real state** - `awaiting_review` is a pause state in the machine. The engine waits, resumes with full context. Not a workaround.
-- **Corrections that accumulate** - human feedback is written to `RULES.md` (injected into every future prompt) and `episodes.jsonl` (searchable by the agent at runtime via `recall_episodes`).
-- **Modular use cases** - adding a new domain means adding a folder. The engine never changes.
-
 ```python
-# Every agent is a plain function - same contract across all use cases and domains
+# Every agent is a plain function — same contract across all use cases
 def run(ctx: AgentContext, **kwargs) -> dict:
     return {"event": "done", "detail": "..."}
 
@@ -79,64 +73,53 @@ engine.run(ctx, state="received")
 
 ## Use Cases
 
-Use cases are self-contained folders that plug into the engine. Each defines its own states, agent pipeline, configuration, and tools. The engine sees none of this - it only sees state transitions and events.
+Use cases are self-contained folders that plug into the engine. Each defines its own states, agent pipeline, configuration, and tools. The engine only sees state transitions and events.
 
 ### UC-1: Coding Agent (active, early stage)
 
-An autonomous coding agent for software bug-fixing, evaluated on SWE-bench Verified - the industry-standard benchmark for coding agents.
+An autonomous coding agent for software bug-fixing, evaluated against SWE-bench Verified — the industry-standard benchmark for coding agents. The agent runs a tool loop (`bash`, `str_replace_editor`, `recall_episodes`) against real repositories, produces a git patch, evaluated in Docker via the swebench harness.
 
-The agent runs a tool loop (`bash`, `str_replace_editor`, `recall_episodes`) against real repositories, produces a git patch, which is then evaluated in Docker via the swebench harness.
+Our metric is not pass rate. **Our metric is the reduction in human involvement time** — how much faster a human can review, correct, and ship a fix when the agent has a full audit trail, a correction loop, and accumulated rules vs. starting cold every time. SWE-bench benchmarking is in progress.
 
 **HITL learning loop:**
 ```
 Run  ->  Agent produces patch
      ->  Evaluation (Docker, swebench harness)
-     ->  Human reviews failure, writes correction
+     ->  Human reviews, writes correction if needed
      ->  Correction added to RULES.md + episodes.jsonl
-     ->  Next run: agent reads updated rules, can recall past corrections
+     ->  Next run: agent reads updated rules, recalls past corrections
+     ->  Human involvement time decreases with each cycle
 ```
-
-**Where we are - first end-to-end run (3 instances):**
-
-| Instance | Patch | Steps | Cost | Result | Correction |
-|----------|:---:|:---:|---:|--------|------------|
-| astropy-14365 | Yes | 10 | $0.13 | Failed - read path fixed, write path missed | "re.IGNORECASE alone insufficient - write path needs uppercase too" |
-| astropy-14539 | Yes | 29 | $0.66 | Failed - wrong approach to VLA comparison | "Use element-wise comparison for object-dtype arrays" |
-| astropy-14508 | Yes | 9 | $0.09 | Partial - target test passed, caused regression | "str() gives lowercase e, FITS spec requires uppercase E" |
-
-3/3 patches produced. 0/3 passed evaluation. 4 corrections captured. $0.88 total cost.
-
-The pass rate is not the point yet. The loop is: failures become corrections, corrections become rules, rules improve the next run. Whether this compounds is what we're measuring.
 
 ---
 
 ## Comparison
 
-How GlassBox compares to existing agent frameworks and platforms:
+🟢 Strong / native &nbsp;&nbsp; 🟡 Partial / workaround &nbsp;&nbsp; 🔴 Not present
 
-| | [LangGraph](https://github.com/langchain-ai/langgraph) | [CrewAI](https://github.com/crewAIInc/crewAI) | [OpenHands](https://github.com/All-Hands-AI/OpenHands) | [SWE-agent](https://github.com/SWE-agent/SWE-agent) | [Devin](https://devin.ai) | **GlassBox** |
+| | [LangGraph](https://github.com/langchain-ai/langgraph) | [CrewAI](https://github.com/crewAIInc/crewAI) | [AutoGen](https://github.com/microsoft/autogen) | [OpenHands](https://github.com/All-Hands-AI/OpenHands) | [Devin](https://devin.ai) | **GlassBox** |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|
-| **Orchestration layer** | Graph-based | Role-based | Single agent | Single agent | Proprietary | State machine |
-| **Audit trail (structural)** | No | No | No | Trajectories only | No | Yes - every step |
-| **HITL as first-class state** | Partial | No | No | No | Partial | Yes |
-| **Corrections fed back to agent** | No | No | No | No | No | Yes - rules + episodes |
-| **Domain-agnostic use cases** | Yes | Yes | No | No | No | Yes |
-| **Modular / pluggable** | Yes | Yes | No | No | No | Yes |
-| **Open source** | Yes | Yes | Yes | Yes | No | Yes |
-| **SWE-bench score** | N/A | N/A | 37% | 43% | Undisclosed | 0% (n=3, WIP) |
-| **Production-ready** | Yes | Yes | Yes | Yes | Yes | No |
+| **Orchestration model** | 🟢 Graph | 🟢 Roles | 🟢 Messaging | 🔴 Single agent | 🔴 Proprietary | 🟢 State machine |
+| **Structural audit trail** | 🔴 | 🔴 | 🔴 | 🟡 Logs only | 🔴 | 🟢 Every step, always on |
+| **HITL as first-class state** | 🟡 Graph node | 🔴 | 🟡 Manual | 🔴 | 🟡 Partial | 🟢 Native pause state |
+| **Corrections fed back to agent** | 🔴 | 🔴 | 🔴 | 🔴 | 🔴 | 🟢 RULES.md + episodes |
+| **Domain-agnostic use cases** | 🟢 | 🟢 | 🟢 | 🔴 | 🔴 | 🟢 |
+| **Open source** | 🟢 | 🟢 | 🟢 | 🟢 | 🔴 | 🟢 |
+| **Ecosystem / integrations** | 🟢 Large | 🟢 Large | 🟢 Large | 🟢 Growing | 🔴 | 🔴 Early |
+| **Production-ready** | 🟢 | 🟢 | 🟢 | 🟢 | 🟢 | 🔴 Early stage |
+| **Lean / auditable core** | 🟡 Complex | 🟡 Complex | 🟡 Complex | 🔴 | 🔴 | 🟢 ~260 lines |
 
 **Where GlassBox is behind:**
-- **SWE-bench score** - 0% on 3 instances. Not competitive. The agent loop works; the patches aren't good enough yet.
-- **Production-ready** - Early stage. No production deployments, no hardened APIs, no enterprise support.
-- **Ecosystem** - LangGraph and CrewAI have large ecosystems, integrations, and community. We have none of that.
-- **Sandboxing** - Agent runs locally. Evaluation is in Docker. Full inference sandboxing is not built yet.
+- 🔴 **Ecosystem** — LangGraph, CrewAI, AutoGen have large communities, integrations, tooling. We have none of that yet.
+- 🔴 **Production-ready** — No production deployments. No hardened APIs. No enterprise support.
+- 🔴 **Sandboxing** — Agent runs locally. Evaluation is in Docker. Full inference sandboxing is not built yet.
+- 🔴 **SWE-bench score** — Benchmarking in progress. No published score yet.
 
-**Where GlassBox is different:**
-- **HITL is structural, not optional** - In LangGraph you can add human-in-the-loop as a graph node. In GlassBox, `awaiting_review` is a native state - the engine was designed around it, not patched to support it.
-- **Corrections compound** - No other framework has a mechanism where human corrections become version-controlled rules that every future agent run reads. `RULES.md` and `episodes.jsonl` are the start of that.
-- **Audit trail is not observability** - Observability tools (LangSmith, Arize, etc.) log what happened. GlassBox's audit trail is structural - it's the execution record the engine produces, tied to the state machine, not a separate monitoring layer.
-- **Lean by design** - The engine is ~260 lines. Agents are plain functions. There is no framework magic to debug.
+**Where GlassBox is structurally different:**
+- 🟢 **HITL is native, not bolted on** — `awaiting_review` is a state in the machine. The engine was designed around it. In every other framework, HITL is a pattern you implement manually.
+- 🟢 **Corrections that compound** — Human feedback in run N becomes a rule the agent reads in run N+1. Version-controlled, readable, editable. No retraining. No fine-tuning.
+- 🟢 **Audit trail is not observability** — LangSmith, Arize, and similar tools observe from outside. GlassBox's audit trail is produced by the engine itself, tied to every state transition, inseparable from execution.
+- 🟢 **Lean by design** — The engine is ~260 lines. Agents are plain functions. There is no framework magic between your agent and the execution.
 
 ---
 
@@ -193,11 +176,11 @@ python -m swebench.harness.run_evaluation \
 
 ## What's Next
 
-- [ ] Re-run 3 instances with accumulated corrections, measure if pass rate improves
-- [ ] Scale to 50+ SWE-bench instances
-- [ ] Full Docker sandboxing for agent inference
-- [ ] Validate that `recall_episodes` measurably changes agent behavior
-- [ ] Second use case (domain TBD) to validate platform generality
+- [ ] Run SWE-bench evaluation and measure reduction in human involvement time across instances
+- [ ] Scale to 50+ SWE-bench instances as the correction loop accumulates
+- [ ] Validate that `recall_episodes` measurably reduces human correction effort per instance
+- [ ] Full Docker sandboxing for agent inference (not just evaluation)
+- [ ] Second use case (domain TBD) to validate platform generality beyond coding
 
 ---
 
