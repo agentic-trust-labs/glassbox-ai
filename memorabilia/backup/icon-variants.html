@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GlassBox AI — Icon Variants</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0a0a0a;
+    color: #e0e0e0;
+    font-family: 'Inter', sans-serif;
+    padding: 40px 20px;
+  }
+  h1 {
+    text-align: center;
+    font-size: 0.7rem;
+    color: #444;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .variant {
+    background: #0e0e0e;
+    border: 1px solid #1a1a1a;
+    border-radius: 16px;
+    padding: 30px 20px 20px;
+    text-align: center;
+    transition: border-color 0.3s;
+  }
+  .variant:hover { border-color: #4ade80; }
+  .variant-num {
+    font-size: 0.5rem;
+    color: #333;
+    letter-spacing: 3px;
+    margin-bottom: 16px;
+  }
+  .variant-icon {
+    width: 160px;
+    height: 160px;
+    margin: 0 auto 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .variant-name {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+  .variant-desc {
+    font-size: 0.5rem;
+    color: #555;
+    line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+
+<h1>GlassBox AI — Icon Variants — Pick Your Vibe</h1>
+
+<div class="grid">
+
+  <!-- ═══════════════════════════════════
+       1. NEON CYBER
+       ═══════════════════════════════════ -->
+  <div class="variant">
+    <div class="variant-num">01</div>
+    <div class="variant-icon">
+      <svg width="150" height="150" viewBox="0 0 150 150" fill="none">
+        <defs>
+          <filter id="neon-glow">
+            <feGaussianBlur stdDeviation="6" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <rect x="25" y="25" width="100" height="100" rx="6" fill="none" stroke="#4ade80" stroke-width="2.5" filter="url(#neon-glow)"/>
+        <rect x="25" y="25" width="100" height="100" rx="6" fill="rgba(74,222,128,0.03)"/>
+        <circle cx="55" cy="62" r="6" fill="#4ade80" filter="url(#neon-glow)"/>
+        <circle cx="95" cy="62" r="6" fill="#4ade80" filter="url(#neon-glow)"/>
+        <circle cx="75" cy="95" r="6" fill="#4ade80" filter="url(#neon-glow)"/>
+        <line x1="61" y1="62" x2="89" y2="62" stroke="#4ade80" stroke-width="1.5" opacity="0.6"/>
+        <line x1="57" y1="67" x2="72" y2="90" stroke="#4ade80" stroke-width="1.5" opacity="0.6"/>
+        <line x1="93" y1="67" x2="78" y2="90" stroke="#4ade80" stroke-width="1.5" opacity="0.6"/>
+      </svg>
+    </div>
+    <div class="variant-name">Neon Cyber</div>
+    <div class="variant-desc">Bright glow, cyberpunk<br>Las Vegas meets Silicon Valley</div>
+  </div>
+
+  <!-- ═══════════════════════════════════
+       2. HOLOGRAPHIC
+       ═══════════════════════════════════ -->
+  <div class="variant">
+    <div class="variant-num">02</div>
+    <div class="variant-icon">
+      <svg width="150" height="150" viewBox="0 0 150 150" fill="none">
+        <defs>
+          <linearGradient id="holo" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#4ade80"/>
+            <stop offset="25%" style="stop-color:#22d3ee"/>
+            <stop offset="50%" style="stop-color:#818cf8"/>
+            <stop offset="75%" style="stop-color:#f472b6"/>
+            <stop offset="100%" style="stop-color:#4ade80"/>
+          </linearGradient>
+          <filter id="holo-glow">
+            <feGaussianBlur stdDeviation="3" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <rect x="25" y="25" width="100" height="100" rx="6" fill="rgba(255,255,255,0.02)" stroke="url(#holo)" stroke-width="2" filter="url(#holo-glow)"/>
+        <circle cx="55" cy="62" r="5" fill="url(#holo)" opacity="0.8"/>
+        <circle cx="95" cy="62" r="5" fill="url(#holo)" opacity="0.8"/>
+        <circle cx="75" cy="95" r="5" fill="url(#holo)" opacity="0.8"/>
+        <line x1="60" y1="62" x2="90" y2="62" stroke="url(#holo)" stroke-width="1" opacity="0.5"/>
+        <line x1="57" y1="67" x2="72" y2="90" stroke="url(#holo)" stroke-width="1" opacity="0.5"/>
+        <line x1="93" y1="67" x2="78" y2="90" stroke="url(#holo)" stroke-width="1" opacity="0.5"/>
+        <line x1="25" y1="32" x2="25" y2="55" stroke="rgba(255,255,255,0.12)" stroke-width="1.5"/>
+      </svg>
+    </div>
+    <div class="variant-name">Holographic</div>
+    <div class="variant-desc">Rainbow gradient edge<br>Iridescent, premium feel</div>
+  </div>
+
+  <!-- ═══════════════════════════════════
+       3. BLUEPRINT
+       ═══════════════════════════════════ -->
+  <div class="variant">
+    <div class="variant-num">03</div>
+    <div class="variant-icon">
+      <svg width="150" height="150" viewBox="0 0 150 150" fill="none">
+        <!-- Grid background -->
+        <pattern id="bp-grid" width="10" height="10" patternUnits="userSpaceOnUse">
+          <line x1="0" y1="0" x2="10" y2="0" stroke="rgba(56,189,248,0.06)" stroke-width="0.5"/>
+          <line x1="0" y1="0" x2="0" y2="10" stroke="rgba(56,189,248,0.06)" stroke-width="0.5"/>
+        </pattern>
+        <rect x="25" y="25" width="100" height="100" rx="2" fill="url(#bp-grid)"/>
+        <rect x="25" y="25" width="100" height="100" rx="2" fill="none" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="6 3"/>
+        <!-- Dimension lines -->
+        <line x1="20" y1="25" x2="20" y2="125" stroke="#38bdf8" stroke-width="0.5" opacity="0.4"/>
+        <line x1="18" y1="25" x2="22" y2="25" stroke="#38bdf8" stroke-width="0.5" opacity="0.4"/>
+        <line x1="18" y1="125" x2="22" y2="125" stroke="#38bdf8" stroke-width="0.5" opacity="0.4"/>
+        <!-- Nodes -->
+        <circle cx="55" cy="62" r="5" fill="none" stroke="#38bdf8" stroke-width="1.5"/>
+        <circle cx="55" cy="62" r="2" fill="#38bdf8"/>
+        <circle cx="95" cy="62" r="5" fill="none" stroke="#38bdf8" stroke-width="1.5"/>
+        <circle cx="95" cy="62" r="2" fill="#38bdf8"/>
+        <circle cx="75" cy="95" r="5" fill="none" stroke="#38bdf8" stroke-width="1.5"/>
+        <circle cx="75" cy="95" r="2" fill="#38bdf8"/>
+        <line x1="60" y1="62" x2="90" y2="62" stroke="#38bdf8" stroke-width="0.8" stroke-dasharray="4 2"/>
+        <line x1="57" y1="67" x2="72" y2="90" stroke="#38bdf8" stroke-width="0.8" stroke-dasharray="4 2"/>
+        <line x1="93" y1="67" x2="78" y2="90" stroke="#38bdf8" stroke-width="0.8" stroke-dasharray="4 2"/>
+        <text x="75" y="140" text-anchor="middle" fill="#38bdf8" font-size="6" opacity="0.5" font-family="monospace">GLASSBOX v1.0</text>
+      </svg>
+    </div>
+    <div class="variant-name">Blueprint</div>
+    <div class="variant-desc">Technical drawing, dashed lines<br>Engineering precision</div>
+  </div>
+
+  <!-- ═══════════════════════════════════
+       4. CIRCUIT BOARD
+       ═══════════════════════════════════ -->
+  <div class="variant">
+    <div class="variant-num">04</div>
+    <div class="variant-icon">
+      <svg width="150" height="150" viewBox="0 0 150 150" fill="none">
+        <rect x="25" y="25" width="100" height="100" rx="4" fill="rgba(74,222,128,0.02)" stroke="#4ade80" stroke-width="1.5" opacity="0.7"/>
+        <!-- PCB traces -->
+        <path d="M55 25 L55 42 L42 55 L42 62" stroke="#4ade80" stroke-width="1.2" opacity="0.3"/>
+        <path d="M95 25 L95 42 L108 55 L108 62" stroke="#4ade80" stroke-width="1.2" opacity="0.3"/>
+        <path d="M75 125 L75 108 L75 95" stroke="#4ade80" stroke-width="1.2" opacity="0.3"/>
+        <!-- IC-style nodes -->
+        <rect x="47" cy="55" y="55" width="16" height="14" rx="2" fill="rgba(74,222,128,0.15)" stroke="#4ade80" stroke-width="1.2"/>
+        <rect x="87" y="55" width="16" height="14" rx="2" fill="rgba(74,222,128,0.15)" stroke="#4ade80" stroke-width="1.2"/>
+        <rect x="67" y="88" width="16" height="14" rx="2" fill="rgba(74,222,128,0.15)" stroke="#4ade80" stroke-width="1.2"/>
+        <!-- Connections -->
+        <path d="M63 62 L87 62" stroke="#4ade80" stroke-width="1" opacity="0.5"/>
+        <path d="M59 69 L72 88" stroke="#4ade80" stroke-width="1" opacity="0.5"/>
+        <path d="M91 69 L78 88" stroke="#4ade80" stroke-width="1" opacity="0.5"/>
+        <!-- Pin dots -->
+        <circle cx="55" cy="42" r="2" fill="#4ade80" opacity="0.6"/>
+        <circle cx="95" cy="42" r="2" fill="#4ade80" opacity="0.6"/>
+        <circle cx="75" cy="108" r="2" fill="#4ade80" opacity="0.6"/>
+      </svg>
+    </div>
+    <div class="variant-name">Circuit Board</div>
+    <div class="variant-desc">PCB traces, chip packages<br>Hardware meets AI</div>
+  </div>
+
+  <!-- ═══════════════════════════════════
+       5. CONSTELLATION
+       ═══════════════════════════════════ -->
+  <div class="variant">
+    <div class="variant-num">05</div>
+    <div class="variant-icon">
+      <svg width="150" height="150" viewBox="0 0 150 150" fill="none">
+        <defs>
+          <radialGradient id="star-glow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" style="stop-color:#4ade80;stop-opacity:0.08"/>
+            <stop offset="100%" style="stop-color:#4ade80;stop-opacity:0"/>
+          </radialGradient>
+        </defs>
+        <rect x="25" y="25" width="100" height="100" rx="6" fill="url(#star-glow)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+        <!-- Stars scattered -->
+        <circle cx="35" cy="35" r="1" fill="white" opacity="0.3"/>
+        <circle cx="110" cy="40" r="1" fill="white" opacity="0.2"/>
+        <circle cx="40" cy="110" r="1.5" fill="white" opacity="0.2"/>
+        <circle cx="105" cy="105" r="1" fill="white" opacity="0.15"/>
+        <circle cx="70" cy="38" r="0.8" fill="white" opacity="0.2"/>
+        <circle cx="115" cy="80" r="0.8" fill="white" opacity="0.15"/>
+        <!-- Main constellation nodes -->
+        <circle cx="55" cy="62" r="4" fill="#4ade80" opacity="0.9"/>
+        <circle cx="55" cy="62" r="8" fill="none" stroke="#4ade80" opacity="0.15" stroke-width="1"/>
+        <circle cx="95" cy="62" r="4" fill="#4ade80" opacity="0.9"/>
+        <circle cx="95" cy="62" r="8" fill="none" stroke="#4ade80" opacity="0.15" stroke-width="1"/>
+        <circle cx="75" cy="95" r="4" fill="#4ade80" opacity="0.9"/>
+        <circle cx="75" cy="95" r="8" fill="none" stroke="#4ade80" opacity="0.15" stroke-width="1"/>
+        <!-- Constellation lines -->
+        <line x1="59" y1="62" x2="91" y2="62" stroke="white" stroke-width="0.8" opacity="0.25"/>
+        <line x1="57" y1="66" x2="73" y2="91" stroke="white" stroke-width="0.8" opacity="0.25"/>
+        <line x1="93" y1="66" x2="77" y2="91" stroke="white" stroke-width="0.8" opacity="0.25"/>
+      </svg>
+    </div>
+    <div class="variant-name">Constellation</div>
+    <div class="variant-desc">Star map, deep space<br>Agents as celestial bodies</div>
+  </div>
+
+  <!-- ═══════════════════════════════════
+       6. GLASS PRISM
+       ═══════════════════════════════════ -->
+  <div class="variant">
+    <div class="variant-num">06</div>
+    <div class="variant-icon">
+      <svg width="150" height="150" viewBox="0 0 150 150" fill="none">
+        <defs>
+          <linearGradient id="prism-fill" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:rgba(255,255,255,0.08)"/>
+            <stop offset="100%" style="stop-color:rgba(74,222,128,0.05)"/>
+          </linearGradient>
+          <filter id="prism-glow">
+            <feGaussianBlur stdDeviation="2"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <!-- 3D isometric box -->
+        <!-- Top face -->
+        <path d="M75 20 L125 50 L75 80 L25 50 Z" fill="rgba(74,222,128,0.06)" stroke="#4ade80" stroke-width="1.5" opacity="0.7"/>
+        <!-- Left face -->
+        <path d="M25 50 L75 80 L75 130 L25 100 Z" fill="rgba(74,222,128,0.03)" stroke="#4ade80" stroke-width="1" opacity="0.5"/>
+        <!-- Right face -->
+        <path d="M125 50 L75 80 L75 130 L125 100 Z" fill="rgba(74,222,128,0.08)" stroke="#4ade80" stroke-width="1" opacity="0.6"/>
+        <!-- Glass shine on top -->
+        <path d="M75 20 L100 35 L75 50 L50 35 Z" fill="rgba(255,255,255,0.06)"/>
+        <!-- Inner nodes visible through glass -->
+        <circle cx="60" cy="60" r="3" fill="#4ade80" opacity="0.7" filter="url(#prism-glow)"/>
+        <circle cx="90" cy="60" r="3" fill="#4ade80" opacity="0.7" filter="url(#prism-glow)"/>
+        <circle cx="75" cy="100" r="3" fill="#4ade80" opacity="0.5" filter="url(#prism-glow)"/>
+        <line x1="63" y1="60" x2="87" y2="60" stroke="#4ade80" stroke-width="0.8" opacity="0.3"/>
+        <line x1="62" y1="63" x2="73" y2="97" stroke="#4ade80" stroke-width="0.8" opacity="0.3"/>
+        <line x1="88" y1="63" x2="77" y2="97" stroke="#4ade80" stroke-width="0.8" opacity="0.3"/>
+        <!-- Highlight edge -->
+        <line x1="75" y1="20" x2="25" y2="50" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+      </svg>
+    </div>
+    <div class="variant-name">Glass Prism 3D</div>
+    <div class="variant-desc">Isometric crystal cube<br>See-through from every angle</div>
+  </div>
+
+  <!-- ═══════════════════════════════════
+       7. HUD / SCI-FI
+       ═══════════════════════════════════ -->
+  <div class="variant">
+    <div class="variant-num">07</div>
+    <div class="variant-icon">
+      <svg width="150" height="150" viewBox="0 0 150 150" fill="none">
+        <defs>
+          <filter id="hud-glow">
+            <feGaussianBlur stdDeviation="2"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <!-- Outer HUD frame -->
+        <rect x="25" y="25" width="100" height="100" rx="2" fill="none" stroke="#4ade80" stroke-width="1" opacity="0.5"/>
+        <!-- Corner brackets -->
+        <path d="M25 40 L25 25 L40 25" fill="none" stroke="#4ade80" stroke-width="2.5" stroke-linecap="round" filter="url(#hud-glow)"/>
+        <path d="M110 25 L125 25 L125 40" fill="none" stroke="#4ade80" stroke-width="2.5" stroke-linecap="round" filter="url(#hud-glow)"/>
+        <path d="M125 110 L125 125 L110 125" fill="none" stroke="#4ade80" stroke-width="2.5" stroke-linecap="round" filter="url(#hud-glow)"/>
+        <path d="M40 125 L25 125 L25 110" fill="none" stroke="#4ade80" stroke-width="2.5" stroke-linecap="round" filter="url(#hud-glow)"/>
+        <!-- Scanning lines -->
+        <line x1="30" y1="50" x2="45" y2="50" stroke="#4ade80" stroke-width="0.8" opacity="0.3"/>
+        <line x1="30" y1="75" x2="38" y2="75" stroke="#4ade80" stroke-width="0.8" opacity="0.3"/>
+        <line x1="30" y1="100" x2="45" y2="100" stroke="#4ade80" stroke-width="0.8" opacity="0.3"/>
+        <!-- Nodes with targeting circles -->
+        <circle cx="55" cy="62" r="4" fill="#4ade80" opacity="0.8" filter="url(#hud-glow)"/>
+        <circle cx="55" cy="62" r="10" fill="none" stroke="#4ade80" stroke-width="0.5" opacity="0.3" stroke-dasharray="3 3"/>
+        <circle cx="95" cy="62" r="4" fill="#4ade80" opacity="0.8" filter="url(#hud-glow)"/>
+        <circle cx="95" cy="62" r="10" fill="none" stroke="#4ade80" stroke-width="0.5" opacity="0.3" stroke-dasharray="3 3"/>
+        <circle cx="75" cy="95" r="4" fill="#4ade80" opacity="0.8" filter="url(#hud-glow)"/>
+        <circle cx="75" cy="95" r="10" fill="none" stroke="#4ade80" stroke-width="0.5" opacity="0.3" stroke-dasharray="3 3"/>
+        <line x1="59" y1="62" x2="91" y2="62" stroke="#4ade80" stroke-width="1" opacity="0.4"/>
+        <line x1="57" y1="66" x2="73" y2="91" stroke="#4ade80" stroke-width="1" opacity="0.4"/>
+        <line x1="93" y1="66" x2="77" y2="91" stroke="#4ade80" stroke-width="1" opacity="0.4"/>
+        <!-- Status text -->
+        <text x="120" y="30" text-anchor="end" fill="#4ade80" font-size="5" opacity="0.4" font-family="monospace">LIVE</text>
+      </svg>
+    </div>
+    <div class="variant-name">HUD / Sci-Fi</div>
+    <div class="variant-desc">Heads-up display, targeting<br>Iron Man meets AI</div>
+  </div>
+
+  <!-- ═══════════════════════════════════
+       8. NEURAL NETWORK
+       ═══════════════════════════════════ -->
+  <div class="variant">
+    <div class="variant-num">08</div>
+    <div class="variant-icon">
+      <svg width="150" height="150" viewBox="0 0 150 150" fill="none">
+        <defs>
+          <filter id="nn-glow">
+            <feGaussianBlur stdDeviation="3"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <rect x="25" y="25" width="100" height="100" rx="10" fill="rgba(74,222,128,0.02)" stroke="#4ade80" stroke-width="1.5" opacity="0.4"/>
+        <!-- Layer 1 (input) -->
+        <circle cx="42" cy="45" r="3.5" fill="#4ade80" opacity="0.5"/>
+        <circle cx="42" cy="65" r="3.5" fill="#4ade80" opacity="0.5"/>
+        <circle cx="42" cy="85" r="3.5" fill="#4ade80" opacity="0.5"/>
+        <circle cx="42" cy="105" r="3.5" fill="#4ade80" opacity="0.5"/>
+        <!-- Layer 2 (hidden) -->
+        <circle cx="75" cy="52" r="4.5" fill="#4ade80" opacity="0.8" filter="url(#nn-glow)"/>
+        <circle cx="75" cy="75" r="4.5" fill="#4ade80" opacity="0.8" filter="url(#nn-glow)"/>
+        <circle cx="75" cy="98" r="4.5" fill="#4ade80" opacity="0.8" filter="url(#nn-glow)"/>
+        <!-- Layer 3 (output) -->
+        <circle cx="108" cy="60" r="3.5" fill="#4ade80" opacity="0.5"/>
+        <circle cx="108" cy="90" r="3.5" fill="#4ade80" opacity="0.5"/>
+        <!-- L1 → L2 connections -->
+        <line x1="46" y1="45" x2="71" y2="52" stroke="#4ade80" stroke-width="0.5" opacity="0.2"/>
+        <line x1="46" y1="45" x2="71" y2="75" stroke="#4ade80" stroke-width="0.5" opacity="0.15"/>
+        <line x1="46" y1="65" x2="71" y2="52" stroke="#4ade80" stroke-width="0.5" opacity="0.15"/>
+        <line x1="46" y1="65" x2="71" y2="75" stroke="#4ade80" stroke-width="0.5" opacity="0.2"/>
+        <line x1="46" y1="85" x2="71" y2="75" stroke="#4ade80" stroke-width="0.5" opacity="0.2"/>
+        <line x1="46" y1="85" x2="71" y2="98" stroke="#4ade80" stroke-width="0.5" opacity="0.15"/>
+        <line x1="46" y1="105" x2="71" y2="98" stroke="#4ade80" stroke-width="0.5" opacity="0.2"/>
+        <line x1="46" y1="105" x2="71" y2="75" stroke="#4ade80" stroke-width="0.5" opacity="0.1"/>
+        <!-- L2 → L3 connections -->
+        <line x1="80" y1="52" x2="104" y2="60" stroke="#4ade80" stroke-width="0.5" opacity="0.2"/>
+        <line x1="80" y1="52" x2="104" y2="90" stroke="#4ade80" stroke-width="0.5" opacity="0.1"/>
+        <line x1="80" y1="75" x2="104" y2="60" stroke="#4ade80" stroke-width="0.5" opacity="0.15"/>
+        <line x1="80" y1="75" x2="104" y2="90" stroke="#4ade80" stroke-width="0.5" opacity="0.15"/>
+        <line x1="80" y1="98" x2="104" y2="90" stroke="#4ade80" stroke-width="0.5" opacity="0.2"/>
+        <line x1="80" y1="98" x2="104" y2="60" stroke="#4ade80" stroke-width="0.5" opacity="0.1"/>
+      </svg>
+    </div>
+    <div class="variant-name">Neural Network</div>
+    <div class="variant-desc">Visible layers inside glass<br>AI brain you can see through</div>
+  </div>
+
+  <!-- ═══════════════════════════════════
+       9. MINIMAL PREMIUM
+       ═══════════════════════════════════ -->
+  <div class="variant">
+    <div class="variant-num">09</div>
+    <div class="variant-icon">
+      <svg width="150" height="150" viewBox="0 0 150 150" fill="none">
+        <defs>
+          <linearGradient id="prem-stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:rgba(255,255,255,0.5)"/>
+            <stop offset="50%" style="stop-color:rgba(255,255,255,0.15)"/>
+            <stop offset="100%" style="stop-color:rgba(255,255,255,0.4)"/>
+          </linearGradient>
+          <filter id="prem-glow">
+            <feGaussianBlur stdDeviation="1.5"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <rect x="30" y="30" width="90" height="90" rx="12" fill="none" stroke="url(#prem-stroke)" stroke-width="1.5"/>
+        <!-- Subtle glass reflection -->
+        <path d="M30 42 L30 30 L42 30" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2" stroke-linecap="round"/>
+        <!-- Three minimal dots -->
+        <circle cx="58" cy="65" r="4" fill="white" opacity="0.9" filter="url(#prem-glow)"/>
+        <circle cx="92" cy="65" r="4" fill="white" opacity="0.9" filter="url(#prem-glow)"/>
+        <circle cx="75" cy="95" r="4" fill="white" opacity="0.9" filter="url(#prem-glow)"/>
+        <!-- Hairline connections -->
+        <line x1="62" y1="65" x2="88" y2="65" stroke="white" stroke-width="0.5" opacity="0.2"/>
+        <line x1="60" y1="69" x2="73" y2="91" stroke="white" stroke-width="0.5" opacity="0.2"/>
+        <line x1="90" y1="69" x2="77" y2="91" stroke="white" stroke-width="0.5" opacity="0.2"/>
+      </svg>
+    </div>
+    <div class="variant-name">Minimal Premium</div>
+    <div class="variant-desc">Apple-clean, white on black<br>Less is more, luxury feel</div>
+  </div>
+
+  <!-- ═══════════════════════════════════
+       10. QUANTUM ORBITAL
+       ═══════════════════════════════════ -->
+  <div class="variant">
+    <div class="variant-num">10</div>
+    <div class="variant-icon">
+      <svg width="150" height="150" viewBox="0 0 150 150" fill="none">
+        <defs>
+          <filter id="q-glow">
+            <feGaussianBlur stdDeviation="4"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <rect x="25" y="25" width="100" height="100" rx="6" fill="rgba(74,222,128,0.02)" stroke="#4ade80" stroke-width="1" opacity="0.3"/>
+        <!-- Orbital rings -->
+        <ellipse cx="75" cy="75" rx="40" ry="15" fill="none" stroke="#4ade80" stroke-width="0.8" opacity="0.3" transform="rotate(-30 75 75)"/>
+        <ellipse cx="75" cy="75" rx="40" ry="15" fill="none" stroke="#4ade80" stroke-width="0.8" opacity="0.3" transform="rotate(30 75 75)"/>
+        <ellipse cx="75" cy="75" rx="40" ry="15" fill="none" stroke="#4ade80" stroke-width="0.8" opacity="0.3" transform="rotate(90 75 75)"/>
+        <!-- Core -->
+        <circle cx="75" cy="75" r="8" fill="#4ade80" opacity="0.15"/>
+        <circle cx="75" cy="75" r="4" fill="#4ade80" opacity="0.9" filter="url(#q-glow)"/>
+        <!-- Electrons -->
+        <circle cx="50" cy="55" r="3" fill="#4ade80" opacity="0.8" filter="url(#q-glow)"/>
+        <circle cx="100" cy="55" r="3" fill="#4ade80" opacity="0.8" filter="url(#q-glow)"/>
+        <circle cx="75" cy="105" r="3" fill="#4ade80" opacity="0.8" filter="url(#q-glow)"/>
+      </svg>
+    </div>
+    <div class="variant-name">Quantum Orbital</div>
+    <div class="variant-desc">Atom / orbital structure<br>Agents as particles in glass</div>
+  </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.glassbox-ai-labs/glassbox-ai",
+  "title": "GlassBox AI",
+  "description": "Multi-agent MCP server with trust scoring and multi-round debate. 3 AI agents debate any topic, reference each other by name, agree/disagree, converge on a plan, and trust scores update based on who persuades whom.",
+  "repository": {
+    "url": "https://github.com/glassbox-ai-labs/glassbox-ai",
+    "source": "github"
+  },
+  "version": "0.3.0",
+  "packages": [
+    {
+      "registryType": "pypi",
+      "identifier": "glassbox-ai",
+      "version": "0.3.0",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "description": "Your OpenAI API key for powering the multi-agent debate",
+          "isRequired": true,
+          "format": "string",
+          "isSecret": true,
+          "name": "OPENAI_API_KEY"
+        }
+      ]
+    }
+  ]
+}

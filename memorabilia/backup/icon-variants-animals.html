@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GlassBox AI — Animal Symbols of Trust & Transparency</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #050505;
+    color: #e0e0e0;
+    font-family: 'Inter', sans-serif;
+    padding: 40px 20px;
+  }
+  h1 { text-align: center; font-size: 0.65rem; color: #4ade80; letter-spacing: 5px; text-transform: uppercase; margin-bottom: 6px; }
+  .subtitle { text-align: center; font-size: 0.45rem; color: #333; letter-spacing: 2px; margin-bottom: 50px; }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .variant {
+    background: #0a0a0a;
+    border: 1px solid #141414;
+    border-radius: 20px;
+    padding: 22px 12px 18px;
+    text-align: center;
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+  .variant:hover {
+    border-color: #4ade80;
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(74,222,128,0.06);
+  }
+  .variant-num { font-size: 0.42rem; color: #4ade80; letter-spacing: 4px; margin-bottom: 10px; font-weight: 600; }
+  .variant-icon { width: 160px; height: 160px; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; }
+  .variant-name { font-size: 0.72rem; font-weight: 700; color: #fff; letter-spacing: 0.5px; margin-bottom: 2px; }
+  .variant-animal { font-size: 0.42rem; color: #4ade80; opacity: 0.6; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 6px; }
+  .variant-story { font-size: 0.42rem; color: #555; line-height: 1.7; margin-bottom: 6px; }
+  .variant-moral { font-size: 0.4rem; color: #4ade80; opacity: 0.4; font-style: italic; }
+</style>
+</head>
+<body>
+
+<h1>GlassBox AI — Animal Symbols</h1>
+<p class="subtitle">Trust · Transparency · Multi-Agent Negotiation · From Nature, Fables & Folklore</p>
+
+<div class="grid">
+
+  <!-- 01: GLASS FROG — literally transparent -->
+  <div class="variant">
+    <div class="variant-num">01</div>
+    <div class="variant-icon">
+      <svg width="150" height="150" viewBox="0 0 150 150" fill="none">
+        <defs>
+          <filter id="a1-glow"><feGaussianBlur stdDeviation="4"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <!-- Frog body outline — transparent, you can see inside -->
+        <ellipse cx="75" cy="80" rx="40" ry="35" fill="rgba(74,222,128,0.04)" stroke="#4ade80" stroke-width="1.5" opacity="0.7"/>
+        <!-- Visible internal organs = visible agents -->
+        <!-- Heart (center trust) -->
+        <circle cx="75" cy="72" r="6" fill="#4ade80" opacity="0.3" filter="url(#a1-glow)"/>
+        <circle cx="75" cy="72" r="3" fill="#4ade80" opacity="0.7"/>
+        <!-- Internal nodes (agents visible through transparent belly) -->
+        <circle cx="58" cy="80" r="4" fill="#4ade80" opacity="0.4"/>
+        <circle cx="92" cy="80" r="4" fill="#4ade80" opacity="0.4"/>
+        <circle cx="75" cy="95" r="4" fill="#4ade80" opacity="0.4"/>
+        <!-- Connections visible inside -->
+        <line x1="62" y1="80" x2="88" y2="80" stroke="#4ade80" stroke-width="0.6" opacity="0.25"/>
+        <line x1="60" y1="84" x2="72" y2="92" stroke="#4ade80" stroke-width="0.6" opacity="0.25"/>
+        <line x1="90" y1="84" x2="78" y2="92" stroke="#4ade80" stroke-width="0.6" opacity="0.25"/>
+        <!-- Eyes -->
+        <circle cx="58" cy="55" r="8" fill="rgba(74,222,128,0.06)" stroke="#4ade80" stroke-width="1" opacity="0.6"/>
+        <circle cx="58" cy="55" r="3" fill="#4ade80" opacity="0.8"/>
+        <circle cx="92" cy="55" r="8" fill="rgba(74,222,128,0.06)" stroke="#4ade80" stroke-width="1" opacity="0.6"/>
+        <circle cx="92" cy="55" r="3" fill="#4ade80" opacity="0.8"/>
+        <!-- Front legs -->
+        <path d="M40 90 Q30 100 28 108" fill="none" stroke="#4ade80" stroke-width="1" opacity="0.4"/>
+        <path d="M110 90 Q120 100 122 108" fill="none" stroke="#4ade80" stroke-width="1" opacity="0.4"/>
+      </svg>
+    </div>
+    <div class="variant-name">Glass Frog</div>
+    <div class="variant-animal">Hyalinobatrachium · Costa Rica</div>
+    <div class="variant-story">A frog with a transparent belly. You can see its heart beating, organs working. It hides NOTHING.</div>
+    <div class="variant-moral">"The animal that IS a glass box"</div>
+  </div>
+
+  <!-- 02: THREE BEES — democratic waggle dance voting -->
+  <div class="variant">
+    <div class="variant-num">02</div>
+    <div class="variant-icon">
+      <svg width="150" height="150" viewBox="0 0 150 150" fill="none">
+        <defs>
+          <filter id="a2-glow"><feGaussianBlur stdDeviation="3"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <!-- Honeycomb glass box -->
+        <polygon points="75,20 120,45 120,95 75,120 30,95 30,45" fill="rgba(251,191,36,0.04)" stroke="#fbbf24" stroke-width="1.2" opacity="0.5"/>
+        <!-- Three bee agents -->
+        <!-- Bee A -->
+        <ellipse cx="55" cy="55" rx="10" ry="7" fill="rgba(251,191,36,0.1)" stroke="#fbbf24" stroke-width="1"/>
+        <line x1="48" y1="48" x2="44" y2="42" stroke="#fbbf24" stroke-width="0.8" opacity="0.5"/>
+        <line x1="62" y1="48" x2="66" y2="42" stroke="#fbbf24" stroke-width="0.8" opacity="0.5"/>
+        <!-- Bee B -->
+        <ellipse cx="95" cy="55" rx="10" ry="7" fill="rgba(251,191,36,0.1)" stroke="#fbbf24" stroke-width="1"/>
+        <line x1="88" y1="48" x2="84" y2="42" stroke="#fbbf24" stroke-width="0.8" opacity="0.5"/>
+        <line x1="102" y1="48" x2="106" y2="42" stroke="#fbbf24" stroke-width="0.8" opacity="0.5"/>
+        <!-- Bee C -->
+        <ellipse cx="75" cy="90" rx="10" ry="7" fill="rgba(251,191,36,0.1)" stroke="#fbbf24" stroke-width="1"/>
+        <line x1="68" y1="83" x2="64" y2="77" stroke="#fbbf24" stroke-width="0.8" opacity="0.5"/>
+        <line x1="82" y1="83" x2="86" y2="77" stroke="#fbbf24" stroke-width="0.8" opacity="0.5"/>
+        <!-- Waggle dance paths (figure-8 consensus paths) -->
+        <path d="M65 55 Q75 45 85 55" fill="none" stroke="#fbbf24" stroke-width="0.8" opacity="0.4" stroke-dasharray="3 2"/>
+        <path d="M60 62 Q68 78 72 83" fill="none" stroke="#fbbf24" stroke-width="0.8" opacity="0.3" stroke-dasharray="3 2"/>
+        <path d="M90 62 Q82 78 78 83" fill="none" stroke="#fbbf24" stroke-width="0.8" opacity="0.3" stroke-dasharray="3 2"/>
+        <!-- Center: consensus point -->
+        <circle cx="75" cy="65" r="4" fill="#fbbf24" opacity="0.3" filter="url(#a2-glow)"/>
+        <text x="75" y="67" text-anchor="middle" fill="white" font-size="5" opacity="0.7" font-family="Inter">✓</text>
+      </svg>
+    </div>
+    <div class="variant-name">The Waggle Vote</div>
+    <div class="variant-animal">Honeybee · Real Science</div>
+    <div class="variant-story">When bees need a new hive, scouts dance to argue locations. The swarm literally VOTES through dance. Democracy in nature.</div>
+    <div class="variant-moral">"Multi-agent debate is 80M years old"</div>
+  </div>
+
+  <!-- 03: OWL COUNCIL — Panchatantra: Owls vs Crows -->
+  <div class="variant">
+    <div class="variant-num">03</div>
+    <div class="variant-icon">
+      <svg width="150" height="150" viewBox="0 0 150 150" fill="none">
+        <defs>
+          <filter id="a3-glow"><feGaussianBlur stdDeviation="3"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <!-- Glass box -->
+        <rect x="20" y="25" width="110" height="100" rx="12" fill="rgba(74,222,128,0.02)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+        <!-- Three owls in council -->
+        <!-- Owl A (center, larger — the judge) -->
+        <circle cx="75" cy="58" r="16" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+        <circle cx="68" cy="54" r="4" fill="rgba(251,191,36,0.15)" stroke="#fbbf24" stroke-width="0.8"/>
+        <circle cx="68" cy="54" r="2" fill="#fbbf24" opacity="0.8"/>
+        <circle cx="82" cy="54" r="4" fill="rgba(251,191,36,0.15)" stroke="#fbbf24" stroke-width="0.8"/>
+        <circle cx="82" cy="54" r="2" fill="#fbbf24" opacity="0.8"/>
+        <path d="M72 62 L75 65 L78 62" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="0.8"/>
+        <!-- Owl B (left) -->
+        <circle cx="38" cy="95" r="12" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.15)" stroke-width="0.8"/>
+        <circle cx="34" cy="92" r="3" fill="rgba(74,222,128,0.15)" stroke="#4ade80" stroke-width="0.6"/>
+        <circle cx="34" cy="92" r="1.5" fill="#4ade80" opacity="0.7"/>
+        <circle cx="42" cy="92" r="3" fill="rgba(74,222,128,0.15)" stroke="#4ade80" stroke-width="0.6"/>
+        <circle cx="42" cy="92" r="1.5" fill="#4ade80" opacity="0.7"/>
+        <!-- Owl C (right) -->
+        <circle cx="112" cy="95" r="12" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.15)" stroke-width="0.8"/>
+        <circle cx="108" cy="92" r="3" fill="rgba(74,222,128,0.15)" stroke="#4ade80" stroke-width="0.6"/>
+        <circle cx="108" cy="92" r="1.5" fill="#4ade80" opacity="0.7"/>
+        <circle cx="116" cy="92" r="3" fill="rgba(74,222,128,0.15)" stroke="#4ade80" stroke-width="0.6"/>
+        <circle cx="116" cy="92" r="1.5" fill="#4ade80" opacity="0.7"/>
+        <!-- Council lines -->
+        <line x1="65" y1="72" x2="44" y2="84" stroke="rgba(255,255,255,0.1)" stroke-width="0.6"/>
+        <line x1="85" y1="72" x2="106" y2="84" stroke="rgba(255,255,255,0.1)" stroke-width="0.6"/>
+        <line x1="50" y1="95" x2="100" y2="95" stroke="rgba(255,255,255,0.06)" stroke-width="0.5" stroke-dasharray="4 3"/>
+      </svg>
+    </div>
+    <div class="variant-name">Owl Council</div>
+    <div class="variant-animal">Panchatantra · Crows & Owls</div>
+    <div class="variant-story">In the Panchatantra, owls hold night councils to debate strategy. Three wise owls — one sees, one judges, one decides.</div>
+    <div class="variant-moral">"Wisdom is a council, not a king"</div>
+  </div>
+
+  <!-- 04: GLASSWING BUTTERFLY — transparent wings -->
+  <div class="variant">
+    <div class="variant-num">04</div>
+    <div class="variant-icon">
+      <svg width="150" height="150" viewBox="0 0 150 150" fill="none">
+        <defs>
+          <filter id="a4-glow"><feGaussianBlur stdDeviation="3"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <!-- Body (center axis) -->
+        <line x1="75" y1="30" x2="75" y2="120" stroke="#4ade80" stroke-width="2" opacity="0.6"/>
+        <!-- Antennae -->
+        <path d="M75 35 Q60 20 55 15" fill="none" stroke="#4ade80" stroke-width="0.8" opacity="0.4"/>
+        <circle cx="55" cy="15" r="2" fill="#4ade80" opacity="0.5"/>
+        <path d="M75 35 Q90 20 95 15" fill="none" stroke="#4ade80" stroke-width="0.8" opacity="0.4"/>
+        <circle cx="95" cy="15" r="2" fill="#4ade80" opacity="0.5"/>
+        <!-- Left upper wing (transparent) -->
+        <path d="M75 40 Q30 35 22 65 Q20 80 50 85 Q70 87 75 75 Z" fill="rgba(74,222,128,0.04)" stroke="#4ade80" stroke-width="1" opacity="0.5"/>
+        <!-- Right upper wing (transparent) -->
+        <path d="M75 40 Q120 35 128 65 Q130 80 100 85 Q80 87 75 75 Z" fill="rgba(74,222,128,0.04)" stroke="#4ade80" stroke-width="1" opacity="0.5"/>
+        <!-- Left lower wing -->
+        <path d="M75 80 Q40 85 30 105 Q35 115 55 110 Q70 108 75 95 Z" fill="rgba(74,222,128,0.03)" stroke="#4ade80" stroke-width="0.8" opacity="0.4"/>
+        <!-- Right lower wing -->
+        <path d="M75 80 Q110 85 120 105 Q115 115 95 110 Q80 108 75 95 Z" fill="rgba(74,222,128,0.03)" stroke="#4ade80" stroke-width="0.8" opacity="0.4"/>
+        <!-- Agent nodes visible through wings -->
+        <circle cx="50" cy="60" r="4" fill="#4ade80" opacity="0.5" filter="url(#a4-glow)"/>
+        <circle cx="100" cy="60" r="4" fill="#4ade80" opacity="0.5" filter="url(#a4-glow)"/>
+        <circle cx="75" cy="95" r="4" fill="#4ade80" opacity="0.5" filter="url(#a4-glow)"/>
+        <!-- Wing veins as connections -->
+        <path d="M50 60 Q75 50 100 60" fill="none" stroke="#4ade80" stroke-width="0.4" opacity="0.3"/>
+        <path d="M50 60 Q60 80 75 95" fill="none" stroke="#4ade80" stroke-width="0.4" opacity="0.25"/>
+        <path d="M100 60 Q90 80 75 95" fill="none" stroke="#4ade80" stroke-width="0.4" opacity="0.25"/>
+      </svg>
+    </div>
+    <div class="variant-name">Glasswing</div>
+    <div class="variant-animal">Greta oto · Central America</div>
+    <div class="variant-story">A butterfly with completely transparent wings. Predators can see right through it — and it STILL survives. Transparency as strength.</div>
+    <div class="variant-moral">"Nothing to hide, nothing to fear"</div>
+  </div>
+
+  <!-- 05: WOLF PACK — trust-based coordination -->
+  <div class="variant">
+    <div class="variant-num">05</div>
+    <div class="variant-icon">
+      <svg width="150" height="150" viewBox="0 0 150 150" fill="none">
+        <defs>
+          <filter id="a5-glow"><feGaussianBlur stdDeviation="3"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <!-- Glass box -->
+        <rect x="18" y="20" width="114" height="110" rx="12" fill="rgba(74,222,128,0.015)" stroke="rgba(255,255,255,0.08)" stroke-width="0.8"/>
+        <!-- Alpha wolf (front, larger) -->
+        <path d="M75 55 L65 42 L70 50 L75 38 L80 50 L85 42 Z" fill="rgba(255,255,255,0.15)"/>
+        <ellipse cx="75" cy="68" rx="14" ry="10" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+        <circle cx="70" cy="65" r="2" fill="white" opacity="0.6"/>
+        <circle cx="80" cy="65" r="2" fill="white" opacity="0.6"/>
+        <!-- Beta wolf (left) -->
+        <path d="M38 82 L30 72 L34 78 L38 68 L42 78 L46 72 Z" fill="rgba(74,222,128,0.12)"/>
+        <ellipse cx="38" cy="92" rx="11" ry="8" fill="rgba(74,222,128,0.04)" stroke="#4ade80" stroke-width="0.8" opacity="0.6"/>
+        <circle cx="34" cy="90" r="1.5" fill="#4ade80" opacity="0.5"/>
+        <circle cx="42" cy="90" r="1.5" fill="#4ade80" opacity="0.5"/>
+        <!-- Scout wolf (right) -->
+        <path d="M112 82 L104 72 L108 78 L112 68 L116 78 L120 72 Z" fill="rgba(74,222,128,0.12)"/>
+        <ellipse cx="112" cy="92" rx="11" ry="8" fill="rgba(74,222,128,0.04)" stroke="#4ade80" stroke-width="0.8" opacity="0.6"/>
+        <circle cx="108" cy="90" r="1.5" fill="#4ade80" opacity="0.5"/>
+        <circle cx="116" cy="90" r="1.5" fill="#4ade80" opacity="0.5"/>
+        <!-- Trust lines -->
+        <line x1="65" y1="75" x2="48" y2="88" stroke="#4ade80" stroke-width="0.8" opacity="0.25"/>
+        <line x1="85" y1="75" x2="102" y2="88" stroke="#4ade80" stroke-width="0.8" opacity="0.25"/>
+        <line x1="49" y1="92" x2="101" y2="92" stroke="#4ade80" stroke-width="0.5" opacity="0.15" stroke-dasharray="4 3"/>
+        <!-- Howl lines (communication) -->
+        <path d="M75 52 Q75 40 82 32" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/>
+        <path d="M75 52 Q75 38 68 30" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/>
+      </svg>
+    </div>
+    <div class="variant-name">Wolf Pack</div>
+    <div class="variant-animal">Canis lupus · Worldwide</div>
+    <div class="variant-story">Wolves hunt as a coordinated team. Alpha leads, beta flanks, scout reports. Absolute trust — one wrong move and the hunt fails.</div>
+    <div class="variant-moral">"Trust your pack or die alone"</div>
+  </div>
+
+  <!-- 06: ELEPHANT COUNCIL — matriarchal collective wisdom -->
+  <div class="variant">
+    <div class="variant-num">06</div>
+    <div class="variant-icon">
+      <svg width="150" height="150" viewBox="0 0 150 150" fill="none">
+        <defs>
+          <filter id="a6-glow"><feGaussianBlur stdDeviation="3"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <!-- Glass box -->
+        <rect x="15" y="20" width="120" height="110" rx="12" fill="rgba(74,222,128,0.015)" stroke="rgba(255,255,255,0.08)" stroke-width="0.8"/>
+        <!-- Matriarch (large, center) -->
+        <circle cx="75" cy="60" r="20" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+        <path d="M58 55 Q52 70 50 80" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
+        <path d="M92 55 Q98 70 100 80" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
+        <circle cx="68" cy="54" r="2.5" fill="white" opacity="0.5"/>
+        <circle cx="82" cy="54" r="2.5" fill="white" opacity="0.5"/>
+        <!-- Elder (left) -->
+        <circle cx="30" cy="95" r="14" fill="rgba(74,222,128,0.03)" stroke="#4ade80" stroke-width="0.8" opacity="0.5"/>
+        <path d="M20 92 Q16 100 14 108" fill="none" stroke="#4ade80" stroke-width="0.8" opacity="0.3"/>
+        <!-- Scout (right) -->
+        <circle cx="120" cy="95" r="14" fill="rgba(74,222,128,0.03)" stroke="#4ade80" stroke-width="0.8" opacity="0.5"/>
+        <path d="M130 92 Q134 100 136 108" fill="none" stroke="#4ade80" stroke-width="0.8" opacity="0.3"/>
+        <!-- Council lines -->
+        <line x1="60" y1="72" x2="38" y2="84" stroke="rgba(255,255,255,0.1)" stroke-width="0.6"/>
+        <line x1="90" y1="72" x2="112" y2="84" stroke="rgba(255,255,255,0.1)" stroke-width="0.6"/>
+        <!-- Memory indicator (elephants never forget) -->
+        <text x="75" y="110" text-anchor="middle" fill="rgba(255,255,255,0.15)" font-size="5" font-family="Inter">memory: persistent</text>
+      </svg>
+    </div>
+    <div class="variant-name">Elephant Council</div>
+    <div class="variant-animal">Loxodonta · Africa</div>
+    <div class="variant-story">Elephant herds make decisions by council. The matriarch consults elders, weighs experience, and the herd follows. They never forget a lesson.</div>
+    <div class="variant-moral">"Trust is built on memory"</div>
+  </div>
+
+  <!-- 07: MICE & ELEPHANTS — Panchatantra mutual trust -->
+  <div class="variant">
+    <div class="variant-num">07</div>
+    <div class="variant-icon">
+      <svg width="150" height="150" viewBox="0 0 150 150" fill="none">
+        <defs>
+          <filter id="a7-glow"><feGaussianBlur stdDeviation="3"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <!-- Glass box -->
+        <rect x="15" y="15" width="120" height="120" rx="14" fill="rgba(74,222,128,0.02)" stroke="rgba(255,255,255,0.08)" stroke-width="0.8"/>
+        <!-- Large elephant (big agent) -->
+        <circle cx="85" cy="65" r="25" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+        <circle cx="78" cy="58" r="2.5" fill="white" opacity="0.4"/>
+        <path d="M72 60 Q65 75 62 85" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
+        <!-- Three tiny mice (small agents — equally powerful) -->
+        <circle cx="30" cy="105" r="6" fill="rgba(74,222,128,0.08)" stroke="#4ade80" stroke-width="1"/>
+        <circle cx="28" cy="102" r="1.5" fill="#4ade80" opacity="0.7"/>
+        <path d="M28 110 Q25 115 22 112" fill="none" stroke="#4ade80" stroke-width="0.5" opacity="0.4"/>
+        <circle cx="50" cy="110" r="5" fill="rgba(74,222,128,0.06)" stroke="#4ade80" stroke-width="0.8"/>
+        <circle cx="48" cy="108" r="1.2" fill="#4ade80" opacity="0.6"/>
+        <circle cx="40" cy="118" r="4" fill="rgba(74,222,128,0.05)" stroke="#4ade80" stroke-width="0.6"/>
+        <!-- Trust connection (mice saved elephants by gnawing nets) -->
+        <path d="M36 105 Q55 85 72 78" fill="none" stroke="#4ade80" stroke-width="0.8" opacity="0.3" stroke-dasharray="3 2"/>
+        <path d="M50 105 Q65 90 78 82" fill="none" stroke="#4ade80" stroke-width="0.6" opacity="0.2" stroke-dasharray="3 2"/>
+        <!-- Trust bidirectional arrows -->
+        <text x="55" y="88" fill="#4ade80" font-size="5" opacity="0.4" font-family="Inter">trust ↔</text>
+      </svg>
+    </div>
+    <div class="variant-name">Mice & Elephants</div>
+    <div class="variant-animal">Panchatantra · Mitra-labha</div>
+    <div class="variant-story">Tiny mice freed trapped elephants by gnawing their ropes. The elephants later saved the mice from a flood. Small agents + big agents = mutual trust.</div>
+    <div class="variant-moral">"Every agent matters, regardless of size"</div>
+  </div>
+
+  <!-- 08: DOLPHIN POD — echolocation = transparency -->
+  <div class="variant">
+    <div class="variant-num">08</div>
+    <div class="variant-icon">
+      <svg width="150" height="150" viewBox="0 0 150 150" fill="none">
+        <defs>
+          <filter id="a8-glow"><feGaussianBlur stdDeviation="3"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <!-- Water / glass box -->
+        <rect x="15" y="20" width="120" height="110" rx="14" fill="rgba(34,211,238,0.02)" stroke="rgba(34,211,238,0.2)" stroke-width="1"/>
+        <!-- Dolphin A (top) -->
+        <path d="M45 55 Q55 45 75 48 Q85 50 88 55 Q85 58 75 58 Q55 58 45 55 Z" fill="rgba(34,211,238,0.08)" stroke="#22d3ee" stroke-width="0.8"/>
+        <circle cx="52" cy="52" r="1.5" fill="#22d3ee" opacity="0.7"/>
+        <!-- Dolphin B (middle) -->
+        <path d="M55 78 Q65 68 85 71 Q95 73 98 78 Q95 81 85 81 Q65 81 55 78 Z" fill="rgba(34,211,238,0.08)" stroke="#22d3ee" stroke-width="0.8"/>
+        <circle cx="62" cy="75" r="1.5" fill="#22d3ee" opacity="0.7"/>
+        <!-- Dolphin C (bottom) -->
+        <path d="M40 100 Q50 90 70 93 Q80 95 83 100 Q80 103 70 103 Q50 103 40 100 Z" fill="rgba(34,211,238,0.08)" stroke="#22d3ee" stroke-width="0.8"/>
+        <circle cx="47" cy="97" r="1.5" fill="#22d3ee" opacity="0.7"/>
+        <!-- Echolocation waves (transparent communication) -->
+        <circle cx="88" cy="55" r="8" fill="none" stroke="#22d3ee" stroke-width="0.5" opacity="0.2"/>
+        <circle cx="88" cy="55" r="14" fill="none" stroke="#22d3ee" stroke-width="0.3" opacity="0.12"/>
+        <circle cx="88" cy="55" r="20" fill="none" stroke="#22d3ee" stroke-width="0.2" opacity="0.08"/>
+        <circle cx="98" cy="78" r="8" fill="none" stroke="#22d3ee" stroke-width="0.5" opacity="0.2"/>
+        <circle cx="98" cy="78" r="14" fill="none" stroke="#22d3ee" stroke-width="0.3" opacity="0.12"/>
+      </svg>
+    </div>
+    <div class="variant-name">Dolphin Pod</div>
+    <div class="variant-animal">Tursiops · Worldwide Oceans</div>
+    <div class="variant-story">Dolphins use echolocation — sound waves that reveal everything hidden. They share the map with the entire pod. Total information transparency.</div>
+    <div class="variant-moral">"Ping the truth, share with everyone"</div>
+  </div>
+
+  <!-- 09: LION & RABBIT — Panchatantra: truth defeats power -->
+  <div class="variant">
+    <div class="variant-num">09</div>
+    <div class="variant-icon">
+      <svg width="150" height="150" viewBox="0 0 150 150" fill="none">
+        <defs>
+          <filter id="a9-glow"><feGaussianBlur stdDeviation="3"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <!-- Glass box (the well of truth) -->
+        <rect x="20" y="20" width="110" height="110" rx="14" fill="rgba(74,222,128,0.015)" stroke="rgba(255,255,255,0.08)" stroke-width="0.8"/>
+        <!-- Lion (powerful but deceived by reflection) -->
+        <circle cx="50" cy="55" r="18" fill="rgba(251,191,36,0.06)" stroke="#fbbf24" stroke-width="1" opacity="0.6"/>
+        <!-- Mane rays -->
+        <line x1="50" y1="37" x2="50" y2="32" stroke="#fbbf24" stroke-width="0.8" opacity="0.3"/>
+        <line x1="38" y1="42" x2="34" y2="38" stroke="#fbbf24" stroke-width="0.8" opacity="0.3"/>
+        <line x1="62" y1="42" x2="66" y2="38" stroke="#fbbf24" stroke-width="0.8" opacity="0.3"/>
+        <line x1="34" y1="55" x2="30" y2="55" stroke="#fbbf24" stroke-width="0.8" opacity="0.3"/>
+        <line x1="66" y1="55" x2="70" y2="55" stroke="#fbbf24" stroke-width="0.8" opacity="0.3"/>
+        <circle cx="44" cy="52" r="2" fill="#fbbf24" opacity="0.5"/>
+        <circle cx="56" cy="52" r="2" fill="#fbbf24" opacity="0.5"/>
+        <!-- Rabbit (small but wise) -->
+        <ellipse cx="105" cy="50" rx="8" ry="6" fill="rgba(74,222,128,0.06)" stroke="#4ade80" stroke-width="0.8"/>
+        <path d="M100 44 Q98 32 100 28" fill="none" stroke="#4ade80" stroke-width="0.8" opacity="0.5"/>
+        <path d="M110 44 Q112 32 110 28" fill="none" stroke="#4ade80" stroke-width="0.8" opacity="0.5"/>
+        <circle cx="102" cy="48" r="1.2" fill="#4ade80" opacity="0.7"/>
+        <!-- The well (mirror of truth) -->
+        <ellipse cx="75" cy="105" rx="25" ry="10" fill="rgba(74,222,128,0.05)" stroke="#4ade80" stroke-width="0.8" opacity="0.5"/>
+        <text x="75" y="108" text-anchor="middle" fill="#4ade80" font-size="5" opacity="0.4" font-family="Inter">mirror</text>
+        <!-- Lion looking down at reflection -->
+        <path d="M50 73 Q55 90 65 98" fill="none" stroke="rgba(251,191,36,0.2)" stroke-width="0.6" stroke-dasharray="3 2"/>
+        <!-- Rabbit pointing to well -->
+        <path d="M105 56 Q95 80 80 98" fill="none" stroke="#4ade80" stroke-width="0.6" opacity="0.3" stroke-dasharray="3 2"/>
+      </svg>
+    </div>
+    <div class="variant-name">Lion & Rabbit</div>
+    <div class="variant-animal">Panchatantra · Kakolukiyam</div>
+    <div class="variant-story">A rabbit showed a lion his own reflection in a well. The lion attacked his reflection and fell in. Truth (transparency) defeated brute force.</div>
+    <div class="variant-moral">"The mirror doesn't lie"</div>
+  </div>
+
+  <!-- 10: CRANE FORMATION — collective navigation trust -->
+  <div class="variant">
+    <div class="variant-num">10</div>
+    <div class="variant-icon">
+      <svg width="150" height="150" viewBox="0 0 150 150" fill="none">
+        <defs>
+          <filter id="a10-glow"><feGaussianBlur stdDeviation="2"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <!-- Glass box -->
+        <rect x="15" y="15" width="120" height="120" rx="14" fill="rgba(74,222,128,0.015)" stroke="rgba(255,255,255,0.08)" stroke-width="0.8"/>
+        <!-- V-formation: lead bird + 2 flanking -->
+        <!-- Lead crane -->
+        <path d="M75 40 L65 52 L75 48 L85 52 Z" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.3)" stroke-width="0.8"/>
+        <path d="M60 52 L75 48 L90 52" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="0.5"/>
+        <!-- Left flank -->
+        <path d="M45 65 L35 77 L45 73 L55 77 Z" fill="rgba(74,222,128,0.1)" stroke="#4ade80" stroke-width="0.8" opacity="0.7"/>
+        <path d="M30 77 L45 73 L60 77" fill="none" stroke="#4ade80" stroke-width="0.5" opacity="0.3"/>
+        <!-- Right flank -->
+        <path d="M105 65 L95 77 L105 73 L115 77 Z" fill="rgba(74,222,128,0.1)" stroke="#4ade80" stroke-width="0.8" opacity="0.7"/>
+        <path d="M90 77 L105 73 L120 77" fill="none" stroke="#4ade80" stroke-width="0.5" opacity="0.3"/>
+        <!-- Second row left -->
+        <path d="M30 88 L22 98 L30 95 L38 98 Z" fill="rgba(74,222,128,0.06)" stroke="#4ade80" stroke-width="0.6" opacity="0.5"/>
+        <!-- Second row right -->
+        <path d="M120 88 L112 98 L120 95 L128 98 Z" fill="rgba(74,222,128,0.06)" stroke="#4ade80" stroke-width="0.6" opacity="0.5"/>
+        <!-- V-formation lines (trust structure) -->
+        <line x1="75" y1="50" x2="48" y2="70" stroke="#4ade80" stroke-width="0.5" opacity="0.2"/>
+        <line x1="75" y1="50" x2="102" y2="70" stroke="#4ade80" stroke-width="0.5" opacity="0.2"/>
+        <line x1="45" y1="75" x2="32" y2="90" stroke="#4ade80" stroke-width="0.4" opacity="0.15"/>
+        <line x1="105" y1="75" x2="118" y2="90" stroke="#4ade80" stroke-width="0.4" opacity="0.15"/>
+        <!-- Rotation indicator -->
+        <path d="M80 105 Q85 100 82 95" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="0.8"/>
+        <text x="75" y="118" text-anchor="middle" fill="rgba(255,255,255,0.2)" font-size="5" font-family="Inter">leaders rotate</text>
+      </svg>
+    </div>
+    <div class="variant-name">Crane Formation</div>
+    <div class="variant-animal">Grus · Worldwide Migration</div>
+    <div class="variant-story">Cranes fly in V-formation. The leader rotates — when one tires, another takes over. Trust that the next leader will also find the way.</div>
+    <div class="variant-moral">"Rotate leadership, share the burden"</div>
+  </div>
+
+</div>
+
+</body>
+</html>

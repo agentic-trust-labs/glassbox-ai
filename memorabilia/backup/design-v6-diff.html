@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GlassBox AI — T-Shirt v6 — The Diff</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #050505;
+    color: #e0e0e0;
+    font-family: 'JetBrains Mono', monospace;
+    min-height: 100vh;
+    padding: 40px 20px;
+  }
+  h1 {
+    text-align: center;
+    font-size: 1rem;
+    color: #4ade80;
+    margin-bottom: 6px;
+    letter-spacing: 3px;
+  }
+  .subtitle {
+    text-align: center;
+    color: #282828;
+    font-size: 0.6rem;
+    margin-bottom: 60px;
+    letter-spacing: 1px;
+  }
+  .shirts {
+    display: flex;
+    justify-content: center;
+    gap: 80px;
+    flex-wrap: wrap;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .shirt-container { text-align: center; }
+  .shirt-label {
+    color: #282828;
+    font-size: 0.6rem;
+    margin-bottom: 20px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+  }
+
+  .tshirt-wrap {
+    position: relative;
+    width: 500px;
+    height: 620px;
+  }
+  .tshirt-svg { width: 100%; height: 100%; }
+
+  /* ═══════════════════════════════════════
+     FRONT — Diamond + GlassBox AI / not / BlackBox AI
+     ═══════════════════════════════════════ */
+  .front-design {
+    position: absolute;
+    top: 115px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 320px;
+    text-align: center;
+  }
+
+  .diamond-wrap { margin-bottom: 30px; }
+  .diamond-svg {
+    filter: drop-shadow(0 0 14px rgba(74, 222, 128, 0.35))
+            drop-shadow(0 0 50px rgba(74, 222, 128, 0.08));
+  }
+
+  .f-glass {
+    font-family: 'Inter', sans-serif;
+    font-size: 2.3rem;
+    font-weight: 700;
+    color: #4ade80;
+    letter-spacing: 2px;
+    margin-bottom: 22px;
+    text-shadow: 0 0 40px rgba(74, 222, 128, 0.15);
+  }
+  .f-not {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: #3a3a3a;
+    letter-spacing: 8px;
+    margin: 22px 0;
+  }
+  .f-black {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #888;
+    letter-spacing: 2px;
+    text-decoration: line-through;
+    text-decoration-color: #f85149;
+    text-decoration-thickness: 2.5px;
+  }
+
+  .front-footer {
+    margin-top: 34px;
+    padding-top: 18px;
+    border-top: 1px solid #141414;
+    text-align: center;
+  }
+  .pip-line {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+  }
+  .pip-prompt { color: #4ade80; }
+  .pip-cmd { color: #555; }
+  .pip-pkg { color: #4ade80; font-weight: 600; }
+  .cursor {
+    display: inline-block;
+    width: 7px; height: 14px;
+    background: #4ade80;
+    margin-left: 2px;
+    animation: blink 1s step-end infinite;
+    vertical-align: middle;
+    opacity: 0.8;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .qr-section { margin-top: 14px; }
+  .qr-box {
+    display: inline-flex;
+    width: 54px; height: 54px;
+    border: 1px solid #1a1a1a;
+    background: #fff;
+    border-radius: 3px;
+    align-items: center;
+    justify-content: center;
+  }
+  .qr-label {
+    font-size: 0.36rem;
+    color: #2a2a2a;
+    margin-top: 5px;
+    letter-spacing: 1px;
+  }
+
+  /* ═══════════════════════════════════════
+     BACK — Git Diff Style
+     Red = BlackBox (old)
+     Green = GlassBox (new)
+     ═══════════════════════════════════════ */
+  .back-design {
+    position: absolute;
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 340px;
+    text-align: center;
+  }
+
+  /* Diff file header — looks like GitHub */
+  .diff-header {
+    text-align: left;
+    padding: 8px 14px;
+    background: rgba(13, 17, 23, 0.5);
+    border: 1px solid #1a1f2b;
+    border-bottom: none;
+    border-radius: 8px 8px 0 0;
+    font-size: 0.5rem;
+    color: #484f58;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .diff-file-icon {
+    width: 12px; height: 12px;
+    fill: #484f58;
+  }
+  .diff-filename { color: #58a6ff; }
+
+  /* Diff body */
+  .diff-block {
+    background: rgba(13, 17, 23, 0.7);
+    border: 1px solid #1a1f2b;
+    border-radius: 0 0 8px 8px;
+    padding: 12px 0;
+    text-align: left;
+    font-size: 0.62rem;
+    line-height: 2.3;
+  }
+
+  .diff-line {
+    display: flex;
+    align-items: baseline;
+    padding: 0 14px;
+    position: relative;
+  }
+  .diff-line.del {
+    background: rgba(248, 81, 73, 0.1);
+    border-left: 3px solid #f85149;
+  }
+  .diff-line.add {
+    background: rgba(74, 222, 128, 0.08);
+    border-left: 3px solid #4ade80;
+  }
+  .diff-line.ctx {
+    border-left: 3px solid transparent;
+    opacity: 0.5;
+  }
+  .diff-line.blank {
+    border-left: 3px solid transparent;
+    height: 12px;
+  }
+  .diff-line.hunk {
+    border-left: 3px solid transparent;
+    color: #484f58;
+    font-size: 0.48rem;
+  }
+
+  .diff-sign {
+    min-width: 14px;
+    font-weight: 700;
+    margin-right: 8px;
+  }
+  .diff-sign.minus { color: #f85149; }
+  .diff-sign.plus { color: #4ade80; }
+  .diff-sign.space { color: transparent; }
+
+  .d-kw { color: #ff7b72; }
+  .d-str { color: #a5d6ff; }
+  .d-var { color: #c9d1d9; }
+  .d-op { color: #555; }
+  .d-cm { color: #484f58; }
+  .d-fn { color: #d2a8ff; }
+  .d-grn { color: #4ade80; }
+  .d-cls { color: #ffa657; }
+
+  /* Bottom section */
+  .back-sep {
+    width: 40px;
+    height: 1px;
+    background: #1a1a1a;
+    margin: 28px auto;
+  }
+  .people-line {
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+  .ppl-dim { color: #555; }
+  .ppl-verb { color: #999; }
+  .ppl-brand { color: #4ade80; }
+
+  .back-pip {
+    margin-top: 12px;
+    font-size: 0.48rem;
+    color: #2a2a2a;
+    letter-spacing: 1px;
+  }
+
+  /* ═══════════════════════════════════════ */
+  .specs {
+    max-width: 900px;
+    margin: 80px auto 0;
+    border: 1px solid #111;
+    border-radius: 6px;
+    background: #080808;
+    padding: 28px;
+  }
+  .specs h2 {
+    color: #4ade80;
+    font-size: 0.65rem;
+    margin-bottom: 14px;
+    letter-spacing: 2px;
+    font-weight: 400;
+  }
+  .specs table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.58rem;
+  }
+  .specs td {
+    padding: 6px 12px;
+    border-bottom: 1px solid #0d0d0d;
+    vertical-align: top;
+  }
+  .specs td:first-child { color: #333; width: 130px; }
+  .specs td:last-child { color: #555; }
+  .accent { color: #4ade80; }
+  .note {
+    text-align: center;
+    margin-top: 36px;
+    font-size: 0.45rem;
+    color: #181818;
+    line-height: 2;
+  }
+  .note a { color: #4ade80; text-decoration: none; }
+</style>
+</head>
+<body>
+
+<h1>GLASSBOX AI</h1>
+<p class="subtitle">// v6 — the diff — red is old, green is new</p>
+
+<div class="shirts">
+
+  <!-- ══════════════════════════════════════
+       FRONT — Diamond + GlassBox AI / not / BlackBox AI
+       ══════════════════════════════════════ -->
+  <div class="shirt-container">
+    <div class="shirt-label">front</div>
+    <div class="tshirt-wrap">
+      <svg class="tshirt-svg" viewBox="0 0 500 620" fill="none">
+        <path d="
+          M155 0 L72 35 L0 110 L62 168 L98 128
+          L98 596 C98 608 106 616 118 616
+          L382 616 C394 616 402 608 402 596
+          L402 128 L438 168 L500 110 L428 35 L345 0
+          C345 0 322 60 250 60 C178 60 155 0 155 0 Z
+        " fill="#0e0e0e" stroke="#161616" stroke-width="1"/>
+        <path d="M155 0 C178 60 178 60 250 60 C322 60 322 60 345 0"
+          fill="none" stroke="#131313" stroke-width="1.5"/>
+      </svg>
+
+      <div class="front-design">
+        <div class="diamond-wrap">
+          <svg class="diamond-svg" width="52" height="52" viewBox="0 0 48 48" fill="none">
+            <path d="M24 2 L44 18 L24 46 L4 18 Z" fill="none" stroke="#4ade80" stroke-width="1.5" opacity="0.8"/>
+            <path d="M4 18 L24 12 L44 18" fill="none" stroke="#4ade80" stroke-width="0.8" opacity="0.5"/>
+            <path d="M24 12 L24 46" fill="none" stroke="#4ade80" stroke-width="0.5" opacity="0.3"/>
+            <path d="M14 18 L24 46 L34 18" fill="none" stroke="#4ade80" stroke-width="0.5" opacity="0.25"/>
+            <path d="M24 2 L14 18" fill="none" stroke="#4ade80" stroke-width="0.8" opacity="0.4"/>
+            <path d="M24 2 L34 18" fill="none" stroke="#4ade80" stroke-width="0.8" opacity="0.4"/>
+            <path d="M14 18 L24 12 L34 18 Z" fill="#4ade80" opacity="0.06"/>
+          </svg>
+        </div>
+
+        <div class="f-glass">GlassBox AI</div>
+        <div class="f-not">not</div>
+        <div class="f-black">BlackBox AI</div>
+
+        <div class="front-footer">
+          <div class="pip-line">
+            <span class="pip-prompt">$</span>
+            <span class="pip-cmd"> pip install </span>
+            <span class="pip-pkg">glassbox-ai</span>
+            <span class="cursor"></span>
+          </div>
+          <div class="qr-section">
+            <div class="qr-box">
+              <svg viewBox="0 0 50 50" width="46" height="46">
+                <rect width="50" height="50" fill="white"/>
+                <rect x="3" y="3" width="13" height="13" rx="2" fill="#111"/>
+                <rect x="5.5" y="5.5" width="8" height="8" rx="1" fill="white"/>
+                <rect x="7" y="7" width="5" height="5" rx="0.5" fill="#111"/>
+                <rect x="34" y="3" width="13" height="13" rx="2" fill="#111"/>
+                <rect x="36.5" y="5.5" width="8" height="8" rx="1" fill="white"/>
+                <rect x="38" y="7" width="5" height="5" rx="0.5" fill="#111"/>
+                <rect x="3" y="34" width="13" height="13" rx="2" fill="#111"/>
+                <rect x="5.5" y="36.5" width="8" height="8" rx="1" fill="white"/>
+                <rect x="7" y="38" width="5" height="5" rx="0.5" fill="#111"/>
+                <rect x="20" y="4" width="3" height="3" fill="#111"/>
+                <rect x="26" y="7" width="3" height="3" fill="#111"/>
+                <rect x="20" y="20" width="3" height="3" fill="#4ade80"/>
+                <rect x="24" y="24" width="3" height="3" fill="#4ade80"/>
+                <rect x="28" y="20" width="3" height="3" fill="#4ade80"/>
+                <rect x="34" y="22" width="3" height="3" fill="#111"/>
+                <rect x="42" y="22" width="3" height="3" fill="#111"/>
+                <rect x="34" y="34" width="3" height="3" fill="#111"/>
+                <rect x="42" y="38" width="3" height="3" fill="#111"/>
+                <rect x="44" y="44" width="3" height="3" fill="#111"/>
+              </svg>
+            </div>
+            <div class="qr-label">github.com/glassbox-ai-labs</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       BACK — Git Diff: BlackBox → GlassBox
+       ══════════════════════════════════════ -->
+  <div class="shirt-container">
+    <div class="shirt-label">back</div>
+    <div class="tshirt-wrap">
+      <svg class="tshirt-svg" viewBox="0 0 500 620" fill="none">
+        <path d="
+          M155 0 L72 35 L0 110 L62 168 L98 128
+          L98 596 C98 608 106 616 118 616
+          L382 616 C394 616 402 608 402 596
+          L402 128 L438 168 L500 110 L428 35 L345 0
+          C345 0 326 38 250 38 C174 38 155 0 155 0 Z
+        " fill="#0e0e0e" stroke="#161616" stroke-width="1"/>
+        <path d="M155 0 C174 38 174 38 250 38 C326 38 326 38 345 0"
+          fill="none" stroke="#131313" stroke-width="1.5"/>
+      </svg>
+
+      <div class="back-design">
+        <!-- Diff file header -->
+        <div class="diff-header">
+          <svg class="diff-file-icon" viewBox="0 0 16 16"><path d="M2 1.75C2 .784 2.784 0 3.75 0h6.586c.464 0 .909.184 1.237.513l2.914 2.914c.329.328.513.773.513 1.237v9.586A1.75 1.75 0 0113.25 16h-9.5A1.75 1.75 0 012 14.25V1.75z" fill="#484f58"/></svg>
+          <span class="diff-filename">trust.py</span>
+          <span style="margin-left:auto; color:#484f58;">+4 −4</span>
+        </div>
+
+        <!-- Diff body -->
+        <div class="diff-block">
+          <!-- Hunk header -->
+          <div class="diff-line hunk">
+            <span class="diff-sign space">&nbsp;</span>
+            <span>@@ -1,8 +1,8 @@ <span class="d-fn">class</span> <span class="d-cls">Agent</span></span>
+          </div>
+
+          <!-- Line 1: trust -->
+          <div class="diff-line del">
+            <span class="diff-sign minus">−</span>
+            <span><span class="d-var">trust</span> <span class="d-op">=</span> <span class="d-str">"assumed"</span></span>
+          </div>
+          <div class="diff-line add">
+            <span class="diff-sign plus">+</span>
+            <span><span class="d-var">trust</span> <span class="d-op">=</span> <span class="d-str">"earned"</span></span>
+          </div>
+
+          <!-- blank spacer -->
+          <div class="diff-line blank"></div>
+
+          <!-- Line 2: reasoning -->
+          <div class="diff-line del">
+            <span class="diff-sign minus">−</span>
+            <span><span class="d-var">reasoning</span> <span class="d-op">=</span> <span class="d-str">"hidden"</span></span>
+          </div>
+          <div class="diff-line add">
+            <span class="diff-sign plus">+</span>
+            <span><span class="d-var">reasoning</span> <span class="d-op">=</span> <span class="d-str">"traceable"</span></span>
+          </div>
+
+          <!-- blank spacer -->
+          <div class="diff-line blank"></div>
+
+          <!-- Line 3: decision -->
+          <div class="diff-line del">
+            <span class="diff-sign minus">−</span>
+            <span><span class="d-var">decision</span> <span class="d-op">=</span> <span class="d-var">blackbox</span><span class="d-op">(</span><span class="d-var">input</span><span class="d-op">)</span></span>
+          </div>
+          <div class="diff-line add">
+            <span class="diff-sign plus">+</span>
+            <span><span class="d-var">decision</span> <span class="d-op">=</span> <span class="d-grn">debate</span><span class="d-op">(</span><span class="d-var">input</span><span class="d-op">).</span><span class="d-grn">trace</span><span class="d-op">()</span></span>
+          </div>
+
+          <!-- blank spacer -->
+          <div class="diff-line blank"></div>
+
+          <!-- Line 4: deploy -->
+          <div class="diff-line del">
+            <span class="diff-sign minus">−</span>
+            <span><span class="d-var">deploy</span> <span class="d-op">=</span> <span class="d-str">"hope it works"</span></span>
+          </div>
+          <div class="diff-line add">
+            <span class="diff-sign plus">+</span>
+            <span><span class="d-var">deploy</span> <span class="d-op">=</span> <span class="d-grn">production</span><span class="d-op">(</span><span class="d-kw">verified</span><span class="d-op">=</span><span class="d-cls">True</span><span class="d-op">)</span></span>
+          </div>
+        </div>
+
+        <div class="back-sep"></div>
+
+        <div class="people-line">
+          <span class="ppl-dim">people</span>
+          <span class="ppl-verb"> start </span>
+          <span class="ppl-brand">GlassBox</span>
+        </div>
+
+        <div class="back-pip">pip install glassbox-ai</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════ SPECS ══════ -->
+<div class="specs">
+  <h2>// print specifications</h2>
+  <table>
+    <tr><td>fabric</td><td>100% Combed Cotton, <span class="accent">220 GSM</span></td></tr>
+    <tr><td>color</td><td>Jet Black</td></tr>
+    <tr><td>print</td><td><span class="accent">DTG</span> — Direct to Garment</td></tr>
+    <tr><td>palette</td><td><span style="color:#4ade80">■</span> green · <span style="color:#f85149">■</span> red · <span style="color:#a5d6ff">■</span> cyan · <span style="color:#484f58">■</span> grey · <span style="color:#c9d1d9">■</span> white</td></tr>
+    <tr><td>front</td><td>A4 — centered on chest</td></tr>
+    <tr><td>back</td><td>A4 — centered upper back</td></tr>
+    <tr><td>qr</td><td>Min <span class="accent">6×6 cm</span> — replace with real QR</td></tr>
+    <tr><td>qty</td><td><span class="accent">5 pieces</span></td></tr>
+  </table>
+</div>
+
+<div class="specs" style="margin-top: 18px;">
+  <h2>// express print — delhi ncr</h2>
+  <table>
+    <tr><td><span class="accent">★</span> TeeLabs</td><td>Delhi factory walk-in. Same-day. → teelabs.in</td></tr>
+    <tr><td><span class="accent">★</span> Delhi Tees</td><td>Karol Bagh. WhatsApp, 1-day. → tshirt.delhitshirts.in</td></tr>
+    <tr><td>Printo</td><td>Online, Delhi hub, 1-2 day. → printo.in</td></tr>
+    <tr><td>ARC Print</td><td>Noida. Corporate DTG. → arcprint.in</td></tr>
+  </table>
+</div>
+
+<div class="note">
+  screenshot front & back at 300 DPI · generate real QR at qr-code-generator.com<br>
+  <a href="https://github.com/glassbox-ai-labs/glassbox-ai">GlassBox AI</a> · transparency by default
+</div>
+
+</body>
+</html>

@@ -1,0 +1,7 @@
+[
+  {
+    "instance_id": "astropy__astropy-13453",
+    "model_patch": "diff --git a/astropy/io/ascii/html.py b/astropy/io/ascii/html.py\nindex 266cf229cc..c5a1105145 100644\n--- a/astropy/io/ascii/html.py\n+++ b/astropy/io/ascii/html.py\n@@ -349,11 +349,13 @@ class HTML(core.BaseReader):\n         cols = list(table.columns.values())\n \n         self.data.header.cols = cols\n+        self.data.cols = cols\n \n         if isinstance(self.data.fill_values, tuple):\n             self.data.fill_values = [self.data.fill_values]\n \n         self.data._set_fill_values(cols)\n+        self.data._set_col_formats()\n \n         lines = []\n",
+    "model_name_or_path": "glassbox-coder-hitl-v1"
+  }
+]

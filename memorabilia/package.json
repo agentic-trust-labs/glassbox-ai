@@ -1,0 +1,15 @@
+{
+  "name": "memorabilia",
+  "version": "1.0.0",
+  "description": "Community-designed swag for the GlassBox AI project. Download, customize, and print your own.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "puppeteer": "^24.37.3"
+  }
+}

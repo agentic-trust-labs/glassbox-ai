@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GlassBox AI — T-Shirt v5</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #050505;
+    color: #e0e0e0;
+    font-family: 'JetBrains Mono', monospace;
+    min-height: 100vh;
+    padding: 40px 20px;
+  }
+  h1 {
+    text-align: center;
+    font-size: 1rem;
+    color: #4ade80;
+    margin-bottom: 6px;
+    letter-spacing: 3px;
+  }
+  .subtitle {
+    text-align: center;
+    color: #282828;
+    font-size: 0.65rem;
+    margin-bottom: 60px;
+    letter-spacing: 1px;
+  }
+  .shirts {
+    display: flex;
+    justify-content: center;
+    gap: 80px;
+    flex-wrap: wrap;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .shirt-container { text-align: center; }
+  .shirt-label {
+    color: #282828;
+    font-size: 0.6rem;
+    margin-bottom: 20px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+  }
+
+  .tshirt-wrap {
+    position: relative;
+    width: 500px;
+    height: 620px;
+  }
+  .tshirt-svg { width: 100%; height: 100%; }
+
+  /* ═══════════════════════════════════════
+     FRONT — Diamond + GlassBox AI / not / BlackBox AI
+     Elegant, minimal, maximum impact
+     ═══════════════════════════════════════ */
+  .front-design {
+    position: absolute;
+    top: 120px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 320px;
+    text-align: center;
+  }
+
+  /* Diamond — elegant SVG, not emoji */
+  .diamond-wrap {
+    margin-bottom: 28px;
+  }
+  .diamond-svg {
+    filter: drop-shadow(0 0 12px rgba(74, 222, 128, 0.3))
+            drop-shadow(0 0 40px rgba(74, 222, 128, 0.1));
+  }
+
+  /* GlassBox AI */
+  .f-glass {
+    font-family: 'Inter', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #4ade80;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+  }
+
+  /* not */
+  .f-not {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: #444;
+    letter-spacing: 8px;
+    text-transform: lowercase;
+    margin: 20px 0;
+  }
+
+  /* BlackBox AI — readable, struck through */
+  .f-black {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #777;
+    letter-spacing: 2px;
+    text-decoration: line-through;
+    text-decoration-color: #f85149;
+    text-decoration-thickness: 2.5px;
+  }
+
+  /* Footer: pip + QR */
+  .front-footer {
+    margin-top: 32px;
+    padding-top: 18px;
+    border-top: 1px solid #161616;
+    text-align: center;
+  }
+  .pip-line {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+  }
+  .pip-prompt { color: #4ade80; }
+  .pip-cmd { color: #555; }
+  .pip-pkg { color: #4ade80; font-weight: 600; }
+  .cursor {
+    display: inline-block;
+    width: 8px; height: 15px;
+    background: #4ade80;
+    margin-left: 2px;
+    animation: blink 1s step-end infinite;
+    vertical-align: middle;
+    opacity: 0.8;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .qr-section { margin-top: 14px; text-align: center; }
+  .qr-box {
+    display: inline-flex;
+    width: 56px; height: 56px;
+    border: 1px solid #1a1a1a;
+    background: #fff;
+    border-radius: 3px;
+    align-items: center;
+    justify-content: center;
+  }
+  .qr-label {
+    font-size: 0.38rem;
+    color: #333;
+    margin-top: 5px;
+    letter-spacing: 1px;
+  }
+
+  /* ═══════════════════════════════════════
+     BACK — 4 Lines of Philosophical Python
+     + people start GlassBox
+     Clean, big, readable
+     ═══════════════════════════════════════ */
+  .back-design {
+    position: absolute;
+    top: 130px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 320px;
+    text-align: center;
+  }
+
+  .back-code {
+    text-align: left;
+    font-size: 0.78rem;
+    line-height: 2.8;
+    padding: 0 10px;
+  }
+  .c { color: #6a737d; }
+  .k { color: #ff7b72; }
+  .g { color: #4ade80; }
+  .w { color: #c9d1d9; }
+
+  .back-sep {
+    width: 40px;
+    height: 1px;
+    background: #1a1a1a;
+    margin: 36px auto;
+  }
+
+  .people-line {
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+  .ppl-dim { color: #555; }
+  .ppl-verb { color: #999; }
+  .ppl-brand { color: #4ade80; }
+
+  .back-pip {
+    margin-top: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.5rem;
+    color: #333;
+    letter-spacing: 1px;
+  }
+
+  /* ═══════════════════════════════════════ */
+  .specs {
+    max-width: 900px;
+    margin: 80px auto 0;
+    border: 1px solid #111;
+    border-radius: 6px;
+    background: #080808;
+    padding: 30px;
+  }
+  .specs h2 {
+    color: #4ade80;
+    font-size: 0.7rem;
+    margin-bottom: 16px;
+    letter-spacing: 2px;
+    font-weight: 400;
+  }
+  .specs table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.62rem;
+  }
+  .specs td {
+    padding: 7px 12px;
+    border-bottom: 1px solid #0d0d0d;
+    vertical-align: top;
+  }
+  .specs td:first-child { color: #333; width: 140px; }
+  .specs td:last-child { color: #666; }
+  .accent { color: #4ade80; }
+
+  .note {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 0.5rem;
+    color: #1a1a1a;
+    line-height: 2;
+  }
+  .note a { color: #4ade80; text-decoration: none; }
+</style>
+</head>
+<body>
+
+<h1>GLASSBOX AI</h1>
+<p class="subtitle">// v5 — minimal diamond, 4 lines, elegant</p>
+
+<div class="shirts">
+
+  <!-- ══════════════════════════════════════
+       FRONT — Diamond + GlassBox AI / not / BlackBox AI
+       ══════════════════════════════════════ -->
+  <div class="shirt-container">
+    <div class="shirt-label">front</div>
+    <div class="tshirt-wrap">
+      <svg class="tshirt-svg" viewBox="0 0 500 620" fill="none">
+        <path d="
+          M155 0 L72 35 L0 110 L62 168 L98 128
+          L98 596 C98 608 106 616 118 616
+          L382 616 C394 616 402 608 402 596
+          L402 128 L438 168 L500 110 L428 35 L345 0
+          C345 0 322 60 250 60 C178 60 155 0 155 0 Z
+        " fill="#0e0e0e" stroke="#161616" stroke-width="1"/>
+        <path d="M155 0 C178 60 178 60 250 60 C322 60 322 60 345 0"
+          fill="none" stroke="#131313" stroke-width="1.5"/>
+      </svg>
+
+      <div class="front-design">
+        <!-- Diamond — clean geometric SVG -->
+        <div class="diamond-wrap">
+          <svg class="diamond-svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
+            <!-- outer diamond shape -->
+            <path d="M24 2 L44 18 L24 46 L4 18 Z" fill="none" stroke="#4ade80" stroke-width="1.5" opacity="0.8"/>
+            <!-- inner facets -->
+            <path d="M4 18 L24 12 L44 18" fill="none" stroke="#4ade80" stroke-width="0.8" opacity="0.5"/>
+            <path d="M24 12 L24 46" fill="none" stroke="#4ade80" stroke-width="0.5" opacity="0.3"/>
+            <path d="M14 18 L24 46 L34 18" fill="none" stroke="#4ade80" stroke-width="0.5" opacity="0.25"/>
+            <!-- top facets -->
+            <path d="M24 2 L14 18" fill="none" stroke="#4ade80" stroke-width="0.8" opacity="0.4"/>
+            <path d="M24 2 L34 18" fill="none" stroke="#4ade80" stroke-width="0.8" opacity="0.4"/>
+            <!-- highlight -->
+            <path d="M14 18 L24 12 L34 18 Z" fill="#4ade80" opacity="0.06"/>
+          </svg>
+        </div>
+
+        <!-- GlassBox AI -->
+        <div class="f-glass">GlassBox AI</div>
+
+        <!-- not -->
+        <div class="f-not">not</div>
+
+        <!-- BlackBox AI — clearly readable, red strikethrough -->
+        <div class="f-black">BlackBox AI</div>
+
+        <!-- pip install + QR -->
+        <div class="front-footer">
+          <div class="pip-line">
+            <span class="pip-prompt">$</span>
+            <span class="pip-cmd"> pip install </span>
+            <span class="pip-pkg">glassbox-ai</span>
+            <span class="cursor"></span>
+          </div>
+          <div class="qr-section">
+            <div class="qr-box">
+              <svg viewBox="0 0 50 50" width="48" height="48">
+                <rect width="50" height="50" fill="white"/>
+                <rect x="3" y="3" width="13" height="13" rx="2" fill="#111"/>
+                <rect x="5.5" y="5.5" width="8" height="8" rx="1" fill="white"/>
+                <rect x="7" y="7" width="5" height="5" rx="0.5" fill="#111"/>
+                <rect x="34" y="3" width="13" height="13" rx="2" fill="#111"/>
+                <rect x="36.5" y="5.5" width="8" height="8" rx="1" fill="white"/>
+                <rect x="38" y="7" width="5" height="5" rx="0.5" fill="#111"/>
+                <rect x="3" y="34" width="13" height="13" rx="2" fill="#111"/>
+                <rect x="5.5" y="36.5" width="8" height="8" rx="1" fill="white"/>
+                <rect x="7" y="38" width="5" height="5" rx="0.5" fill="#111"/>
+                <rect x="20" y="4" width="3" height="3" fill="#111"/>
+                <rect x="26" y="7" width="3" height="3" fill="#111"/>
+                <rect x="20" y="20" width="3" height="3" fill="#4ade80"/>
+                <rect x="24" y="24" width="3" height="3" fill="#4ade80"/>
+                <rect x="28" y="20" width="3" height="3" fill="#4ade80"/>
+                <rect x="34" y="22" width="3" height="3" fill="#111"/>
+                <rect x="42" y="22" width="3" height="3" fill="#111"/>
+                <rect x="34" y="34" width="3" height="3" fill="#111"/>
+                <rect x="42" y="38" width="3" height="3" fill="#111"/>
+                <rect x="44" y="44" width="3" height="3" fill="#111"/>
+              </svg>
+            </div>
+            <div class="qr-label">github.com/glassbox-ai-labs</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       BACK — 4 Lines of Python Philosophy
+       + people start GlassBox
+       ══════════════════════════════════════ -->
+  <div class="shirt-container">
+    <div class="shirt-label">back</div>
+    <div class="tshirt-wrap">
+      <svg class="tshirt-svg" viewBox="0 0 500 620" fill="none">
+        <path d="
+          M155 0 L72 35 L0 110 L62 168 L98 128
+          L98 596 C98 608 106 616 118 616
+          L382 616 C394 616 402 608 402 596
+          L402 128 L438 168 L500 110 L428 35 L345 0
+          C345 0 326 38 250 38 C174 38 155 0 155 0 Z
+        " fill="#0e0e0e" stroke="#161616" stroke-width="1"/>
+        <path d="M155 0 C174 38 174 38 250 38 C326 38 326 38 345 0"
+          fill="none" stroke="#131313" stroke-width="1.5"/>
+      </svg>
+
+      <div class="back-design">
+        <!-- 4 lines of Python — big, readable -->
+        <div class="back-code">
+          <div><span class="c"># trust is earned, not assumed</span></div>
+          <div><span class="c"># every decision, traceable</span></div>
+          <div><span class="c"># debate, don't dictate</span></div>
+          <div><span class="k">from</span> <span class="w">glassbox</span> <span class="k">import</span> <span class="g">transparency</span></div>
+        </div>
+
+        <div class="back-sep"></div>
+
+        <!-- people start GlassBox -->
+        <div class="people-line">
+          <span class="ppl-dim">people</span>
+          <span class="ppl-verb"> start </span>
+          <span class="ppl-brand">GlassBox</span>
+        </div>
+
+        <div class="back-pip">pip install glassbox-ai</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════ SPECS ══════ -->
+<div class="specs">
+  <h2>// print specifications</h2>
+  <table>
+    <tr><td>fabric</td><td>100% Combed Cotton, <span class="accent">220 GSM</span></td></tr>
+    <tr><td>color</td><td>Jet Black</td></tr>
+    <tr><td>print</td><td><span class="accent">DTG</span> — Direct to Garment</td></tr>
+    <tr><td>palette</td><td><span style="color:#4ade80">■</span> green · <span style="color:#ff7b72">■</span> red · <span style="color:#6a737d">■</span> grey · <span style="color:#c9d1d9">■</span> white — 4 colors only, clean print</td></tr>
+    <tr><td>front</td><td>A4 — centered on chest</td></tr>
+    <tr><td>back</td><td>A4 — centered upper back (less is more)</td></tr>
+    <tr><td>qr</td><td>Min <span class="accent">6×6 cm</span> — replace placeholder with real QR</td></tr>
+    <tr><td>qty</td><td><span class="accent">5 pieces</span></td></tr>
+  </table>
+</div>
+
+<div class="specs" style="margin-top: 20px;">
+  <h2>// express print — delhi ncr</h2>
+  <table>
+    <tr><td><span class="accent">★</span> TeeLabs</td><td>Delhi factory walk-in. Same-day. → teelabs.in</td></tr>
+    <tr><td><span class="accent">★</span> Delhi Tees</td><td>Karol Bagh. WhatsApp, 1-day. → tshirt.delhitshirts.in</td></tr>
+    <tr><td>Printo</td><td>Online, Delhi hub, 1-2 day. → printo.in</td></tr>
+    <tr><td>ARC Print</td><td>Noida. Corporate DTG. → arcprint.in</td></tr>
+  </table>
+</div>
+
+<div class="note">
+  screenshot front & back at 300 DPI · generate real QR at qr-code-generator.com<br>
+  <a href="https://github.com/glassbox-ai-labs/glassbox-ai">GlassBox AI</a> · transparency by default
+</div>
+
+</body>
+</html>

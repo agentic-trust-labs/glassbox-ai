@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GlassBox AI — 20 Jellyfish Variants</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #030303; color: #e0e0e0; font-family: 'Inter', sans-serif; padding: 30px 15px; }
+  h1 { text-align: center; font-size: 0.6rem; color: #4ade80; letter-spacing: 5px; text-transform: uppercase; margin-bottom: 4px; }
+  .sub { text-align: center; font-size: 0.4rem; color: #222; letter-spacing: 2px; margin-bottom: 35px; }
+  .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; max-width: 1500px; margin: 0 auto; }
+  .c {
+    background: #080808; border: 1px solid #121212; border-radius: 20px;
+    padding: 16px 8px 14px; text-align: center; transition: all 0.3s; cursor: pointer;
+  }
+  .c:hover { border-color: #4ade80; transform: translateY(-3px); box-shadow: 0 10px 30px rgba(74,222,128,0.06); }
+  .n { font-size: 0.38rem; color: #4ade80; letter-spacing: 3px; margin-bottom: 6px; font-weight: 700; }
+  .ic { width: 160px; height: 160px; margin: 0 auto 8px; display: flex; align-items: center; justify-content: center; }
+  .nm { font-size: 0.65rem; font-weight: 800; color: #fff; margin-bottom: 2px; }
+  .tg { font-size: 0.36rem; color: #4ade80; opacity: 0.5; letter-spacing: 1px; margin-bottom: 4px; }
+  .ds { font-size: 0.36rem; color: #444; line-height: 1.6; }
+</style>
+</head>
+<body>
+<h1>GlassBox AI — Jellyfish · 20 Variants</h1>
+<p class="sub">Transparent · Neural · Multi-Agent · Glass · Elegant</p>
+<div class="grid">
+
+<!-- 01: NEURAL JELLY -->
+<div class="c"><div class="n">01</div><div class="ic">
+<svg width="150" height="150" viewBox="0 0 150 150" fill="none">
+<defs><filter id="g1"><feGaussianBlur stdDeviation="3"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+<!-- Bell -->
+<path d="M35 65 Q35 20 75 15 Q115 20 115 65 Q115 75 75 80 Q35 75 35 65 Z" fill="rgba(74,222,128,0.08)" stroke="#4ade80" stroke-width="1.8"/>
+<!-- Neural dots inside bell -->
+<circle cx="55" cy="40" r="4" fill="#4ade80" opacity="0.7" filter="url(#g1)"/>
+<circle cx="75" cy="35" r="4" fill="#4ade80" opacity="0.8" filter="url(#g1)"/>
+<circle cx="95" cy="40" r="4" fill="#4ade80" opacity="0.7" filter="url(#g1)"/>
+<circle cx="65" cy="55" r="3" fill="#4ade80" opacity="0.5"/>
+<circle cx="85" cy="55" r="3" fill="#4ade80" opacity="0.5"/>
+<circle cx="75" cy="65" r="3.5" fill="#4ade80" opacity="0.6"/>
+<!-- Neural connections -->
+<line x1="55" y1="40" x2="75" y2="35" stroke="#4ade80" stroke-width="0.8" opacity="0.3"/>
+<line x1="75" y1="35" x2="95" y2="40" stroke="#4ade80" stroke-width="0.8" opacity="0.3"/>
+<line x1="55" y1="40" x2="65" y2="55" stroke="#4ade80" stroke-width="0.6" opacity="0.2"/>
+<line x1="95" y1="40" x2="85" y2="55" stroke="#4ade80" stroke-width="0.6" opacity="0.2"/>
+<line x1="65" y1="55" x2="75" y2="65" stroke="#4ade80" stroke-width="0.6" opacity="0.2"/>
+<line x1="85" y1="55" x2="75" y2="65" stroke="#4ade80" stroke-width="0.6" opacity="0.2"/>
+<!-- Tentacles -->
+<path d="M50 75 Q45 95 48 115 Q50 125 45 135" stroke="#4ade80" stroke-width="2" opacity="0.5" fill="none" stroke-linecap="round"/>
+<path d="M62 78 Q58 100 60 120 Q62 132 58 140" stroke="#4ade80" stroke-width="1.8" opacity="0.4" fill="none" stroke-linecap="round"/>
+<path d="M75 80 Q75 105 75 125 Q75 135 72 142" stroke="#4ade80" stroke-width="1.5" opacity="0.35" fill="none" stroke-linecap="round"/>
+<path d="M88 78 Q92 100 90 120 Q88 132 92 140" stroke="#4ade80" stroke-width="1.8" opacity="0.4" fill="none" stroke-linecap="round"/>
+<path d="M100 75 Q105 95 102 115 Q100 125 105 135" stroke="#4ade80" stroke-width="2" opacity="0.5" fill="none" stroke-linecap="round"/>
+<!-- Dots on tentacles -->
+<circle cx="47" cy="105" r="2" fill="#4ade80" opacity="0.4"/>
+<circle cx="60" cy="110" r="2" fill="#4ade80" opacity="0.35"/>
+<circle cx="75" cy="112" r="2" fill="#4ade80" opacity="0.3"/>
+<circle cx="90" cy="110" r="2" fill="#4ade80" opacity="0.35"/>
+<circle cx="103" cy="105" r="2" fill="#4ade80" opacity="0.4"/>
+</svg>
+</div><div class="nm">Neural Jelly</div><div class="tg">Neural network inside glass</div><div class="ds">Bell = glass box<br>Dots = neurons · Lines = synapses</div></div>
+
+<!-- 02: TRUST PULSE -->
+<div class="c"><div class="n">02</div><div class="ic">
+<svg width="150" height="150" viewBox="0 0 150 150" fill="none">
+<defs><filter id="g2"><feGaussianBlur stdDeviation="4"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+<path d="M35 65 Q35 20 75 15 Q115 20 115 65 Q115 75 75 80 Q35 75 35 65 Z" fill="rgba(74,222,128,0.06)" stroke="#4ade80" stroke-width="1.5"/>
+<!-- Trust core -->
+<circle cx="75" cy="45" r="10" fill="#4ade80" opacity="0.15" filter="url(#g2)"/>
+<circle cx="75" cy="45" r="5" fill="#4ade80" opacity="0.7"/>
+<!-- Pulse rings -->
+<circle cx="75" cy="45" r="15" fill="none" stroke="#4ade80" stroke-width="0.8" opacity="0.3"/>
+<circle cx="75" cy="45" r="22" fill="none" stroke="#4ade80" stroke-width="0.5" opacity="0.15"/>
+<!-- Tentacles with traveling pulses -->
+<path d="M50 75 Q42 100 48 135" stroke="#4ade80" stroke-width="2.5" opacity="0.5" fill="none" stroke-linecap="round"/>
+<path d="M65 78 Q60 105 62 140" stroke="#4ade80" stroke-width="2" opacity="0.4" fill="none" stroke-linecap="round"/>
+<path d="M75 80 Q75 110 74 142" stroke="#4ade80" stroke-width="1.8" opacity="0.35" fill="none" stroke-linecap="round"/>
+<path d="M85 78 Q90 105 88 140" stroke="#4ade80" stroke-width="2" opacity="0.4" fill="none" stroke-linecap="round"/>
+<path d="M100 75 Q108 100 102 135" stroke="#4ade80" stroke-width="2.5" opacity="0.5" fill="none" stroke-linecap="round"/>
+<!-- Bright pulse dots traveling down -->
+<circle cx="46" cy="95" r="3" fill="#4ade80" opacity="0.8" filter="url(#g2)"/>
+<circle cx="61" cy="108" r="2.5" fill="#4ade80" opacity="0.7" filter="url(#g2)"/>
+<circle cx="75" cy="100" r="2.5" fill="#4ade80" opacity="0.6" filter="url(#g2)"/>
+<circle cx="89" cy="115" r="2.5" fill="#4ade80" opacity="0.7" filter="url(#g2)"/>
+<circle cx="104" cy="102" r="3" fill="#4ade80" opacity="0.8" filter="url(#g2)"/>
+</svg>
+</div><div class="nm">Trust Pulse</div><div class="tg">Trust flowing through the system</div><div class="ds">Glowing pulses travel down<br>tentacles like trust signals</div></div>
+
+<!-- 03: DEBATE BLOOM -->
+<div class="c"><div class="n">03</div><div class="ic">
+<svg width="150" height="150" viewBox="0 0 150 150" fill="none">
+<path d="M35 65 Q35 20 75 15 Q115 20 115 65 Q115 75 75 80 Q35 75 35 65 Z" fill="rgba(74,222,128,0.06)" stroke="#4ade80" stroke-width="1.5"/>
+<!-- 3 Agent nodes inside bell -->
+<circle cx="55" cy="42" r="6" fill="#4ade80" opacity="0.6"/>
+<text x="55" y="45" text-anchor="middle" fill="white" font-size="7" font-weight="700" font-family="Inter">A</text>
+<circle cx="95" cy="42" r="6" fill="#4ade80" opacity="0.6"/>
+<text x="95" y="45" text-anchor="middle" fill="white" font-size="7" font-weight="700" font-family="Inter">B</text>
+<circle cx="75" cy="65" r="6" fill="#4ade80" opacity="0.6"/>
+<text x="75" y="68" text-anchor="middle" fill="white" font-size="7" font-weight="700" font-family="Inter">C</text>
+<!-- Debate arcs -->
+<path d="M61 42 Q75 32 89 42" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1" stroke-dasharray="3 2"/>
+<path d="M58 47 Q64 58 72 62" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="0.8"/>
+<path d="M92 47 Q86 58 78 62" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="0.8"/>
+<!-- 3 tentacle clusters (one per agent) -->
+<path d="M42 75 Q35 100 38 130 Q40 140 35 145" stroke="#4ade80" stroke-width="2.5" opacity="0.5" fill="none" stroke-linecap="round"/>
+<path d="M50 77 Q45 105 48 135" stroke="#4ade80" stroke-width="2" opacity="0.4" fill="none" stroke-linecap="round"/>
+<path d="M70 80 Q68 108 66 138" stroke="#4ade80" stroke-width="1.8" opacity="0.35" fill="none" stroke-linecap="round"/>
+<path d="M80 80 Q82 108 84 138" stroke="#4ade80" stroke-width="1.8" opacity="0.35" fill="none" stroke-linecap="round"/>
+<path d="M100 77 Q105 105 102 135" stroke="#4ade80" stroke-width="2" opacity="0.4" fill="none" stroke-linecap="round"/>
+<path d="M108 75 Q115 100 112 130 Q110 140 115 145" stroke="#4ade80" stroke-width="2.5" opacity="0.5" fill="none" stroke-linecap="round"/>
+</svg>
+</div><div class="nm">Debate Bloom</div><div class="tg">3 agents debating inside</div><div class="ds">A, B, C agents in bell<br>Each owns a tentacle cluster</div></div>
+
+<!-- 04: GLASS BELL -->
+<div class="c"><div class="n">04</div><div class="ic">
+<svg width="150" height="150" viewBox="0 0 150 150" fill="none">
+<defs>
+<linearGradient id="gb" x1="0%" y1="0%" x2="100%" y2="100%">
+<stop offset="0%" style="stop-color:rgba(255,255,255,0.12)"/><stop offset="100%" style="stop-color:rgba(255,255,255,0.02)"/>
+</linearGradient>
+</defs>
+<path d="M35 65 Q35 18 75 12 Q115 18 115 65 Q115 78 75 82 Q35 78 35 65 Z" fill="url(#gb)" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/>
+<!-- Glass shine -->
+<path d="M42 30 Q42 22 52 18" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2" stroke-linecap="round"/>
+<!-- Faint internal structure -->
+<ellipse cx="75" cy="45" rx="18" ry="12" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="0.8"/>
+<circle cx="75" cy="50" r="4" fill="rgba(255,255,255,0.1)"/>
+<!-- Tentacles (glass-like, refined) -->
+<path d="M48 78 Q40 105 45 140" stroke="rgba(255,255,255,0.2)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+<path d="M60 80 Q55 108 58 142" stroke="rgba(255,255,255,0.15)" stroke-width="2" fill="none" stroke-linecap="round"/>
+<path d="M75 82 Q75 112 74 145" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+<path d="M90 80 Q95 108 92 142" stroke="rgba(255,255,255,0.15)" stroke-width="2" fill="none" stroke-linecap="round"/>
+<path d="M102 78 Q110 105 105 140" stroke="rgba(255,255,255,0.2)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+</svg>
+</div><div class="nm">Glass Bell</div><div class="tg">Pure transparency</div><div class="ds">White on black, no color<br>Maximum glass effect</div></div>
+
+<!-- 05: BIOLUMINESCENT -->
+<div class="c"><div class="n">05</div><div class="ic">
+<svg width="150" height="150" viewBox="0 0 150 150" fill="none">
+<defs><filter id="g5"><feGaussianBlur stdDeviation="6"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+<filter id="g5s"><feGaussianBlur stdDeviation="3"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+<!-- Outer glow -->
+<ellipse cx="75" cy="50" rx="45" ry="38" fill="#4ade80" opacity="0.06" filter="url(#g5)"/>
+<path d="M35 65 Q35 20 75 15 Q115 20 115 65 Q115 75 75 80 Q35 75 35 65 Z" fill="rgba(74,222,128,0.1)" stroke="#4ade80" stroke-width="2" filter="url(#g5s)"/>
+<!-- Bright core -->
+<circle cx="75" cy="42" r="12" fill="#4ade80" opacity="0.2" filter="url(#g5)"/>
+<circle cx="75" cy="42" r="6" fill="#4ade80" opacity="0.6"/>
+<!-- Bioluminescent spots -->
+<circle cx="55" cy="38" r="2.5" fill="#4ade80" opacity="0.8" filter="url(#g5s)"/>
+<circle cx="95" cy="38" r="2.5" fill="#4ade80" opacity="0.8" filter="url(#g5s)"/>
+<circle cx="65" cy="58" r="2" fill="#4ade80" opacity="0.6" filter="url(#g5s)"/>
+<circle cx="85" cy="58" r="2" fill="#4ade80" opacity="0.6" filter="url(#g5s)"/>
+<!-- Glowing tentacles -->
+<path d="M48 75 Q38 105 45 138" stroke="#4ade80" stroke-width="3" opacity="0.6" fill="none" stroke-linecap="round" filter="url(#g5s)"/>
+<path d="M62 78 Q55 108 60 140" stroke="#4ade80" stroke-width="2.5" opacity="0.5" fill="none" stroke-linecap="round"/>
+<path d="M75 80 Q75 112 73 142" stroke="#4ade80" stroke-width="2" opacity="0.4" fill="none" stroke-linecap="round"/>
+<path d="M88 78 Q95 108 90 140" stroke="#4ade80" stroke-width="2.5" opacity="0.5" fill="none" stroke-linecap="round"/>
+<path d="M102 75 Q112 105 105 138" stroke="#4ade80" stroke-width="3" opacity="0.6" fill="none" stroke-linecap="round" filter="url(#g5s)"/>
+</svg>
+</div><div class="nm">Bioluminescent</div><div class="tg">Light in the darkness</div><div class="ds">Heavy glow, deep sea light<br>Illuminates hidden truths</div></div>
+
+<!-- 06: CONSTELLATION JELLY -->
+<div class="c"><div class="n">06</div><div class="ic">
+<svg width="150" height="150" viewBox="0 0 150 150" fill="none">
+<path d="M35 65 Q35 20 75 15 Q115 20 115 65 Q115 75 75 80 Q35 75 35 65 Z" fill="rgba(74,222,128,0.04)" stroke="#4ade80" stroke-width="1.2" opacity="0.6"/>
+<!-- Star pattern inside bell -->
+<circle cx="55" cy="30" r="2" fill="white" opacity="0.8"/><circle cx="75" cy="25" r="2.5" fill="white" opacity="0.9"/>
+<circle cx="95" cy="30" r="2" fill="white" opacity="0.8"/><circle cx="48" cy="48" r="1.5" fill="white" opacity="0.6"/>
+<circle cx="102" cy="48" r="1.5" fill="white" opacity="0.6"/><circle cx="65" cy="55" r="2" fill="white" opacity="0.7"/>
+<circle cx="85" cy="55" r="2" fill="white" opacity="0.7"/><circle cx="75" cy="68" r="2" fill="white" opacity="0.6"/>
+<!-- Constellation lines -->
+<line x1="55" y1="30" x2="75" y2="25" stroke="white" stroke-width="0.5" opacity="0.2"/>
+<line x1="75" y1="25" x2="95" y2="30" stroke="white" stroke-width="0.5" opacity="0.2"/>
+<line x1="55" y1="30" x2="48" y2="48" stroke="white" stroke-width="0.4" opacity="0.15"/>
+<line x1="95" y1="30" x2="102" y2="48" stroke="white" stroke-width="0.4" opacity="0.15"/>
+<line x1="48" y1="48" x2="65" y2="55" stroke="white" stroke-width="0.4" opacity="0.15"/>
+<line x1="102" y1="48" x2="85" y2="55" stroke="white" stroke-width="0.4" opacity="0.15"/>
+<line x1="65" y1="55" x2="75" y2="68" stroke="white" stroke-width="0.4" opacity="0.15"/>
+<line x1="85" y1="55" x2="75" y2="68" stroke="white" stroke-width="0.4" opacity="0.15"/>
+<!-- Tentacles as star trails -->
+<path d="M50 75 Q45 100 48 130" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+<path d="M65 78 Q62 105 64 135" stroke="rgba(255,255,255,0.15)" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+<path d="M75 80 Q75 108 74 138" stroke="rgba(255,255,255,0.12)" stroke-width="1" fill="none" stroke-linecap="round"/>
+<path d="M85 78 Q88 105 86 135" stroke="rgba(255,255,255,0.15)" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+<path d="M100 75 Q105 100 102 130" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+</svg>
+</div><div class="nm">Constellation</div><div class="tg">Agents as stars</div><div class="ds">Star map inside the bell<br>Cosmic trust network</div></div>
+
+<!-- 07: CIRCUIT JELLY -->
+<div class="c"><div class="n">07</div><div class="ic">
+<svg width="150" height="150" viewBox="0 0 150 150" fill="none">
+<path d="M35 65 Q35 20 75 15 Q115 20 115 65 Q115 75 75 80 Q35 75 35 65 Z" fill="rgba(74,222,128,0.05)" stroke="#4ade80" stroke-width="1.5"/>
+<!-- PCB traces inside bell -->
+<path d="M50 30 L50 45 L65 55" stroke="#4ade80" stroke-width="1.2" opacity="0.5"/>
+<path d="M100 30 L100 45 L85 55" stroke="#4ade80" stroke-width="1.2" opacity="0.5"/>
+<path d="M75 20 L75 35 L75 55" stroke="#4ade80" stroke-width="1.2" opacity="0.5"/>
+<path d="M65 55 L85 55" stroke="#4ade80" stroke-width="1.5" opacity="0.6"/>
+<!-- Chip nodes -->
+<rect x="46" y="26" width="8" height="8" rx="1" fill="#4ade80" opacity="0.5"/>
+<rect x="96" y="26" width="8" height="8" rx="1" fill="#4ade80" opacity="0.5"/>
+<rect x="71" y="16" width="8" height="8" rx="1" fill="#4ade80" opacity="0.6"/>
+<rect x="61" y="51" width="8" height="8" rx="1" fill="#4ade80" opacity="0.4"/>
+<rect x="81" y="51" width="8" height="8" rx="1" fill="#4ade80" opacity="0.4"/>
+<!-- PCB tentacles -->
+<path d="M48 75 L45 95 L48 115 L45 135" stroke="#4ade80" stroke-width="2" opacity="0.4" fill="none"/>
+<path d="M62 78 L60 100 L62 120 L60 140" stroke="#4ade80" stroke-width="1.5" opacity="0.35" fill="none"/>
+<path d="M75 80 L75 105 L75 125 L75 142" stroke="#4ade80" stroke-width="1.2" opacity="0.3" fill="none"/>
+<path d="M88 78 L90 100 L88 120 L90 140" stroke="#4ade80" stroke-width="1.5" opacity="0.35" fill="none"/>
+<path d="M102 75 L105 95 L102 115 L105 135" stroke="#4ade80" stroke-width="2" opacity="0.4" fill="none"/>
+<!-- Solder dots -->
+<circle cx="45" cy="95" r="2" fill="#4ade80" opacity="0.5"/><circle cx="60" cy="100" r="1.5" fill="#4ade80" opacity="0.4"/>
+<circle cx="105" cy="95" r="2" fill="#4ade80" opacity="0.5"/><circle cx="90" cy="100" r="1.5" fill="#4ade80" opacity="0.4"/>
+</svg>
+</div><div class="nm">Circuit Jelly</div><div class="tg">AI as organism</div><div class="ds">PCB traces for tentacles<br>Chip nodes inside bell</div></div>
+
+<!-- 08: SWARM JELLY -->
+<div class="c"><div class="n">08</div><div class="ic">
+<svg width="150" height="150" viewBox="0 0 150 150" fill="none">
+<!-- Large outer bell (the system) -->
+<path d="M25 72 Q25 15 75 10 Q125 15 125 72 Q125 82 75 88 Q25 82 25 72 Z" fill="rgba(74,222,128,0.04)" stroke="#4ade80" stroke-width="1.2" opacity="0.4"/>
+<!-- 3 mini jellyfish INSIDE the bell -->
+<!-- Mini jelly A -->
+<path d="M48 40 Q48 28 58 25 Q68 28 68 40 Q68 44 58 46 Q48 44 48 40 Z" fill="rgba(74,222,128,0.15)" stroke="#4ade80" stroke-width="1"/>
+<path d="M52 46 Q50 55 52 62" stroke="#4ade80" stroke-width="1" opacity="0.5" fill="none"/><path d="M58 46 Q58 56 57 63" stroke="#4ade80" stroke-width="0.8" opacity="0.4" fill="none"/>
+<path d="M64 46 Q66 55 64 62" stroke="#4ade80" stroke-width="1" opacity="0.5" fill="none"/>
+<!-- Mini jelly B -->
+<path d="M82 40 Q82 28 92 25 Q102 28 102 40 Q102 44 92 46 Q82 44 82 40 Z" fill="rgba(74,222,128,0.15)" stroke="#4ade80" stroke-width="1"/>
+<path d="M86 46 Q84 55 86 62" stroke="#4ade80" stroke-width="1" opacity="0.5" fill="none"/><path d="M92 46 Q92 56 91 63" stroke="#4ade80" stroke-width="0.8" opacity="0.4" fill="none"/>
+<path d="M98 46 Q100 55 98 62" stroke="#4ade80" stroke-width="1" opacity="0.5" fill="none"/>
+<!-- Mini jelly C -->
+<path d="M62 58 Q62 48 72 45 Q82 48 82 58 Q82 62 72 64 Q62 62 62 58 Z" fill="rgba(74,222,128,0.15)" stroke="#4ade80" stroke-width="1"/>
+<path d="M66 64 Q64 72 66 78" stroke="#4ade80" stroke-width="1" opacity="0.5" fill="none"/><path d="M72 64 Q72 73 71 79" stroke="#4ade80" stroke-width="0.8" opacity="0.4" fill="none"/>
+<path d="M78 64 Q80 72 78 78" stroke="#4ade80" stroke-width="1" opacity="0.5" fill="none"/>
+<!-- Main tentacles from outer bell -->
+<path d="M40 82 Q32 108 38 138" stroke="#4ade80" stroke-width="2.5" opacity="0.4" fill="none" stroke-linecap="round"/>
+<path d="M58 86 Q52 112 56 142" stroke="#4ade80" stroke-width="2" opacity="0.3" fill="none" stroke-linecap="round"/>
+<path d="M75 88 Q75 115 74 145" stroke="#4ade80" stroke-width="1.5" opacity="0.25" fill="none" stroke-linecap="round"/>
+<path d="M92 86 Q98 112 94 142" stroke="#4ade80" stroke-width="2" opacity="0.3" fill="none" stroke-linecap="round"/>
+<path d="M110 82 Q118 108 112 138" stroke="#4ade80" stroke-width="2.5" opacity="0.4" fill="none" stroke-linecap="round"/>
+</svg>
+</div><div class="nm">Swarm Jelly</div><div class="tg">3 agents inside the system</div><div class="ds">Mini jellyfish within the<br>larger glass bell = agents</div></div>
+
+<!-- 09: HEARTBEAT JELLY -->
+<div class="c"><div class="n">09</div><div class="ic">
+<svg width="150" height="150" viewBox="0 0 150 150" fill="none">
+<defs><filter id="g9"><feGaussianBlur stdDeviation="5"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+<path d="M35 65 Q35 20 75 15 Q115 20 115 65 Q115 75 75 80 Q35 75 35 65 Z" fill="rgba(74,222,128,0.06)" stroke="#4ade80" stroke-width="1.5"/>
+<!-- Heart pulse at center -->
+<circle cx="75" cy="45" r="18" fill="#4ade80" opacity="0.06" filter="url(#g9)"/>
+<circle cx="75" cy="45" r="12" fill="#4ade80" opacity="0.1"/>
+<circle cx="75" cy="45" r="7" fill="#4ade80" opacity="0.2"/>
+<circle cx="75" cy="45" r="3" fill="#4ade80" opacity="0.9"/>
+<!-- ECG line across bell -->
+<path d="M40 50 L55 50 L60 38 L65 55 L70 42 L75 50 L80 50 L85 35 L90 58 L95 45 L100 50 L110 50" fill="none" stroke="#4ade80" stroke-width="1" opacity="0.4"/>
+<!-- Tentacles -->
+<path d="M48 75 Q40 105 45 138" stroke="#4ade80" stroke-width="2.5" opacity="0.5" fill="none" stroke-linecap="round"/>
+<path d="M62 78 Q55 108 60 140" stroke="#4ade80" stroke-width="2" opacity="0.4" fill="none" stroke-linecap="round"/>
+<path d="M75 80 Q75 112 73 142" stroke="#4ade80" stroke-width="1.5" opacity="0.35" fill="none" stroke-linecap="round"/>
+<path d="M88 78 Q95 108 90 140" stroke="#4ade80" stroke-width="2" opacity="0.4" fill="none" stroke-linecap="round"/>
+<path d="M102 75 Q110 105 105 138" stroke="#4ade80" stroke-width="2.5" opacity="0.5" fill="none" stroke-linecap="round"/>
+</svg>
+</div><div class="nm">Heartbeat</div><div class="tg">Trust has a pulse</div><div class="ds">ECG line inside bell<br>Living, beating trust system</div></div>
+
+<!-- 10: DATA FLOW -->
+<div class="c"><div class="n">10</div><div class="ic">
+<svg width="150" height="150" viewBox="0 0 150 150" fill="none">
+<path d="M35 65 Q35 20 75 15 Q115 20 115 65 Q115 75 75 80 Q35 75 35 65 Z" fill="rgba(74,222,128,0.06)" stroke="#4ade80" stroke-width="1.5"/>
+<!-- Data dots flowing up into bell -->
+<circle cx="50" cy="130" r="2" fill="#4ade80" opacity="0.3"/><circle cx="50" cy="118" r="2" fill="#4ade80" opacity="0.4"/>
+<circle cx="50" cy="105" r="2.5" fill="#4ade80" opacity="0.5"/><circle cx="50" cy="90" r="3" fill="#4ade80" opacity="0.6"/>
+<circle cx="75" cy="135" r="2" fill="#4ade80" opacity="0.25"/><circle cx="75" cy="122" r="2" fill="#4ade80" opacity="0.35"/>
+<circle cx="75" cy="108" r="2.5" fill="#4ade80" opacity="0.45"/><circle cx="75" cy="94" r="3" fill="#4ade80" opacity="0.55"/>
+<circle cx="100" cy="128" r="2" fill="#4ade80" opacity="0.3"/><circle cx="100" cy="115" r="2" fill="#4ade80" opacity="0.4"/>
+<circle cx="100" cy="102" r="2.5" fill="#4ade80" opacity="0.5"/><circle cx="100" cy="88" r="3" fill="#4ade80" opacity="0.6"/>
+<!-- Processed/verified dots inside bell -->
+<circle cx="60" cy="40" r="4" fill="#4ade80" opacity="0.7"/>
+<circle cx="90" cy="40" r="4" fill="#4ade80" opacity="0.7"/>
+<circle cx="75" cy="58" r="4" fill="#4ade80" opacity="0.8"/>
+<!-- Arrow-up paths -->
+<path d="M50 75 Q50 85 50 130" stroke="#4ade80" stroke-width="1.5" opacity="0.2" fill="none"/>
+<path d="M75 80 Q75 90 75 135" stroke="#4ade80" stroke-width="1.2" opacity="0.15" fill="none"/>
+<path d="M100 75 Q100 85 100 128" stroke="#4ade80" stroke-width="1.5" opacity="0.2" fill="none"/>
+</svg>
+</div><div class="nm">Data Flow</div><div class="tg">Information rises, gets verified</div><div class="ds">Data dots flow up through<br>tentacles into the bell</div></div>
+
+<!-- 11: SKELETON JELLY -->
+<div class="c"><div class="n">11</div><div class="ic">
+<svg width="150" height="150" viewBox="0 0 150 150" fill="none">
+<path d="M35 65 Q35 20 75 15 Q115 20 115 65 Q115 75 75 80 Q35 75 35 65 Z" fill="rgba(74,222,128,0.03)" stroke="#4ade80" stroke-width="1.5"/>
+<!-- Internal skeleton/structure visible -->
+<path d="M75 18 L75 75" stroke="#4ade80" stroke-width="1" opacity="0.4"/>
+<path d="M48 35 L102 35" stroke="#4ade80" stroke-width="0.8" opacity="0.3"/>
+<path d="M42 50 L108 50" stroke="#4ade80" stroke-width="0.8" opacity="0.3"/>
+<path d="M40 65 L110 65" stroke="#4ade80" stroke-width="0.8" opacity="0.3"/>
+<!-- Rib-like arcs -->
+<path d="M75 35 Q55 42 48 50" fill="none" stroke="#4ade80" stroke-width="0.6" opacity="0.25"/>
+<path d="M75 35 Q95 42 102 50" fill="none" stroke="#4ade80" stroke-width="0.6" opacity="0.25"/>
+<path d="M75 50 Q58 58 42 65" fill="none" stroke="#4ade80" stroke-width="0.6" opacity="0.2"/>
+<path d="M75 50 Q92 58 108 65" fill="none" stroke="#4ade80" stroke-width="0.6" opacity="0.2"/>
+<!-- Joint dots -->
+<circle cx="75" cy="18" r="3" fill="#4ade80" opacity="0.6"/>
+<circle cx="48" cy="35" r="2" fill="#4ade80" opacity="0.4"/><circle cx="102" cy="35" r="2" fill="#4ade80" opacity="0.4"/>
+<circle cx="42" cy="50" r="2" fill="#4ade80" opacity="0.35"/><circle cx="108" cy="50" r="2" fill="#4ade80" opacity="0.35"/>
+<circle cx="75" cy="75" r="3" fill="#4ade80" opacity="0.5"/>
+<!-- Tentacles -->
+<path d="M48 75 Q40 105 45 138" stroke="#4ade80" stroke-width="2" opacity="0.4" fill="none" stroke-linecap="round"/>
+<path d="M62 78 Q58 108 60 140" stroke="#4ade80" stroke-width="1.5" opacity="0.3" fill="none" stroke-linecap="round"/>
+<path d="M75 80 Q75 112 74 142" stroke="#4ade80" stroke-width="1.2" opacity="0.25" fill="none" stroke-linecap="round"/>
+<path d="M88 78 Q92 108 90 140" stroke="#4ade80" stroke-width="1.5" opacity="0.3" fill="none" stroke-linecap="round"/>
+<path d="M102 75 Q110 105 105 138" stroke="#4ade80" stroke-width="2" opacity="0.4" fill="none" stroke-linecap="round"/>
+</svg>
+</div><div class="nm">Skeleton</div><div class="tg">X-ray — nothing hidden</div><div class="ds">Full internal structure<br>visible through glass body</div></div>
+
+<!-- 12: ETHEREUM JELLY -->
+<div class="c"><div class="n">12</div><div class="ic">
+<svg width="150" height="150" viewBox="0 0 150 150" fill="none">
+<!-- Geometric/angular bell (diamond-shaped top) -->
+<path d="M75 12 L115 45 L115 70 L75 82 L35 70 L35 45 Z" fill="rgba(74,222,128,0.06)" stroke="#4ade80" stroke-width="1.5"/>
+<!-- Inner diamond -->
+<path d="M75 22 L100 42 L100 62 L75 72 L50 62 L50 42 Z" fill="none" stroke="#4ade80" stroke-width="0.8" opacity="0.3"/>
+<!-- Nodes at vertices -->
+<circle cx="75" cy="12" r="3" fill="#4ade80" opacity="0.7"/>
+<circle cx="115" cy="45" r="2.5" fill="#4ade80" opacity="0.5"/>
+<circle cx="115" cy="70" r="2.5" fill="#4ade80" opacity="0.5"/>
+<circle cx="35" cy="45" r="2.5" fill="#4ade80" opacity="0.5"/>
+<circle cx="35" cy="70" r="2.5" fill="#4ade80" opacity="0.5"/>
+<circle cx="75" cy="82" r="3" fill="#4ade80" opacity="0.6"/>
+<!-- Center hash -->
+<circle cx="75" cy="47" r="4" fill="#4ade80" opacity="0.5"/>
+<!-- Angular tentacles -->
+<path d="M45 75 L40 95 L45 115 L40 135" stroke="#4ade80" stroke-width="2" opacity="0.4" fill="none"/>
+<path d="M60 80 L57 100 L60 120 L57 140" stroke="#4ade80" stroke-width="1.5" opacity="0.3" fill="none"/>
+<path d="M75 82 L75 105 L75 125 L75 142" stroke="#4ade80" stroke-width="1.2" opacity="0.25" fill="none"/>
+<path d="M90 80 L93 100 L90 120 L93 140" stroke="#4ade80" stroke-width="1.5" opacity="0.3" fill="none"/>
+<path d="M105 75 L110 95 L105 115 L110 135" stroke="#4ade80" stroke-width="2" opacity="0.4" fill="none"/>
+</svg>
+</div><div class="nm">Crypto Jelly</div><div class="tg">Distributed trust</div><div class="ds">Hexagonal bell, angular<br>Blockchain meets biology</div></div>
+
+<!-- 13: FIBONACCI JELLY -->
+<div class="c"><div class="n">13</div><div class="ic">
+<svg width="150" height="150" viewBox="0 0 150 150" fill="none">
+<path d="M35 65 Q35 20 75 15 Q115 20 115 65 Q115 75 75 80 Q35 75 35 65 Z" fill="rgba(74,222,128,0.05)" stroke="#4ade80" stroke-width="1.5"/>
+<!-- Golden spiral inside bell -->
+<path d="M75 25 Q92 25 95 40 Q98 55 85 60 Q72 65 70 55 Q68 48 75 45 Q80 42 82 48 Q84 52 80 54" fill="none" stroke="#4ade80" stroke-width="1.2" opacity="0.5"/>
+<!-- Fibonacci dots (at golden intervals) -->
+<circle cx="75" cy="25" r="3" fill="#4ade80" opacity="0.7"/>
+<circle cx="95" cy="40" r="2.5" fill="#4ade80" opacity="0.6"/>
+<circle cx="85" cy="60" r="2" fill="#4ade80" opacity="0.5"/>
+<circle cx="70" cy="55" r="1.5" fill="#4ade80" opacity="0.5"/>
+<circle cx="75" cy="45" r="1.2" fill="#4ade80" opacity="0.4"/>
+<!-- Spiral tentacles -->
+<path d="M48 75 Q35 95 42 120 Q48 135 38 145" stroke="#4ade80" stroke-width="2.5" opacity="0.5" fill="none" stroke-linecap="round"/>
+<path d="M62 78 Q52 100 58 125 Q62 138 55 145" stroke="#4ade80" stroke-width="2" opacity="0.4" fill="none" stroke-linecap="round"/>
+<path d="M75 80 Q72 105 75 128 Q77 140 72 148" stroke="#4ade80" stroke-width="1.5" opacity="0.35" fill="none" stroke-linecap="round"/>
+<path d="M88 78 Q98 100 92 125 Q88 138 95 145" stroke="#4ade80" stroke-width="2" opacity="0.4" fill="none" stroke-linecap="round"/>
+<path d="M102 75 Q115 95 108 120 Q102 135 112 145" stroke="#4ade80" stroke-width="2.5" opacity="0.5" fill="none" stroke-linecap="round"/>
+</svg>
+</div><div class="nm">Fibonacci</div><div class="tg">Mathematical beauty</div><div class="ds">Golden spiral inside bell<br>Nature's perfect algorithm</div></div>
+
+<!-- 14: DEEP SEA KING -->
+<div class="c"><div class="n">14</div><div class="ic">
+<svg width="150" height="150" viewBox="0 0 150 150" fill="none">
+<defs><filter id="g14"><feGaussianBlur stdDeviation="4"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+<!-- Large majestic bell with crown ridges -->
+<path d="M25 70 Q25 15 75 8 Q125 15 125 70 Q125 82 75 88 Q25 82 25 70 Z" fill="rgba(74,222,128,0.1)" stroke="#4ade80" stroke-width="2.5"/>
+<!-- Crown ridges on top -->
+<path d="M45 22 L50 12 L55 22" fill="none" stroke="#4ade80" stroke-width="2" opacity="0.7"/>
+<path d="M65 16 L70 6 L75 16" fill="none" stroke="#4ade80" stroke-width="2" opacity="0.8"/>
+<path d="M85 16 L90 6 L95 16" fill="none" stroke="#4ade80" stroke-width="2" opacity="0.8"/>
+<path d="M105 22 L110 12 L115 22" fill="none" stroke="#4ade80" stroke-width="2" opacity="0.7"/>
+<!-- Royal dots -->
+<circle cx="50" cy="12" r="2.5" fill="#4ade80" opacity="0.8" filter="url(#g14)"/>
+<circle cx="70" cy="6" r="3" fill="#4ade80" opacity="0.9" filter="url(#g14)"/>
+<circle cx="90" cy="6" r="3" fill="#4ade80" opacity="0.9" filter="url(#g14)"/>
+<circle cx="110" cy="12" r="2.5" fill="#4ade80" opacity="0.8" filter="url(#g14)"/>
+<!-- Inner glow -->
+<circle cx="75" cy="50" r="15" fill="#4ade80" opacity="0.08" filter="url(#g14)"/>
+<circle cx="75" cy="50" r="6" fill="#4ade80" opacity="0.5"/>
+<!-- Long flowing tentacles -->
+<path d="M35 82 Q22 108 30 140 Q32 148 25 150" stroke="#4ade80" stroke-width="3" opacity="0.6" fill="none" stroke-linecap="round"/>
+<path d="M48 85 Q38 112 42 142" stroke="#4ade80" stroke-width="2.5" opacity="0.5" fill="none" stroke-linecap="round"/>
+<path d="M60 87 Q54 115 58 145" stroke="#4ade80" stroke-width="2" opacity="0.4" fill="none" stroke-linecap="round"/>
+<path d="M75 88 Q75 118 74 148" stroke="#4ade80" stroke-width="1.8" opacity="0.35" fill="none" stroke-linecap="round"/>
+<path d="M90 87 Q96 115 92 145" stroke="#4ade80" stroke-width="2" opacity="0.4" fill="none" stroke-linecap="round"/>
+<path d="M102 85 Q112 112 108 142" stroke="#4ade80" stroke-width="2.5" opacity="0.5" fill="none" stroke-linecap="round"/>
+<path d="M115 82 Q128 108 120 140 Q118 148 125 150" stroke="#4ade80" stroke-width="3" opacity="0.6" fill="none" stroke-linecap="round"/>
+</svg>
+</div><div class="nm">Deep Sea King</div><div class="tg">Majestic · Regal</div><div class="ds">Crown ridges, large bell<br>Long flowing royal tentacles</div></div>
+
+<!-- 15: PIXEL JELLY -->
+<div class="c"><div class="n">15</div><div class="ic">
+<svg width="150" height="150" viewBox="0 0 150 150" fill="none">
+<!-- Pixel grid bell -->
+<rect x="60" y="10" width="8" height="8" fill="#4ade80" opacity="0.7"/><rect x="70" y="10" width="8" height="8" fill="#4ade80" opacity="0.8"/><rect x="80" y="10" width="8" height="8" fill="#4ade80" opacity="0.7"/>
+<rect x="50" y="18" width="8" height="8" fill="#4ade80" opacity="0.6"/><rect x="58" y="18" width="8" height="8" fill="#4ade80" opacity="0.7"/><rect x="66" y="18" width="8" height="8" fill="#4ade80" opacity="0.8"/><rect x="74" y="18" width="8" height="8" fill="#4ade80" opacity="0.8"/><rect x="82" y="18" width="8" height="8" fill="#4ade80" opacity="0.7"/><rect x="90" y="18" width="8" height="8" fill="#4ade80" opacity="0.6"/>
+<rect x="42" y="26" width="8" height="8" fill="#4ade80" opacity="0.5"/><rect x="50" y="26" width="8" height="8" fill="#4ade80" opacity="0.6"/><rect x="58" y="26" width="8" height="8" fill="#4ade80" opacity="0.1"/><rect x="66" y="26" width="8" height="8" fill="#4ade80" opacity="0.15"/><rect x="74" y="26" width="8" height="8" fill="#4ade80" opacity="0.15"/><rect x="82" y="26" width="8" height="8" fill="#4ade80" opacity="0.1"/><rect x="90" y="26" width="8" height="8" fill="#4ade80" opacity="0.6"/><rect x="98" y="26" width="8" height="8" fill="#4ade80" opacity="0.5"/>
+<rect x="36" y="34" width="8" height="8" fill="#4ade80" opacity="0.5"/><rect x="44" y="34" width="8" height="8" fill="#4ade80" opacity="0.1"/><rect x="60" y="34" width="8" height="8" fill="#4ade80" opacity="0.3"/><rect x="80" y="34" width="8" height="8" fill="#4ade80" opacity="0.3"/><rect x="96" y="34" width="8" height="8" fill="#4ade80" opacity="0.1"/><rect x="104" y="34" width="8" height="8" fill="#4ade80" opacity="0.5"/>
+<rect x="34" y="42" width="8" height="8" fill="#4ade80" opacity="0.5"/><rect x="42" y="42" width="8" height="8" fill="#4ade80" opacity="0.1"/><rect x="98" y="42" width="8" height="8" fill="#4ade80" opacity="0.1"/><rect x="106" y="42" width="8" height="8" fill="#4ade80" opacity="0.5"/>
+<rect x="34" y="50" width="8" height="8" fill="#4ade80" opacity="0.45"/><rect x="106" y="50" width="8" height="8" fill="#4ade80" opacity="0.45"/>
+<rect x="36" y="58" width="8" height="8" fill="#4ade80" opacity="0.4"/><rect x="104" y="58" width="8" height="8" fill="#4ade80" opacity="0.4"/>
+<rect x="40" y="66" width="8" height="8" fill="#4ade80" opacity="0.35"/><rect x="100" y="66" width="8" height="8" fill="#4ade80" opacity="0.35"/>
+<!-- Pixel tentacles -->
+<rect x="44" y="78" width="5" height="5" fill="#4ade80" opacity="0.4"/><rect x="42" y="88" width="5" height="5" fill="#4ade80" opacity="0.35"/><rect x="44" y="98" width="5" height="5" fill="#4ade80" opacity="0.3"/><rect x="42" y="108" width="5" height="5" fill="#4ade80" opacity="0.25"/><rect x="44" y="118" width="5" height="5" fill="#4ade80" opacity="0.2"/>
+<rect x="62" y="78" width="5" height="5" fill="#4ade80" opacity="0.35"/><rect x="60" y="88" width="5" height="5" fill="#4ade80" opacity="0.3"/><rect x="62" y="98" width="5" height="5" fill="#4ade80" opacity="0.25"/><rect x="60" y="108" width="5" height="5" fill="#4ade80" opacity="0.2"/>
+<rect x="72" y="78" width="5" height="5" fill="#4ade80" opacity="0.3"/><rect x="72" y="88" width="5" height="5" fill="#4ade80" opacity="0.25"/><rect x="72" y="98" width="5" height="5" fill="#4ade80" opacity="0.2"/>
+<rect x="82" y="78" width="5" height="5" fill="#4ade80" opacity="0.35"/><rect x="84" y="88" width="5" height="5" fill="#4ade80" opacity="0.3"/><rect x="82" y="98" width="5" height="5" fill="#4ade80" opacity="0.25"/><rect x="84" y="108" width="5" height="5" fill="#4ade80" opacity="0.2"/>
+<rect x="100" y="78" width="5" height="5" fill="#4ade80" opacity="0.4"/><rect x="102" y="88" width="5" height="5" fill="#4ade80" opacity="0.35"/><rect x="100" y="98" width="5" height="5" fill="#4ade80" opacity="0.3"/><rect x="102" y="108" width="5" height="5" fill="#4ade80" opacity="0.25"/><rect x="100" y="118" width="5" height="5" fill="#4ade80" opacity="0.2"/>
+</svg>
+</div><div class="nm">Pixel Jelly</div><div class="tg">Digital native</div><div class="ds">Pixels fade from solid to<br>transparent — digital glass</div></div>
+
+<!-- 16: SYNAPSE JELLY -->
+<div class="c"><div class="n">16</div><div class="ic">
+<svg width="150" height="150" viewBox="0 0 150 150" fill="none">
+<defs><filter id="g16"><feGaussianBlur stdDeviation="2.5"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+<path d="M35 65 Q35 20 75 15 Q115 20 115 65 Q115 75 75 80 Q35 75 35 65 Z" fill="rgba(74,222,128,0.05)" stroke="#4ade80" stroke-width="1.5"/>
+<!-- Dendrite branches inside bell -->
+<path d="M75 20 L75 45 M75 30 L60 25 M75 30 L90 25 M75 38 L62 42 M75 38 L88 42 M75 45 L65 52 M75 45 L85 52" stroke="#4ade80" stroke-width="1" opacity="0.5"/>
+<!-- Synaptic junction dots (FIRE!) -->
+<circle cx="60" cy="25" r="2.5" fill="#4ade80" opacity="0.8" filter="url(#g16)"/>
+<circle cx="90" cy="25" r="2.5" fill="#4ade80" opacity="0.8" filter="url(#g16)"/>
+<circle cx="62" cy="42" r="2" fill="#4ade80" opacity="0.6" filter="url(#g16)"/>
+<circle cx="88" cy="42" r="2" fill="#4ade80" opacity="0.6" filter="url(#g16)"/>
+<circle cx="65" cy="52" r="2" fill="#4ade80" opacity="0.5"/>
+<circle cx="85" cy="52" r="2" fill="#4ade80" opacity="0.5"/>
+<circle cx="75" cy="20" r="3" fill="#4ade80" opacity="0.7" filter="url(#g16)"/>
+<!-- Branching tentacles (dendrite-like) -->
+<path d="M48 75 Q38 95 42 112 Q38 120 35 128 M42 112 Q48 122 45 132 M42 112 Q38 115 32 120" stroke="#4ade80" stroke-width="1.8" opacity="0.5" fill="none" stroke-linecap="round"/>
+<path d="M65 78 Q58 98 60 115 Q56 125 52 135 M60 115 Q64 128 62 138" stroke="#4ade80" stroke-width="1.5" opacity="0.4" fill="none" stroke-linecap="round"/>
+<path d="M75 80 Q75 100 74 118 Q72 128 68 138 M74 118 Q78 130 76 140" stroke="#4ade80" stroke-width="1.2" opacity="0.35" fill="none" stroke-linecap="round"/>
+<path d="M85 78 Q92 98 90 115 Q94 125 98 135 M90 115 Q86 128 88 138" stroke="#4ade80" stroke-width="1.5" opacity="0.4" fill="none" stroke-linecap="round"/>
+<path d="M102 75 Q112 95 108 112 Q112 120 115 128 M108 112 Q102 122 105 132 M108 112 Q112 115 118 120" stroke="#4ade80" stroke-width="1.8" opacity="0.5" fill="none" stroke-linecap="round"/>
+</svg>
+</div><div class="nm">Synapse</div><div class="tg">Brain connections firing</div><div class="ds">Dendrite branches, synaptic<br>junctions flash at connections</div></div>
+
+<!-- 17: GRADIENT JELLY -->
+<div class="c"><div class="n">17</div><div class="ic">
+<svg width="150" height="150" viewBox="0 0 150 150" fill="none">
+<defs>
+<linearGradient id="gj" x1="0%" y1="0%" x2="100%" y2="100%">
+<stop offset="0%" style="stop-color:#4ade80;stop-opacity:0.15"/><stop offset="50%" style="stop-color:#22d3ee;stop-opacity:0.1"/><stop offset="100%" style="stop-color:#818cf8;stop-opacity:0.12"/>
+</linearGradient>
+<linearGradient id="gjb" x1="0%" y1="0%" x2="100%" y2="100%">
+<stop offset="0%" style="stop-color:#4ade80"/><stop offset="50%" style="stop-color:#22d3ee"/><stop offset="100%" style="stop-color:#818cf8"/>
+</linearGradient>
+</defs>
+<path d="M35 65 Q35 20 75 15 Q115 20 115 65 Q115 75 75 80 Q35 75 35 65 Z" fill="url(#gj)" stroke="url(#gjb)" stroke-width="1.8"/>
+<!-- Gradient dots -->
+<circle cx="55" cy="38" r="4" fill="#4ade80" opacity="0.7"/>
+<circle cx="75" cy="45" r="4" fill="#22d3ee" opacity="0.7"/>
+<circle cx="95" cy="38" r="4" fill="#818cf8" opacity="0.7"/>
+<!-- Gradient tentacles -->
+<path d="M48 75 Q38 105 45 138" stroke="#4ade80" stroke-width="2.5" opacity="0.5" fill="none" stroke-linecap="round"/>
+<path d="M60 78 Q54 108 58 140" stroke="#38bdf8" stroke-width="2" opacity="0.4" fill="none" stroke-linecap="round"/>
+<path d="M75 80 Q75 112 74 142" stroke="#22d3ee" stroke-width="1.8" opacity="0.35" fill="none" stroke-linecap="round"/>
+<path d="M90 78 Q96 108 92 140" stroke="#a78bfa" stroke-width="2" opacity="0.4" fill="none" stroke-linecap="round"/>
+<path d="M102 75 Q112 105 105 138" stroke="#818cf8" stroke-width="2.5" opacity="0.5" fill="none" stroke-linecap="round"/>
+</svg>
+</div><div class="nm">Gradient</div><div class="tg">Trust spectrum</div><div class="ds">Green=trusted → Cyan → Purple<br>Trust gradient across agents</div></div>
+
+<!-- 18: MINIMALIST JELLY -->
+<div class="c"><div class="n">18</div><div class="ic">
+<svg width="150" height="150" viewBox="0 0 150 150" fill="none">
+<!-- Just 6 strokes. That's it. -->
+<path d="M40 65 Q40 20 75 15 Q110 20 110 65" fill="none" stroke="white" stroke-width="2" opacity="0.7" stroke-linecap="round"/>
+<path d="M50 70 Q50 100 48 130" stroke="white" stroke-width="1.5" opacity="0.3" fill="none" stroke-linecap="round"/>
+<path d="M68 72 Q68 102 66 132" stroke="white" stroke-width="1.2" opacity="0.25" fill="none" stroke-linecap="round"/>
+<path d="M82 72 Q82 102 84 132" stroke="white" stroke-width="1.2" opacity="0.25" fill="none" stroke-linecap="round"/>
+<path d="M100 70 Q100 100 102 130" stroke="white" stroke-width="1.5" opacity="0.3" fill="none" stroke-linecap="round"/>
+<!-- One dot. The soul. -->
+<circle cx="75" cy="42" r="3" fill="white" opacity="0.6"/>
+</svg>
+</div><div class="nm">Minimalist</div><div class="tg">Anthropic restraint</div><div class="ds">6 strokes, 1 dot<br>Maximum elegance</div></div>
+
+<!-- 19: NEON JELLY -->
+<div class="c"><div class="n">19</div><div class="ic">
+<svg width="150" height="150" viewBox="0 0 150 150" fill="none">
+<defs><filter id="g19"><feGaussianBlur stdDeviation="6"/><feMerge><feMergeNode/><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+<filter id="g19s"><feGaussianBlur stdDeviation="3"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+<path d="M35 65 Q35 20 75 15 Q115 20 115 65 Q115 75 75 80 Q35 75 35 65 Z" fill="rgba(74,222,128,0.12)" stroke="#4ade80" stroke-width="2.5" filter="url(#g19)"/>
+<!-- Hot spots -->
+<circle cx="55" cy="38" r="5" fill="#4ade80" opacity="0.9" filter="url(#g19)"/>
+<circle cx="75" cy="30" r="5" fill="#4ade80" opacity="1" filter="url(#g19)"/>
+<circle cx="95" cy="38" r="5" fill="#4ade80" opacity="0.9" filter="url(#g19)"/>
+<circle cx="65" cy="58" r="3" fill="#4ade80" opacity="0.7" filter="url(#g19s)"/>
+<circle cx="85" cy="58" r="3" fill="#4ade80" opacity="0.7" filter="url(#g19s)"/>
+<!-- Neon tentacles -->
+<path d="M48 75 Q38 105 45 138" stroke="#4ade80" stroke-width="3.5" opacity="0.7" fill="none" stroke-linecap="round" filter="url(#g19s)"/>
+<path d="M62 78 Q55 108 60 140" stroke="#4ade80" stroke-width="3" opacity="0.6" fill="none" stroke-linecap="round" filter="url(#g19s)"/>
+<path d="M75 80 Q75 112 73 142" stroke="#4ade80" stroke-width="2.5" opacity="0.5" fill="none" stroke-linecap="round"/>
+<path d="M88 78 Q95 108 90 140" stroke="#4ade80" stroke-width="3" opacity="0.6" fill="none" stroke-linecap="round" filter="url(#g19s)"/>
+<path d="M102 75 Q112 105 105 138" stroke="#4ade80" stroke-width="3.5" opacity="0.7" fill="none" stroke-linecap="round" filter="url(#g19s)"/>
+</svg>
+</div><div class="nm">Neon</div><div class="tg">Cyberpunk glow</div><div class="ds">Heavy neon glow, electric<br>Vegas sign energy on black</div></div>
+
+<!-- 20: MOON JELLY -->
+<div class="c"><div class="n">20</div><div class="ic">
+<svg width="150" height="150" viewBox="0 0 150 150" fill="none">
+<defs><filter id="g20"><feGaussianBlur stdDeviation="2"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+<!-- Aurelia aurita — flat, round bell -->
+<circle cx="75" cy="48" r="38" fill="rgba(74,222,128,0.06)" stroke="#4ade80" stroke-width="1.5"/>
+<!-- The famous 4-leaf clover (gonads visible through transparent bell) -->
+<path d="M75 30 Q65 38 62 48 Q65 58 75 48" fill="rgba(74,222,128,0.12)" stroke="#4ade80" stroke-width="0.8" opacity="0.7"/>
+<path d="M75 30 Q85 38 88 48 Q85 58 75 48" fill="rgba(74,222,128,0.12)" stroke="#4ade80" stroke-width="0.8" opacity="0.7"/>
+<path d="M75 48 Q65 48 58 55 Q62 62 75 66" fill="rgba(74,222,128,0.1)" stroke="#4ade80" stroke-width="0.8" opacity="0.6"/>
+<path d="M75 48 Q85 48 92 55 Q88 62 75 66" fill="rgba(74,222,128,0.1)" stroke="#4ade80" stroke-width="0.8" opacity="0.6"/>
+<!-- Radial canals -->
+<line x1="75" y1="12" x2="75" y2="85" stroke="#4ade80" stroke-width="0.5" opacity="0.2"/>
+<line x1="38" y1="48" x2="112" y2="48" stroke="#4ade80" stroke-width="0.5" opacity="0.2"/>
+<line x1="48" y1="22" x2="102" y2="74" stroke="#4ade80" stroke-width="0.4" opacity="0.15"/>
+<line x1="102" y1="22" x2="48" y2="74" stroke="#4ade80" stroke-width="0.4" opacity="0.15"/>
+<!-- Short frilly oral arms -->
+<path d="M65 85 Q60 100 62 115 Q58 125 55 132" stroke="#4ade80" stroke-width="2.5" opacity="0.5" fill="none" stroke-linecap="round"/>
+<path d="M72 86 Q68 105 70 122 Q66 132 64 140" stroke="#4ade80" stroke-width="2" opacity="0.4" fill="none" stroke-linecap="round"/>
+<path d="M78 86 Q82 105 80 122 Q84 132 86 140" stroke="#4ade80" stroke-width="2" opacity="0.4" fill="none" stroke-linecap="round"/>
+<path d="M85 85 Q90 100 88 115 Q92 125 95 132" stroke="#4ade80" stroke-width="2.5" opacity="0.5" fill="none" stroke-linecap="round"/>
+<!-- Marginal tentacles (fine) -->
+<path d="M42 72 Q35 90 38 108" stroke="#4ade80" stroke-width="1" opacity="0.25" fill="none" stroke-linecap="round"/>
+<path d="M50 78 Q45 95 48 112" stroke="#4ade80" stroke-width="0.8" opacity="0.2" fill="none" stroke-linecap="round"/>
+<path d="M100 78 Q105 95 102 112" stroke="#4ade80" stroke-width="0.8" opacity="0.2" fill="none" stroke-linecap="round"/>
+<path d="M108 72 Q115 90 112 108" stroke="#4ade80" stroke-width="1" opacity="0.25" fill="none" stroke-linecap="round"/>
+</svg>
+</div><div class="nm">Moon Jelly</div><div class="tg">Real species · Aurelia aurita</div><div class="ds">4-leaf clover visible through<br>glass bell. Nature's real icon.</div></div>
+
+</div>
+</body>
+</html>

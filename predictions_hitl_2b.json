@@ -1,0 +1,7 @@
+[
+  {
+    "instance_id": "astropy__astropy-14539",
+    "model_patch": "diff --git a/astropy/io/fits/diff.py b/astropy/io/fits/diff.py\nindex 100cdf1b8c..ff4a417ae4 100644\n--- a/astropy/io/fits/diff.py\n+++ b/astropy/io/fits/diff.py\n@@ -1445,9 +1445,15 @@ class TableDataDiff(_BaseDiff):\n             arra = self.a[col.name]\n             arrb = self.b[col.name]\n \n-            if np.issubdtype(arra.dtype, np.floating) and np.issubdtype(\n-                arrb.dtype, np.floating\n-            ):\n+            # Normalize VLAs to ensure consistent array comparisons\n+            if isinstance(arra, np.ndarray) and isinstance(arrb, np.ndarray):\n+                if arra.dtype.kind == 'V' or arrb.dtype.kind == 'V':  # Check for VLAs\n+                    maxlen = max(len(max(arra, key=len, default=[])), len(max(arrb, key=len, default=[])))\n+                    arra = [np.pad(a, (0, maxlen - len(a))) for a in arra]\n+                    arrb = [np.pad(b, (0, maxlen - len(b))) for b in arrb]\n+                    arra, arrb = np.array(arra), np.array(arrb)  # Ensure arrays\n+\n+            if np.issubdtype(arra.dtype, np.floating) and np.issubdtype(arrb.dtype, np.floating):\n                 diffs = where_not_allclose(arra, arrb, rtol=self.rtol, atol=self.atol)\n             elif \"P\" in col.format:\n                 diffs = (",
+    "model_name_or_path": "glassbox-coder-v1"
+  }
+]

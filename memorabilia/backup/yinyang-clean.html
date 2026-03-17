@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GlassBox AI — Yin-Yang · Two Colors Only</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #030303; color: #e0e0e0; font-family: 'Inter', sans-serif; padding: 40px 20px; }
+  h1 { text-align: center; font-size: 0.6rem; color: rgba(255,255,255,0.3); letter-spacing: 5px; text-transform: uppercase; margin-bottom: 4px; }
+  .sub { text-align: center; font-size: 0.4rem; color: #222; letter-spacing: 2px; margin-bottom: 50px; }
+  .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; max-width: 1400px; margin: 0 auto; }
+  .c {
+    background: #080808; border: 1px solid #111; border-radius: 20px;
+    padding: 20px 10px 16px; text-align: center; transition: all 0.3s; cursor: pointer;
+  }
+  .c:hover { border-color: #4ade80; transform: translateY(-3px); }
+  .n { font-size: 0.38rem; color: rgba(255,255,255,0.2); letter-spacing: 3px; margin-bottom: 8px; font-weight: 700; }
+  .ic { width: 200px; height: 200px; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; }
+  .nm { font-size: 0.7rem; font-weight: 800; color: #fff; margin-bottom: 2px; }
+  .tg { font-size: 0.36rem; color: rgba(255,255,255,0.25); letter-spacing: 1px; }
+</style>
+</head>
+<body>
+<h1>Two Colors · Process + Review</h1>
+<p class="sub">Green = Process · White = Review · Nothing else</p>
+<div class="grid">
+
+<!-- 01: CLASSIC CLEAN -->
+<div class="c"><div class="n">01</div><div class="ic">
+<svg width="190" height="190" viewBox="0 0 190 190" fill="none">
+<path d="M95 5 A90 90 0 0 1 95 185 A45 45 0 0 1 95 95 A45 45 0 0 0 95 5 Z" fill="#4ade80"/>
+<path d="M95 5 A90 90 0 0 0 95 185 A45 45 0 0 0 95 95 A45 45 0 0 1 95 5 Z" fill="white"/>
+<circle cx="95" cy="50" r="12" fill="white"/>
+<circle cx="95" cy="140" r="12" fill="#4ade80"/>
+</svg>
+</div><div class="nm">Classic</div><div class="tg">Pure yin-yang. No extras.</div></div>
+
+<!-- 02: WITH TURTLE + RABBIT SILHOUETTES IN DOTS -->
+<div class="c"><div class="n">02</div><div class="ic">
+<svg width="190" height="190" viewBox="0 0 190 190" fill="none">
+<path d="M95 5 A90 90 0 0 1 95 185 A45 45 0 0 1 95 95 A45 45 0 0 0 95 5 Z" fill="#4ade80"/>
+<path d="M95 5 A90 90 0 0 0 95 185 A45 45 0 0 0 95 95 A45 45 0 0 1 95 5 Z" fill="white"/>
+<!-- Turtle silhouette in white dot (review) -->
+<circle cx="95" cy="50" r="14" fill="white"/>
+<ellipse cx="95" cy="50" rx="9" ry="6" fill="#4ade80"/>
+<ellipse cx="102" cy="49" rx="3.5" ry="3" fill="#4ade80"/>
+<circle cx="104" cy="48" r="1" fill="white"/>
+<ellipse cx="87" cy="54" rx="3" ry="1.8" fill="#4ade80" opacity="0.7"/>
+<ellipse cx="101" cy="54" rx="3" ry="1.8" fill="#4ade80" opacity="0.7"/>
+<!-- Rabbit silhouette in green dot (process) -->
+<circle cx="95" cy="140" r="14" fill="#4ade80"/>
+<circle cx="95" cy="138" r="5.5" fill="white"/>
+<path d="M92 133 Q91 125 92 120" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+<path d="M98 132 Q99 124 98 119" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+<circle cx="97" cy="137" r="1.2" fill="#4ade80"/>
+</svg>
+</div><div class="nm">Silhouettes</div><div class="tg">Turtle in white · Rabbit in green</div></div>
+
+<!-- 03: THICK BOLD -->
+<div class="c"><div class="n">03</div><div class="ic">
+<svg width="190" height="190" viewBox="0 0 190 190" fill="none">
+<circle cx="95" cy="95" r="90" fill="#4ade80"/>
+<path d="M95 5 A90 90 0 0 0 95 185 A45 45 0 0 0 95 95 A45 45 0 0 1 95 5 Z" fill="white"/>
+<circle cx="95" cy="50" r="16" fill="white"/>
+<circle cx="95" cy="140" r="16" fill="#4ade80"/>
+</svg>
+</div><div class="nm">Bold</div><div class="tg">Bigger dots · Heavier weight</div></div>
+
+<!-- 04: OUTLINED -->
+<div class="c"><div class="n">04</div><div class="ic">
+<svg width="190" height="190" viewBox="0 0 190 190" fill="none">
+<path d="M95 5 A90 90 0 0 1 95 185 A45 45 0 0 1 95 95 A45 45 0 0 0 95 5 Z" fill="#4ade80"/>
+<path d="M95 5 A90 90 0 0 0 95 185 A45 45 0 0 0 95 95 A45 45 0 0 1 95 5 Z" fill="white"/>
+<circle cx="95" cy="50" r="12" fill="white" stroke="#4ade80" stroke-width="3"/>
+<circle cx="95" cy="140" r="12" fill="#4ade80" stroke="white" stroke-width="3"/>
+<circle cx="95" cy="95" r="90" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
+</svg>
+</div><div class="nm">Outlined</div><div class="tg">Ring border · Outlined dots</div></div>
+
+<!-- 05: ROTATED 90° (horizontal split) -->
+<div class="c"><div class="n">05</div><div class="ic">
+<svg width="190" height="190" viewBox="0 0 190 190" fill="none">
+<g transform="rotate(90 95 95)">
+<path d="M95 5 A90 90 0 0 1 95 185 A45 45 0 0 1 95 95 A45 45 0 0 0 95 5 Z" fill="#4ade80"/>
+<path d="M95 5 A90 90 0 0 0 95 185 A45 45 0 0 0 95 95 A45 45 0 0 1 95 5 Z" fill="white"/>
+<circle cx="95" cy="50" r="12" fill="white"/>
+<circle cx="95" cy="140" r="12" fill="#4ade80"/>
+</g>
+</svg>
+</div><div class="nm">Horizontal</div><div class="tg">Rotated 90° · Left-right flow</div></div>
+
+<!-- 06: SMALL + CENTERED (logo-size) -->
+<div class="c"><div class="n">06</div><div class="ic">
+<svg width="190" height="190" viewBox="0 0 190 190" fill="none">
+<path d="M95 30 A65 65 0 0 1 95 160 A32.5 32.5 0 0 1 95 95 A32.5 32.5 0 0 0 95 30 Z" fill="#4ade80"/>
+<path d="M95 30 A65 65 0 0 0 95 160 A32.5 32.5 0 0 0 95 95 A32.5 32.5 0 0 1 95 30 Z" fill="white"/>
+<circle cx="95" cy="62.5" r="9" fill="white"/>
+<circle cx="95" cy="127.5" r="9" fill="#4ade80"/>
+</svg>
+</div><div class="nm">Compact</div><div class="tg">Smaller · Chest logo size</div></div>
+
+<!-- 07: SOFT EDGES (rounded S-curve) -->
+<div class="c"><div class="n">07</div><div class="ic">
+<svg width="190" height="190" viewBox="0 0 190 190" fill="none">
+<clipPath id="yc7"><circle cx="95" cy="95" r="88"/></clipPath>
+<g clip-path="url(#yc7)">
+<rect x="0" y="0" width="95" height="190" fill="#4ade80"/>
+<rect x="95" y="0" width="95" height="190" fill="white"/>
+<!-- Soft S-curve -->
+<path d="M95 0 Q140 47.5 95 95 Q50 142.5 95 190" fill="#4ade80"/>
+<path d="M95 0 Q140 47.5 95 95 Q50 142.5 95 190" fill="white" transform="translate(0,0)"/>
+<path d="M95 0 Q50 47.5 95 95 Q140 142.5 95 190 L190 190 L190 0 Z" fill="white"/>
+</g>
+<circle cx="95" cy="95" r="88" fill="none" stroke="none"/>
+<!-- Dots -->
+<circle cx="95" cy="48" r="12" fill="white"/>
+<circle cx="95" cy="142" r="12" fill="#4ade80"/>
+<!-- Outer ring -->
+<circle cx="95" cy="95" r="88" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+</svg>
+</div><div class="nm">Soft Curve</div><div class="tg">Wider S-curve · Softer flow</div></div>
+
+<!-- 08: WITH LABELS (P and R) -->
+<div class="c"><div class="n">08</div><div class="ic">
+<svg width="190" height="190" viewBox="0 0 190 190" fill="none">
+<path d="M95 5 A90 90 0 0 1 95 185 A45 45 0 0 1 95 95 A45 45 0 0 0 95 5 Z" fill="#4ade80"/>
+<path d="M95 5 A90 90 0 0 0 95 185 A45 45 0 0 0 95 95 A45 45 0 0 1 95 5 Z" fill="white"/>
+<circle cx="95" cy="50" r="14" fill="white"/>
+<circle cx="95" cy="140" r="14" fill="#4ade80"/>
+<!-- P for Process in the white dot -->
+<text x="95" y="55" text-anchor="middle" fill="#4ade80" font-size="14" font-weight="800" font-family="Inter">P</text>
+<!-- R for Review in the green dot -->
+<text x="95" y="145" text-anchor="middle" fill="white" font-size="14" font-weight="800" font-family="Inter">R</text>
+</svg>
+</div><div class="nm">P + R</div><div class="tg">Process · Review · Labeled</div></div>
+
+<!-- 09: THREE-DOT VARIANT (3 agents) -->
+<div class="c"><div class="n">09</div><div class="ic">
+<svg width="190" height="190" viewBox="0 0 190 190" fill="none">
+<path d="M95 5 A90 90 0 0 1 95 185 A45 45 0 0 1 95 95 A45 45 0 0 0 95 5 Z" fill="#4ade80"/>
+<path d="M95 5 A90 90 0 0 0 95 185 A45 45 0 0 0 95 95 A45 45 0 0 1 95 5 Z" fill="white"/>
+<!-- 3 dots instead of 2 (architect, pragmatist, critic) -->
+<circle cx="95" cy="40" r="9" fill="white"/>
+<circle cx="95" cy="95" r="9" fill="#4ade80" stroke="white" stroke-width="2"/>
+<circle cx="95" cy="150" r="9" fill="#4ade80"/>
+</svg>
+</div><div class="nm">Three Agents</div><div class="tg">Architect · Pragmatist · Critic</div></div>
+
+<!-- 10: SHARP / ANGULAR (modern tech feel) -->
+<div class="c"><div class="n">10</div><div class="ic">
+<svg width="190" height="190" viewBox="0 0 190 190" fill="none">
+<clipPath id="yc10"><circle cx="95" cy="95" r="88"/></clipPath>
+<g clip-path="url(#yc10)">
+<!-- Sharp diagonal split instead of S-curve -->
+<rect x="0" y="0" width="190" height="190" fill="white"/>
+<path d="M95 5 L5 95 L5 5 Z" fill="#4ade80"/>
+<path d="M95 5 L185 95 L5 95 L95 5 Z" fill="#4ade80"/>
+<path d="M5 95 L95 185 L5 185 Z" fill="#4ade80"/>
+<!-- Actually let's do a proper angular S -->
+</g>
+<!-- Cleaner approach: angular yin-yang -->
+<clipPath id="yc10b"><circle cx="95" cy="95" r="88"/></clipPath>
+<g clip-path="url(#yc10b)">
+<rect x="0" y="0" width="190" height="190" fill="#4ade80"/>
+<path d="M95 5 L185 5 L185 185 L95 185 L95 95 Z" fill="white"/>
+<rect x="50" y="5" width="45" height="90" fill="#4ade80"/>
+<rect x="95" y="95" width="45" height="90" fill="white"/>
+</g>
+<circle cx="72" cy="50" r="10" fill="white"/>
+<circle cx="118" cy="140" r="10" fill="#4ade80"/>
+<circle cx="95" cy="95" r="88" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+</svg>
+</div><div class="nm">Angular</div><div class="tg">Sharp geometric · Tech feel</div></div>
+
+</div>
+</body>
+</html>

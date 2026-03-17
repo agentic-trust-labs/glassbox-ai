@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GlassBox AI — T-Shirt v7 — Patches</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #1a1a1a;
+    color: #e0e0e0;
+    font-family: 'JetBrains Mono', monospace;
+    min-height: 100vh;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 60px;
+  }
+  h1 {
+    text-align: center;
+    font-size: 0.7rem;
+    color: #555;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+  }
+
+  .patches {
+    display: flex;
+    gap: 80px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .patch-container { text-align: center; }
+  .patch-label {
+    color: #444;
+    font-size: 0.55rem;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  /* ═══════════════════════════════════
+     FRONT PATCH
+     ═══════════════════════════════════ */
+  .front-patch {
+    width: 340px;
+    height: 440px;
+    background: #0a0a0a;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .glassbox-icon {
+    margin-bottom: 24px;
+    position: relative;
+  }
+
+  .f-brand {
+    text-align: center;
+    margin-bottom: 14px;
+  }
+  .f-brand-text {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+  .f-brand-text .green { color: #4ade80; }
+  .f-brand-text .white { color: #ffffff; }
+
+  .f-not {
+    font-size: 0.65rem;
+    color: rgba(255,255,255,0.25);
+    letter-spacing: 6px;
+    text-transform: lowercase;
+    margin-bottom: 10px;
+  }
+  .f-black {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 400;
+    color: #f87171;
+    letter-spacing: 2px;
+    text-decoration: line-through;
+    text-decoration-thickness: 2px;
+    opacity: 0.8;
+  }
+
+  /* ═══════════════════════════════════
+     BACK PATCH
+     ═══════════════════════════════════ */
+  .back-patch {
+    width: 400px;
+    height: 500px;
+    background: #0a0a0a;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .diff-header {
+    width: 100%;
+    padding: 10px 16px;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-bottom: none;
+    border-radius: 10px 10px 0 0;
+    font-size: 0.6rem;
+    color: #8b949e;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .diff-icon {
+    width: 14px;
+    height: 14px;
+  }
+  .diff-repo { color: #58a6ff; }
+
+  .diff-body {
+    width: 100%;
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 0 0 10px 10px;
+    padding: 16px 0;
+    font-size: 0.72rem;
+    line-height: 2.4;
+  }
+
+  .diff-line {
+    padding: 0 16px;
+    white-space: nowrap;
+  }
+  .diff-line.del {
+    background: rgba(248, 113, 113, 0.1);
+    color: #ffa198;
+  }
+  .diff-line.add {
+    background: rgba(74, 222, 128, 0.1);
+    color: #7ee787;
+  }
+  .diff-line.blank {
+    color: transparent;
+    user-select: none;
+    line-height: 0.8;
+    font-size: 0.3rem;
+  }
+
+  .var { color: #ffa657; }
+  .op  { color: #79c0ff; }
+  .fn  { color: #d2a8ff; }
+  .str { color: #a5d6ff; }
+
+  .back-tagline {
+    margin-top: 32px;
+    text-align: center;
+  }
+  .tagline-main {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #ffffff;
+    letter-spacing: 2px;
+  }
+  .tagline-diamond {
+    filter: drop-shadow(0 0 6px rgba(74,222,128,0.3));
+  }
+
+  /* Print specs */
+  .specs {
+    max-width: 800px;
+    width: 100%;
+    border: 1px solid #1a1a1a;
+    border-radius: 6px;
+    background: #0d0d0d;
+    padding: 24px;
+  }
+  .specs h2 {
+    color: #4ade80;
+    font-size: 0.6rem;
+    margin-bottom: 12px;
+    letter-spacing: 2px;
+    font-weight: 400;
+  }
+  .specs table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.55rem;
+  }
+  .specs td {
+    padding: 5px 10px;
+    border-bottom: 1px solid #111;
+    vertical-align: top;
+  }
+  .specs td:first-child { color: #444; width: 140px; }
+  .specs td:last-child { color: #666; }
+  .accent { color: #4ade80; }
+</style>
+</head>
+<body>
+
+<h1>GlassBox AI — v7 — Print Patches</h1>
+
+<div class="patches">
+
+  <!-- ══════════════════════════════════
+       FRONT PATCH
+       ══════════════════════════════════ -->
+  <div class="patch-container">
+    <div class="patch-label">front patch</div>
+    <div class="front-patch">
+
+      <div class="glassbox-icon">
+        <svg width="140" height="140" viewBox="0 0 150 150" fill="none">
+          <!-- ALL SOLID COLORS - zero opacity, zero rgba -->
+          <line x1="75" y1="24" x2="75" y2="125" stroke="#4ade80" stroke-width="8"/>
+          <path d="M75 30 Q56 14 48 6" fill="none" stroke="#4ade80" stroke-width="4"/>
+          <circle cx="48" cy="6" r="7" fill="#4ade80"/>
+          <path d="M75 30 Q94 14 102 6" fill="none" stroke="#4ade80" stroke-width="4"/>
+          <circle cx="102" cy="6" r="7" fill="#4ade80"/>
+          <path d="M75 36 Q24 28 14 60 Q10 80 46 88 Q66 90 75 74 Z" fill="#143d28" stroke="#4ade80" stroke-width="4"/>
+          <path d="M75 36 Q126 28 136 60 Q140 80 104 88 Q84 90 75 74 Z" fill="#143d28" stroke="#4ade80" stroke-width="4"/>
+          <path d="M75 78 Q36 84 24 106 Q28 120 54 114 Q70 110 75 96 Z" fill="#122e20" stroke="#4ade80" stroke-width="3.5"/>
+          <path d="M75 78 Q114 84 126 106 Q122 120 96 114 Q80 110 75 96 Z" fill="#122e20" stroke="#4ade80" stroke-width="3.5"/>
+          <path d="M75 36 Q48 50 26 70" fill="none" stroke="#2d8a56" stroke-width="3"/>
+          <path d="M75 36 Q42 56 18 76" fill="none" stroke="#2d8a56" stroke-width="2.5"/>
+          <path d="M75 36 Q102 50 124 70" fill="none" stroke="#2d8a56" stroke-width="3"/>
+          <path d="M75 36 Q108 56 132 76" fill="none" stroke="#2d8a56" stroke-width="2.5"/>
+          <circle cx="46" cy="58" r="18" fill="#1a5c38"/>
+          <circle cx="46" cy="58" r="14" fill="#4ade80"/>
+          <circle cx="104" cy="58" r="18" fill="#1a5c38"/>
+          <circle cx="104" cy="58" r="14" fill="#4ade80"/>
+          <circle cx="75" cy="100" r="18" fill="#1a5c38"/>
+          <circle cx="75" cy="100" r="14" fill="#4ade80"/>
+          <path d="M46 58 Q75 46 104 58" fill="none" stroke="#2d8a56" stroke-width="3.5"/>
+          <path d="M46 58 Q58 80 75 100" fill="none" stroke="#2d8a56" stroke-width="3.5"/>
+          <path d="M104 58 Q92 80 75 100" fill="none" stroke="#2d8a56" stroke-width="3.5"/>
+        </svg>
+      </div>
+
+      <div class="f-brand">
+        <span class="f-brand-text"><span class="green">Glass</span><span class="white">Box AI</span></span>
+      </div>
+
+      <div class="f-not">── not ──</div>
+      <div class="f-black">BlackBox AI</div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       BACK PATCH
+       ══════════════════════════════════ -->
+  <div class="patch-container">
+    <div class="patch-label">back patch</div>
+    <div class="back-patch">
+
+      <div class="diff-header">
+        <svg class="diff-icon" viewBox="0 0 16 16" fill="#8b949e">
+          <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+        </svg>
+        <span class="diff-repo">agentic-trust-labs/glassbox-ai</span>
+      </div>
+
+      <div class="diff-body">
+        <div class="diff-line del">- <span class="var">decisions</span> <span class="op">=</span> <span class="fn">blackbox</span>(<span class="var">model</span>)</div>
+        <div class="diff-line del">- <span class="var">trust</span>     <span class="op">=</span> <span class="str">"assumed"</span></div>
+        <div class="diff-line del">- <span class="var">oversight</span>  <span class="op">=</span> <span class="str">None</span></div>
+        <div class="diff-line blank">.</div>
+        <div class="diff-line" style="padding: 4px 16px;"><span style="display:block; border-top: 1px solid #30363d;"></span></div>
+        <div class="diff-line blank">.</div>
+        <div class="diff-line add">+ <span class="var">agents</span>    <span class="op">=</span> <span class="fn">debate</span>(<span class="var">decisions</span>)</div>
+        <div class="diff-line add">+ <span class="var">trust</span>     <span class="op">=</span> <span class="fn">earned</span>(<span class="var">verified</span>)</div>
+        <div class="diff-line add">+ <span class="var">oversight</span>  <span class="op">=</span> <span class="fn">transparent</span>(<span class="var">always</span>)</div>
+      </div>
+
+      <div class="back-tagline">
+        <div class="tagline-main" style="font-family:'JetBrains Mono',monospace; font-size:0.72rem; font-weight:400; color:#7ee787; letter-spacing:1.5px;">trustable agents for scalable solutions</div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- Print Specs -->
+<div class="specs">
+  <h2>// PRINT SPECS</h2>
+  <table>
+    <tr><td>Format</td><td><span class="accent">Glue-on patches</span> — front + back, separate pieces</td></tr>
+    <tr><td>Front patch</td><td>~12 × 16 cm · 340 × 440px</td></tr>
+    <tr><td>Back patch</td><td>~14 × 18 cm · 400 × 500px</td></tr>
+    <tr><td>Background</td><td><span class="accent">Matte black</span> #0a0a0a</td></tr>
+    <tr><td>Colors</td><td>White · Green <span class="accent">#4ade80</span> · Red #f87171 · Blue #58a6ff</td></tr>
+    <tr><td>Fonts</td><td>JetBrains Mono (code) · Inter (brand)</td></tr>
+    <tr><td>Corners</td><td>16px radius — rounded for clean patch edges</td></tr>
+  </table>
+</div>
+
+</body>
+</html>

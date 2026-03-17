@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GlassBox AI — Bold Animal Mascots</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #050505; color: #e0e0e0; font-family: 'Inter', sans-serif; padding: 40px 20px; }
+  h1 { text-align: center; font-size: 0.65rem; color: #4ade80; letter-spacing: 5px; text-transform: uppercase; margin-bottom: 6px; }
+  .subtitle { text-align: center; font-size: 0.45rem; color: #333; letter-spacing: 2px; margin-bottom: 50px; }
+  .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; max-width: 1400px; margin: 0 auto; }
+  .card {
+    background: #0a0a0a; border: 1px solid #141414; border-radius: 24px;
+    padding: 20px 12px 18px; text-align: center; transition: all 0.3s; cursor: pointer;
+  }
+  .card:hover { border-color: #4ade80; transform: translateY(-4px); box-shadow: 0 12px 40px rgba(74,222,128,0.08); }
+  .card-num { font-size: 0.42rem; color: #4ade80; letter-spacing: 4px; margin-bottom: 8px; font-weight: 700; }
+  .card-icon { width: 200px; height: 200px; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; }
+  .card-name { font-size: 0.85rem; font-weight: 800; color: #fff; margin-bottom: 2px; }
+  .card-tagline { font-size: 0.42rem; color: #4ade80; opacity: 0.6; letter-spacing: 1px; margin-bottom: 6px; }
+  .card-why { font-size: 0.42rem; color: #555; line-height: 1.7; }
+</style>
+</head>
+<body>
+
+<h1>GlassBox AI — Bold Animal Mascots</h1>
+<p class="subtitle">Proper product-grade icons · Not minimal wireframes · Real mascots like GitHub's Octocat</p>
+
+<div class="grid">
+
+  <!-- 01: OWL — All-seeing wisdom, sees in the dark -->
+  <div class="card">
+    <div class="card-num">01</div>
+    <div class="card-icon">
+      <svg width="180" height="180" viewBox="0 0 180 180" fill="none">
+        <defs>
+          <filter id="o1"><feGaussianBlur stdDeviation="4"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <!-- Body -->
+        <ellipse cx="90" cy="110" rx="45" ry="42" fill="#4ade80"/>
+        <!-- Head -->
+        <circle cx="90" cy="65" r="35" fill="#4ade80"/>
+        <!-- Ear tufts -->
+        <path d="M62 38 L55 15 L72 35" fill="#4ade80"/>
+        <path d="M118 38 L125 15 L108 35" fill="#4ade80"/>
+        <!-- Eye sockets (dark) -->
+        <circle cx="72" cy="62" r="16" fill="#0a0a0a"/>
+        <circle cx="108" cy="62" r="16" fill="#0a0a0a"/>
+        <!-- Eyes (bright, all-seeing) -->
+        <circle cx="72" cy="62" r="12" fill="#fbbf24"/>
+        <circle cx="108" cy="62" r="12" fill="#fbbf24"/>
+        <!-- Pupils -->
+        <circle cx="72" cy="62" r="6" fill="#0a0a0a"/>
+        <circle cx="108" cy="62" r="6" fill="#0a0a0a"/>
+        <!-- Eye highlights -->
+        <circle cx="76" cy="58" r="2.5" fill="white"/>
+        <circle cx="112" cy="58" r="2.5" fill="white"/>
+        <!-- Beak -->
+        <path d="M85 75 L90 85 L95 75" fill="#fbbf24"/>
+        <!-- Chest pattern (V-marks like feathers) -->
+        <path d="M75 100 L90 115 L105 100" fill="none" stroke="#0a0a0a" stroke-width="2" opacity="0.3"/>
+        <path d="M72 110 L90 125 L108 110" fill="none" stroke="#0a0a0a" stroke-width="2" opacity="0.2"/>
+        <!-- Feet -->
+        <path d="M72 148 L65 155 M72 148 L72 156 M72 148 L79 155" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M108 148 L101 155 M108 148 L108 156 M108 148 L115 155" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="card-name">Owl</div>
+    <div class="card-tagline">Sees everything · Misses nothing</div>
+    <div class="card-why">Symbol of wisdom in every culture. Sees in the dark. The judge of the forest.</div>
+  </div>
+
+  <!-- 02: OCTOPUS — 8 arms = multi-agent -->
+  <div class="card">
+    <div class="card-num">02</div>
+    <div class="card-icon">
+      <svg width="180" height="180" viewBox="0 0 180 180" fill="none">
+        <!-- Head -->
+        <ellipse cx="90" cy="60" rx="38" ry="40" fill="#4ade80"/>
+        <!-- Eyes -->
+        <ellipse cx="75" cy="55" rx="10" ry="12" fill="#0a0a0a"/>
+        <ellipse cx="105" cy="55" rx="10" ry="12" fill="#0a0a0a"/>
+        <circle cx="75" cy="53" r="5" fill="white"/>
+        <circle cx="105" cy="53" r="5" fill="white"/>
+        <circle cx="77" cy="51" r="2" fill="#0a0a0a"/>
+        <circle cx="107" cy="51" r="2" fill="#0a0a0a"/>
+        <!-- Smile -->
+        <path d="M80 72 Q90 80 100 72" fill="none" stroke="#0a0a0a" stroke-width="2" stroke-linecap="round"/>
+        <!-- 8 tentacles (8 agents working together) -->
+        <path d="M55 90 Q30 105 25 130 Q22 140 30 138" fill="none" stroke="#4ade80" stroke-width="8" stroke-linecap="round"/>
+        <path d="M60 95 Q40 115 32 145 Q28 155 36 152" fill="none" stroke="#4ade80" stroke-width="7" stroke-linecap="round"/>
+        <path d="M70 98 Q55 125 50 155 Q48 165 56 160" fill="none" stroke="#4ade80" stroke-width="6" stroke-linecap="round"/>
+        <path d="M82 100 Q78 130 75 160 Q74 168 80 164" fill="none" stroke="#4ade80" stroke-width="6" stroke-linecap="round"/>
+        <path d="M98 100 Q102 130 105 160 Q106 168 100 164" fill="none" stroke="#4ade80" stroke-width="6" stroke-linecap="round"/>
+        <path d="M110 98 Q125 125 130 155 Q132 165 124 160" fill="none" stroke="#4ade80" stroke-width="6" stroke-linecap="round"/>
+        <path d="M120 95 Q140 115 148 145 Q152 155 144 152" fill="none" stroke="#4ade80" stroke-width="7" stroke-linecap="round"/>
+        <path d="M125 90 Q150 105 155 130 Q158 140 150 138" fill="none" stroke="#4ade80" stroke-width="8" stroke-linecap="round"/>
+        <!-- Suction cups (data points) -->
+        <circle cx="30" cy="130" r="3" fill="#0a0a0a" opacity="0.3"/>
+        <circle cx="36" cy="145" r="2.5" fill="#0a0a0a" opacity="0.3"/>
+        <circle cx="50" cy="150" r="2.5" fill="#0a0a0a" opacity="0.3"/>
+        <circle cx="130" cy="150" r="2.5" fill="#0a0a0a" opacity="0.3"/>
+        <circle cx="150" cy="130" r="3" fill="#0a0a0a" opacity="0.3"/>
+        <circle cx="144" cy="145" r="2.5" fill="#0a0a0a" opacity="0.3"/>
+      </svg>
+    </div>
+    <div class="card-name">Octopus</div>
+    <div class="card-tagline">8 arms · 8 agents · One brain</div>
+    <div class="card-why">Multi-tasking master. Each arm acts independently but coordinates. Like GitHub's Octocat.</div>
+  </div>
+
+  <!-- 03: GLASS FROG — transparent belly -->
+  <div class="card">
+    <div class="card-num">03</div>
+    <div class="card-icon">
+      <svg width="180" height="180" viewBox="0 0 180 180" fill="none">
+        <defs>
+          <filter id="f3"><feGaussianBlur stdDeviation="3"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <!-- Body (transparent green) -->
+        <ellipse cx="90" cy="100" rx="50" ry="38" fill="#4ade80" opacity="0.85"/>
+        <!-- Transparent belly window -->
+        <ellipse cx="90" cy="105" rx="30" ry="22" fill="#0a0a0a" opacity="0.7"/>
+        <ellipse cx="90" cy="105" rx="28" ry="20" fill="rgba(74,222,128,0.1)" stroke="#4ade80" stroke-width="1" opacity="0.6"/>
+        <!-- Visible organs inside (the WHOLE point) -->
+        <!-- Heart -->
+        <circle cx="85" cy="95" r="5" fill="#ef4444" opacity="0.8" filter="url(#f3)"/>
+        <!-- Trust network visible inside -->
+        <circle cx="78" cy="108" r="3" fill="#4ade80" opacity="0.6"/>
+        <circle cx="102" cy="108" r="3" fill="#4ade80" opacity="0.6"/>
+        <circle cx="90" cy="118" r="3" fill="#4ade80" opacity="0.6"/>
+        <line x1="81" y1="108" x2="99" y2="108" stroke="#4ade80" stroke-width="0.8" opacity="0.4"/>
+        <line x1="80" y1="111" x2="88" y2="116" stroke="#4ade80" stroke-width="0.8" opacity="0.3"/>
+        <line x1="100" y1="111" x2="92" y2="116" stroke="#4ade80" stroke-width="0.8" opacity="0.3"/>
+        <!-- Head -->
+        <ellipse cx="90" cy="62" rx="30" ry="24" fill="#4ade80"/>
+        <!-- Big round eyes (characteristic of glass frogs) -->
+        <circle cx="72" cy="52" r="14" fill="white"/>
+        <circle cx="108" cy="52" r="14" fill="white"/>
+        <circle cx="72" cy="52" r="9" fill="#0a0a0a"/>
+        <circle cx="108" cy="52" r="9" fill="#0a0a0a"/>
+        <circle cx="72" cy="52" r="5" fill="#4ade80"/>
+        <circle cx="108" cy="52" r="5" fill="#4ade80"/>
+        <circle cx="75" cy="48" r="3" fill="white"/>
+        <circle cx="111" cy="48" r="3" fill="white"/>
+        <!-- Mouth -->
+        <path d="M78 72 Q90 78 102 72" fill="none" stroke="#2d8a56" stroke-width="1.5"/>
+        <!-- Front legs -->
+        <path d="M48 100 Q30 95 22 105 Q18 112 25 112 L35 108" fill="#4ade80"/>
+        <path d="M132 100 Q150 95 158 105 Q162 112 155 112 L145 108" fill="#4ade80"/>
+        <!-- Toe pads -->
+        <circle cx="25" cy="112" r="4" fill="#3ac475"/>
+        <circle cx="33" cy="110" r="3.5" fill="#3ac475"/>
+        <circle cx="155" cy="112" r="4" fill="#3ac475"/>
+        <circle cx="147" cy="110" r="3.5" fill="#3ac475"/>
+        <!-- Back legs -->
+        <path d="M55 130 Q40 148 35 155 Q32 160 40 158 L50 150" fill="#4ade80"/>
+        <path d="M125 130 Q140 148 145 155 Q148 160 140 158 L130 150" fill="#4ade80"/>
+      </svg>
+    </div>
+    <div class="card-name">Glass Frog</div>
+    <div class="card-tagline">See the heart · See the truth</div>
+    <div class="card-why">Literally transparent. You can see organs, heart, everything. THE glass box animal.</div>
+  </div>
+
+  <!-- 04: HONEYBEE — democratic voter -->
+  <div class="card">
+    <div class="card-num">04</div>
+    <div class="card-icon">
+      <svg width="180" height="180" viewBox="0 0 180 180" fill="none">
+        <!-- Wings (transparent) -->
+        <ellipse cx="60" cy="55" rx="28" ry="16" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.3)" stroke-width="1" transform="rotate(-20 60 55)"/>
+        <ellipse cx="120" cy="55" rx="28" ry="16" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.3)" stroke-width="1" transform="rotate(20 120 55)"/>
+        <!-- Body segments -->
+        <!-- Head -->
+        <circle cx="90" cy="55" r="20" fill="#fbbf24"/>
+        <!-- Eyes -->
+        <circle cx="80" cy="50" r="6" fill="#0a0a0a"/>
+        <circle cx="100" cy="50" r="6" fill="#0a0a0a"/>
+        <circle cx="82" cy="48" r="2.5" fill="white"/>
+        <circle cx="102" cy="48" r="2.5" fill="white"/>
+        <!-- Antennae -->
+        <path d="M80 38 Q72 22 65 18" fill="none" stroke="#0a0a0a" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="65" cy="18" r="3" fill="#0a0a0a"/>
+        <path d="M100 38 Q108 22 115 18" fill="none" stroke="#0a0a0a" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="115" cy="18" r="3" fill="#0a0a0a"/>
+        <!-- Smile -->
+        <path d="M83 62 Q90 68 97 62" fill="none" stroke="#0a0a0a" stroke-width="1.5" stroke-linecap="round"/>
+        <!-- Thorax -->
+        <ellipse cx="90" cy="85" rx="22" ry="18" fill="#fbbf24"/>
+        <!-- Abdomen with stripes -->
+        <ellipse cx="90" cy="125" rx="26" ry="30" fill="#fbbf24"/>
+        <rect x="64" y="108" width="52" height="6" rx="3" fill="#0a0a0a" opacity="0.8"/>
+        <rect x="64" y="120" width="52" height="6" rx="3" fill="#0a0a0a" opacity="0.8"/>
+        <rect x="64" y="132" width="52" height="6" rx="3" fill="#0a0a0a" opacity="0.8"/>
+        <!-- Stinger -->
+        <path d="M90 155 L90 165" stroke="#0a0a0a" stroke-width="2.5" stroke-linecap="round"/>
+        <!-- Legs -->
+        <path d="M70 85 Q55 90 48 100" stroke="#0a0a0a" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M110 85 Q125 90 132 100" stroke="#0a0a0a" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M68 95 Q52 102 45 115" stroke="#0a0a0a" stroke-width="2" stroke-linecap="round"/>
+        <path d="M112 95 Q128 102 135 115" stroke="#0a0a0a" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="card-name">Honeybee</div>
+    <div class="card-tagline">Vote by dance · Democracy in nature</div>
+    <div class="card-why">Bees literally vote on hive locations. Multi-agent consensus that's 80 million years old.</div>
+  </div>
+
+  <!-- 05: DOLPHIN — echolocation transparency -->
+  <div class="card">
+    <div class="card-num">05</div>
+    <div class="card-icon">
+      <svg width="180" height="180" viewBox="0 0 180 180" fill="none">
+        <!-- Body -->
+        <path d="M30 90 Q40 55 80 50 Q110 46 130 60 Q155 78 150 100 Q145 115 120 120 Q100 124 80 118 Q50 110 35 100 Q28 96 30 90 Z" fill="#4ade80"/>
+        <!-- Belly (lighter) -->
+        <path d="M45 95 Q55 105 80 112 Q100 118 118 115 Q130 112 138 105 Q130 115 110 118 Q85 122 60 112 Q45 106 45 95 Z" fill="#3ac475"/>
+        <!-- Eye -->
+        <circle cx="95" cy="65" r="6" fill="#0a0a0a"/>
+        <circle cx="97" cy="63" r="2.5" fill="white"/>
+        <!-- Smile -->
+        <path d="M105 72 Q118 68 130 64" fill="none" stroke="#0a0a0a" stroke-width="2" stroke-linecap="round"/>
+        <!-- Snout/beak -->
+        <path d="M130 60 Q148 55 160 58 Q155 62 145 65 Q135 67 130 64" fill="#4ade80"/>
+        <!-- Dorsal fin -->
+        <path d="M80 50 Q82 25 95 20 Q92 35 90 48" fill="#4ade80"/>
+        <!-- Tail fin -->
+        <path d="M30 90 Q18 80 10 70 Q15 82 22 88" fill="#4ade80"/>
+        <path d="M30 92 Q18 102 10 112 Q15 100 22 94" fill="#4ade80"/>
+        <!-- Pectoral fin -->
+        <path d="M75 100 Q65 115 55 125 Q58 118 65 108 Q70 102 75 100" fill="#3ac475"/>
+        <!-- Echolocation waves (transparency = seeing through water) -->
+        <path d="M155 60 Q162 58 168 62" fill="none" stroke="#4ade80" stroke-width="2" opacity="0.5"/>
+        <path d="M158 55 Q168 52 175 58" fill="none" stroke="#4ade80" stroke-width="1.5" opacity="0.35"/>
+        <path d="M160 50 Q172 46 180 54" fill="none" stroke="#4ade80" stroke-width="1" opacity="0.2"/>
+        <!-- Bubble trail -->
+        <circle cx="42" cy="130" r="4" fill="#4ade80" opacity="0.15"/>
+        <circle cx="55" cy="138" r="3" fill="#4ade80" opacity="0.12"/>
+        <circle cx="38" cy="142" r="5" fill="#4ade80" opacity="0.1"/>
+      </svg>
+    </div>
+    <div class="card-name">Dolphin</div>
+    <div class="card-tagline">Echo the truth · Share with the pod</div>
+    <div class="card-why">Echolocation reveals everything hidden. Shares the full map with the entire pod. Total transparency.</div>
+  </div>
+
+  <!-- 06: WOLF — pack trust -->
+  <div class="card">
+    <div class="card-num">06</div>
+    <div class="card-icon">
+      <svg width="180" height="180" viewBox="0 0 180 180" fill="none">
+        <!-- Head shape -->
+        <path d="M90 40 Q60 45 50 70 Q42 90 50 110 Q60 125 90 130 Q120 125 130 110 Q138 90 130 70 Q120 45 90 40 Z" fill="#4ade80"/>
+        <!-- Ears (pointed, alert) -->
+        <path d="M58 52 L45 15 L70 45" fill="#4ade80"/>
+        <path d="M55 18 L65 40" fill="none" stroke="#2d8a56" stroke-width="1.5"/>
+        <path d="M122 52 L135 15 L110 45" fill="#4ade80"/>
+        <path d="M125 18 L115 40" fill="none" stroke="#2d8a56" stroke-width="1.5"/>
+        <!-- Inner ear -->
+        <path d="M58 48 L50 25 L68 45" fill="#2d8a56" opacity="0.5"/>
+        <path d="M122 48 L130 25 L112 45" fill="#2d8a56" opacity="0.5"/>
+        <!-- Face markings (lighter snout) -->
+        <path d="M90 65 Q70 70 65 85 Q62 100 75 110 Q85 118 90 120 Q95 118 105 110 Q118 100 115 85 Q110 70 90 65 Z" fill="#3ac475"/>
+        <!-- Eyes (intense, loyal) -->
+        <ellipse cx="72" cy="72" rx="8" ry="6" fill="#fbbf24"/>
+        <circle cx="72" cy="72" r="4" fill="#0a0a0a"/>
+        <circle cx="74" cy="70" r="1.5" fill="white"/>
+        <ellipse cx="108" cy="72" rx="8" ry="6" fill="#fbbf24"/>
+        <circle cx="108" cy="72" r="4" fill="#0a0a0a"/>
+        <circle cx="110" cy="70" r="1.5" fill="white"/>
+        <!-- Nose -->
+        <ellipse cx="90" cy="95" rx="8" ry="6" fill="#0a0a0a"/>
+        <circle cx="88" cy="93" r="1.5" fill="rgba(255,255,255,0.2)"/>
+        <!-- Mouth -->
+        <path d="M90 101 L90 108 M90 108 Q82 115 78 112 M90 108 Q98 115 102 112" fill="none" stroke="#0a0a0a" stroke-width="1.5" stroke-linecap="round"/>
+        <!-- Howl lines (communication) -->
+        <path d="M52 130 Q42 138 35 148" fill="none" stroke="#4ade80" stroke-width="1.5" opacity="0.3"/>
+        <path d="M48 135 Q38 145 30 155" fill="none" stroke="#4ade80" stroke-width="1" opacity="0.2"/>
+        <path d="M128 130 Q138 138 145 148" fill="none" stroke="#4ade80" stroke-width="1.5" opacity="0.3"/>
+        <path d="M132 135 Q142 145 150 155" fill="none" stroke="#4ade80" stroke-width="1" opacity="0.2"/>
+      </svg>
+    </div>
+    <div class="card-name">Wolf</div>
+    <div class="card-tagline">Trust the pack · Hunt as one</div>
+    <div class="card-why">Pack coordination requires absolute trust. Alpha leads, scout reports, flanker covers. One team.</div>
+  </div>
+
+  <!-- 07: ELEPHANT — collective wisdom -->
+  <div class="card">
+    <div class="card-num">07</div>
+    <div class="card-icon">
+      <svg width="180" height="180" viewBox="0 0 180 180" fill="none">
+        <!-- Head -->
+        <ellipse cx="90" cy="72" rx="48" ry="45" fill="#4ade80"/>
+        <!-- Ears (large, distinctive) -->
+        <path d="M42 60 Q10 50 15 85 Q18 110 42 105" fill="#4ade80" stroke="#2d8a56" stroke-width="1"/>
+        <path d="M38 65 Q18 58 22 85 Q24 105 40 100" fill="#2d8a56" opacity="0.4"/>
+        <path d="M138 60 Q170 50 165 85 Q162 110 138 105" fill="#4ade80" stroke="#2d8a56" stroke-width="1"/>
+        <path d="M142 65 Q162 58 158 85 Q156 105 140 100" fill="#2d8a56" opacity="0.4"/>
+        <!-- Eyes (wise, kind) -->
+        <circle cx="70" cy="62" r="7" fill="#0a0a0a"/>
+        <circle cx="73" cy="60" r="2.5" fill="white"/>
+        <circle cx="110" cy="62" r="7" fill="#0a0a0a"/>
+        <circle cx="113" cy="60" r="2.5" fill="white"/>
+        <!-- Trunk -->
+        <path d="M85 85 Q80 105 75 125 Q72 140 78 150 Q82 155 88 148 Q92 140 88 130" fill="#4ade80" stroke="#2d8a56" stroke-width="1.5"/>
+        <path d="M95 85 Q100 105 105 125 Q108 140 102 150 Q98 155 92 148" fill="#4ade80"/>
+        <!-- Trunk tip curl -->
+        <path d="M88 130 Q82 125 78 128" fill="none" stroke="#4ade80" stroke-width="4" stroke-linecap="round"/>
+        <!-- Tusks -->
+        <path d="M75 90 Q68 105 65 115 Q64 120 68 118" fill="white" opacity="0.9"/>
+        <path d="M105 90 Q112 105 115 115 Q116 120 112 118" fill="white" opacity="0.9"/>
+        <!-- Forehead wrinkles (wisdom lines) -->
+        <path d="M72 48 Q90 42 108 48" fill="none" stroke="#2d8a56" stroke-width="1" opacity="0.4"/>
+        <path d="M75 53 Q90 48 105 53" fill="none" stroke="#2d8a56" stroke-width="1" opacity="0.3"/>
+      </svg>
+    </div>
+    <div class="card-name">Elephant</div>
+    <div class="card-tagline">Never forgets · Always consults</div>
+    <div class="card-why">Collective council. Matriarch consults elders. Trust built on persistent memory.</div>
+  </div>
+
+  <!-- 08: EAGLE — clear vision from above -->
+  <div class="card">
+    <div class="card-num">08</div>
+    <div class="card-icon">
+      <svg width="180" height="180" viewBox="0 0 180 180" fill="none">
+        <!-- Body -->
+        <ellipse cx="90" cy="100" rx="25" ry="30" fill="#4ade80"/>
+        <!-- Head -->
+        <circle cx="90" cy="58" r="22" fill="white" opacity="0.95"/>
+        <!-- Eyes (intense, piercing) -->
+        <rect x="72" y="52" width="12" height="8" rx="2" fill="#0a0a0a"/>
+        <rect x="96" y="52" width="12" height="8" rx="2" fill="#0a0a0a"/>
+        <circle cx="78" cy="56" r="3" fill="#fbbf24"/>
+        <circle cx="102" cy="56" r="3" fill="#fbbf24"/>
+        <circle cx="78" cy="56" r="1.5" fill="#0a0a0a"/>
+        <circle cx="102" cy="56" r="1.5" fill="#0a0a0a"/>
+        <!-- Brow ridge (fierce) -->
+        <path d="M68 50 L82 52" fill="none" stroke="#0a0a0a" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M112 50 L98 52" fill="none" stroke="#0a0a0a" stroke-width="2.5" stroke-linecap="round"/>
+        <!-- Beak (hooked, powerful) -->
+        <path d="M85 65 L90 62 L95 65 L90 78 Z" fill="#fbbf24"/>
+        <path d="M87 70 L90 78 L93 70" fill="#e0a800"/>
+        <!-- Wings (spread wide) -->
+        <path d="M65 90 Q30 75 10 50 Q15 60 20 68 Q28 80 45 85 Q55 88 65 90" fill="#4ade80"/>
+        <path d="M115 90 Q150 75 170 50 Q165 60 160 68 Q152 80 135 85 Q125 88 115 90" fill="#4ade80"/>
+        <!-- Wing feather tips -->
+        <path d="M10 50 L18 55 M15 55 L22 62 M20 60 L28 68" fill="none" stroke="#2d8a56" stroke-width="1.5"/>
+        <path d="M170 50 L162 55 M165 55 L158 62 M160 60 L152 68" fill="none" stroke="#2d8a56" stroke-width="1.5"/>
+        <!-- Tail feathers -->
+        <path d="M78 128 Q75 148 70 160" stroke="#4ade80" stroke-width="4" stroke-linecap="round"/>
+        <path d="M90 130 Q90 150 90 162" stroke="#4ade80" stroke-width="4" stroke-linecap="round"/>
+        <path d="M102 128 Q105 148 110 160" stroke="#4ade80" stroke-width="4" stroke-linecap="round"/>
+        <!-- Talons -->
+        <path d="M78 128 Q72 135 68 140 M68 140 L62 145 M68 140 L68 148 M68 140 L74 145" stroke="#fbbf24" stroke-width="2" stroke-linecap="round"/>
+        <path d="M102 128 Q108 135 112 140 M112 140 L118 145 M112 140 L112 148 M112 140 L106 145" stroke="#fbbf24" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="card-name">Eagle</div>
+    <div class="card-tagline">See from 3 miles · Miss nothing</div>
+    <div class="card-why">Sharpest vision in nature. Sees 8x better than humans. Total oversight from above.</div>
+  </div>
+
+  <!-- 09: FOX (in a glass box — the clever one made transparent) -->
+  <div class="card">
+    <div class="card-num">09</div>
+    <div class="card-icon">
+      <svg width="180" height="180" viewBox="0 0 180 180" fill="none">
+        <!-- Head -->
+        <path d="M90 45 Q55 50 45 80 Q40 100 55 115 Q70 128 90 130 Q110 128 125 115 Q140 100 135 80 Q125 50 90 45 Z" fill="#4ade80"/>
+        <!-- Ears (large, triangular) -->
+        <path d="M60 52 L42 10 L72 42" fill="#4ade80"/>
+        <path d="M56 45 L48 18 L68 40" fill="#2d8a56" opacity="0.5"/>
+        <path d="M120 52 L138 10 L108 42" fill="#4ade80"/>
+        <path d="M124 45 L132 18 L112 40" fill="#2d8a56" opacity="0.5"/>
+        <!-- White face markings -->
+        <path d="M90 60 Q72 65 62 80 Q58 90 68 102 Q78 112 90 115 Q102 112 112 102 Q122 90 118 80 Q108 65 90 60 Z" fill="white" opacity="0.9"/>
+        <!-- Eyes (clever, sharp) -->
+        <ellipse cx="74" cy="78" rx="7" ry="8" fill="#0a0a0a"/>
+        <circle cx="76" cy="76" r="2.5" fill="#4ade80"/>
+        <circle cx="77" cy="75" r="1" fill="white"/>
+        <ellipse cx="106" cy="78" rx="7" ry="8" fill="#0a0a0a"/>
+        <circle cx="108" cy="76" r="2.5" fill="#4ade80"/>
+        <circle cx="109" cy="75" r="1" fill="white"/>
+        <!-- Nose -->
+        <ellipse cx="90" cy="95" rx="6" ry="4.5" fill="#0a0a0a"/>
+        <!-- Mouth -->
+        <path d="M90 99 L90 104 M90 104 Q84 110 80 108 M90 104 Q96 110 100 108" fill="none" stroke="#0a0a0a" stroke-width="1.2" stroke-linecap="round"/>
+        <!-- Whiskers -->
+        <line x1="75" y1="95" x2="50" y2="90" stroke="#0a0a0a" stroke-width="0.8" opacity="0.3"/>
+        <line x1="75" y1="98" x2="50" y2="100" stroke="#0a0a0a" stroke-width="0.8" opacity="0.3"/>
+        <line x1="105" y1="95" x2="130" y2="90" stroke="#0a0a0a" stroke-width="0.8" opacity="0.3"/>
+        <line x1="105" y1="98" x2="130" y2="100" stroke="#0a0a0a" stroke-width="0.8" opacity="0.3"/>
+        <!-- Glass box frame around fox (making the clever one transparent) -->
+        <rect x="22" y="5" width="136" height="160" rx="12" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5" stroke-dasharray="6 3"/>
+      </svg>
+    </div>
+    <div class="card-name">Fox in Glass</div>
+    <div class="card-tagline">The clever one · Made transparent</div>
+    <div class="card-why">Foxes are clever, even cunning. Put one in a glass box — now it can't trick you. Transparency tames deception.</div>
+  </div>
+
+  <!-- 10: CRANE — formation trust & rotating leadership -->
+  <div class="card">
+    <div class="card-num">10</div>
+    <div class="card-icon">
+      <svg width="180" height="180" viewBox="0 0 180 180" fill="none">
+        <!-- Body -->
+        <ellipse cx="90" cy="90" rx="20" ry="28" fill="white" opacity="0.95"/>
+        <!-- Neck (long, elegant) -->
+        <path d="M85 62 Q80 30 82 18 Q84 10 88 8" fill="none" stroke="white" stroke-width="8" stroke-linecap="round"/>
+        <path d="M85 62 Q80 30 82 18 Q84 10 88 8" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="6" stroke-linecap="round"/>
+        <!-- Head -->
+        <circle cx="90" cy="10" r="8" fill="white"/>
+        <!-- Red crown (iconic crane feature) -->
+        <circle cx="90" cy="5" r="5" fill="#ef4444"/>
+        <!-- Eye -->
+        <circle cx="94" cy="10" r="2" fill="#0a0a0a"/>
+        <!-- Beak -->
+        <path d="M98 10 L118 8 L98 12" fill="#fbbf24"/>
+        <!-- Wing (spread, one side) -->
+        <path d="M70 80 Q40 65 15 70 Q20 75 30 78 Q45 82 60 84" fill="#4ade80"/>
+        <path d="M110 80 Q140 65 165 70 Q160 75 150 78 Q135 82 120 84" fill="#4ade80"/>
+        <!-- Wing tips (black, like real crane) -->
+        <path d="M15 70 L10 68 L12 72 L8 74 L15 74" fill="#0a0a0a"/>
+        <path d="M165 70 L170 68 L168 72 L172 74 L165 74" fill="#0a0a0a"/>
+        <!-- Tail feathers -->
+        <path d="M80 115 Q70 135 60 145" fill="none" stroke="#4ade80" stroke-width="5" stroke-linecap="round"/>
+        <path d="M90 118 Q90 138 88 148" fill="none" stroke="#4ade80" stroke-width="4" stroke-linecap="round"/>
+        <path d="M100 115 Q110 135 120 145" fill="none" stroke="#4ade80" stroke-width="5" stroke-linecap="round"/>
+        <!-- Legs (long, elegant) -->
+        <line x1="82" y1="118" x2="75" y2="165" stroke="#0a0a0a" stroke-width="2.5"/>
+        <line x1="98" y1="118" x2="105" y2="165" stroke="#0a0a0a" stroke-width="2.5"/>
+        <!-- Feet -->
+        <path d="M75 165 L68 170 M75 165 L75 172 M75 165 L82 170" stroke="#0a0a0a" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M105 165 L98 170 M105 165 L105 172 M105 165 L112 170" stroke="#0a0a0a" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="card-name">Crane</div>
+    <div class="card-tagline">Rotate leaders · Trust the formation</div>
+    <div class="card-why">V-formation, rotating leadership. When one tires, another leads. 1000-year symbol of trust in Japan.</div>
+  </div>
+
+</div>
+
+</body>
+</html>

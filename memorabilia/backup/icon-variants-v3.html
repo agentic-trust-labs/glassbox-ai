@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GlassBox AI — Icon v3 — Industry-Inspired</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #050505;
+    color: #e0e0e0;
+    font-family: 'Inter', sans-serif;
+    padding: 40px 20px;
+  }
+  h1 { text-align: center; font-size: 0.65rem; color: #4ade80; letter-spacing: 5px; text-transform: uppercase; margin-bottom: 6px; }
+  .subtitle { text-align: center; font-size: 0.45rem; color: #2a2a2a; letter-spacing: 2px; margin-bottom: 50px; }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .variant {
+    background: #0a0a0a;
+    border: 1px solid #141414;
+    border-radius: 20px;
+    padding: 24px 12px 18px;
+    text-align: center;
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+  .variant:hover {
+    border-color: #4ade80;
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(74,222,128,0.06);
+  }
+  .variant-num { font-size: 0.42rem; color: #4ade80; letter-spacing: 4px; margin-bottom: 12px; font-weight: 600; }
+  .variant-icon { width: 180px; height: 180px; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; }
+  .variant-name { font-size: 0.75rem; font-weight: 700; color: #fff; letter-spacing: 0.5px; margin-bottom: 4px; }
+  .variant-source { font-size: 0.4rem; color: #4ade80; opacity: 0.5; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 6px; }
+  .variant-desc { font-size: 0.44rem; color: #444; line-height: 1.8; }
+</style>
+</head>
+<body>
+
+<h1>GlassBox AI — Industry-Inspired Icons</h1>
+<p class="subtitle">Glassmorphism · Anthropic · Apple · Google · Stripe · Atlassian · OpenAI · Microsoft · Linear</p>
+
+<div class="grid">
+
+  <!-- 01: APPLE GLASSMORPHISM — frosted glass panel with agents visible through blur -->
+  <div class="variant">
+    <div class="variant-num">01</div>
+    <div class="variant-icon">
+      <svg width="170" height="170" viewBox="0 0 170 170" fill="none">
+        <defs>
+          <filter id="frost" x="-10%" y="-10%" width="120%" height="120%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="1.5"/>
+          </filter>
+          <linearGradient id="glass-fill" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:rgba(255,255,255,0.08)"/>
+            <stop offset="100%" style="stop-color:rgba(255,255,255,0.02)"/>
+          </linearGradient>
+          <filter id="g1-glow"><feGaussianBlur stdDeviation="4"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <!-- Background blobs (visible through glass) -->
+        <circle cx="55" cy="70" r="30" fill="#4ade80" opacity="0.07"/>
+        <circle cx="115" cy="100" r="25" fill="#22d3ee" opacity="0.05"/>
+        <!-- Frosted glass panel -->
+        <rect x="25" y="25" width="120" height="120" rx="20" fill="url(#glass-fill)" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+        <!-- Top-left shine -->
+        <path d="M25 45 L25 25 Q25 25 45 25" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1.5" stroke-linecap="round"/>
+        <!-- Agent nodes inside (visible through glass) -->
+        <circle cx="60" cy="65" r="8" fill="rgba(74,222,128,0.12)" stroke="#4ade80" stroke-width="1.2" opacity="0.9"/>
+        <circle cx="110" cy="65" r="8" fill="rgba(74,222,128,0.12)" stroke="#4ade80" stroke-width="1.2" opacity="0.9"/>
+        <circle cx="85" cy="105" r="8" fill="rgba(74,222,128,0.12)" stroke="#4ade80" stroke-width="1.2" opacity="0.9"/>
+        <!-- Debate connections -->
+        <line x1="68" y1="65" x2="102" y2="65" stroke="#4ade80" stroke-width="0.8" opacity="0.35"/>
+        <line x1="64" y1="72" x2="80" y2="98" stroke="#4ade80" stroke-width="0.8" opacity="0.35"/>
+        <line x1="106" y1="72" x2="90" y2="98" stroke="#4ade80" stroke-width="0.8" opacity="0.35"/>
+        <!-- Center trust pulse -->
+        <circle cx="85" cy="76" r="3" fill="#4ade80" opacity="0.6" filter="url(#g1-glow)"/>
+      </svg>
+    </div>
+    <div class="variant-name">Frosted Glass</div>
+    <div class="variant-source">Apple iOS · Glassmorphism</div>
+    <div class="variant-desc">Translucent panel, agents visible<br>through frosted glass. Premium.</div>
+  </div>
+
+  <!-- 02: ANTHROPIC MINIMAL — single elegant mark, understated -->
+  <div class="variant">
+    <div class="variant-num">02</div>
+    <div class="variant-icon">
+      <svg width="170" height="170" viewBox="0 0 170 170" fill="none">
+        <defs>
+          <filter id="g2-soft"><feGaussianBlur stdDeviation="1.5"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <!-- Ultra-minimal: just the glass box outline with one connection -->
+        <rect x="40" y="40" width="90" height="90" rx="16" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1.2"/>
+        <!-- Three dots — that's it -->
+        <circle cx="65" cy="72" r="5" fill="white" opacity="0.85" filter="url(#g2-soft)"/>
+        <circle cx="105" cy="72" r="5" fill="white" opacity="0.85" filter="url(#g2-soft)"/>
+        <circle cx="85" cy="105" r="5" fill="white" opacity="0.85" filter="url(#g2-soft)"/>
+        <!-- Single hairline triangle -->
+        <path d="M65 72 L105 72 L85 105 Z" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="0.5"/>
+      </svg>
+    </div>
+    <div class="variant-name">Minimal Mark</div>
+    <div class="variant-source">Anthropic · Claude Style</div>
+    <div class="variant-desc">Three dots, one box. Nothing more.<br>Trust through radical simplicity.</div>
+  </div>
+
+  <!-- 03: STRIPE GRADIENT GLASS — premium depth with color -->
+  <div class="variant">
+    <div class="variant-num">03</div>
+    <div class="variant-icon">
+      <svg width="170" height="170" viewBox="0 0 170 170" fill="none">
+        <defs>
+          <linearGradient id="stripe-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#4ade80;stop-opacity:0.15"/>
+            <stop offset="50%" style="stop-color:#22d3ee;stop-opacity:0.08"/>
+            <stop offset="100%" style="stop-color:#818cf8;stop-opacity:0.12"/>
+          </linearGradient>
+          <linearGradient id="stripe-border" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#4ade80;stop-opacity:0.6"/>
+            <stop offset="50%" style="stop-color:#22d3ee;stop-opacity:0.3"/>
+            <stop offset="100%" style="stop-color:#818cf8;stop-opacity:0.5"/>
+          </linearGradient>
+          <filter id="g3-glow"><feGaussianBlur stdDeviation="3"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <rect x="28" y="28" width="114" height="114" rx="22" fill="url(#stripe-grad)" stroke="url(#stripe-border)" stroke-width="1.5"/>
+        <!-- Glass shine -->
+        <path d="M28 50 L28 28 Q28 28 50 28" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2" stroke-linecap="round"/>
+        <!-- Agents with gradient glow -->
+        <circle cx="60" cy="70" r="7" fill="#4ade80" opacity="0.25" filter="url(#g3-glow)"/>
+        <circle cx="60" cy="70" r="4" fill="#4ade80" opacity="0.7"/>
+        <circle cx="110" cy="70" r="7" fill="#22d3ee" opacity="0.25" filter="url(#g3-glow)"/>
+        <circle cx="110" cy="70" r="4" fill="#22d3ee" opacity="0.7"/>
+        <circle cx="85" cy="108" r="7" fill="#818cf8" opacity="0.25" filter="url(#g3-glow)"/>
+        <circle cx="85" cy="108" r="4" fill="#818cf8" opacity="0.7"/>
+        <!-- Premium connections -->
+        <line x1="64" y1="70" x2="106" y2="70" stroke="rgba(255,255,255,0.15)" stroke-width="0.8"/>
+        <line x1="62" y1="76" x2="82" y2="102" stroke="rgba(255,255,255,0.1)" stroke-width="0.8"/>
+        <line x1="108" y1="76" x2="88" y2="102" stroke="rgba(255,255,255,0.1)" stroke-width="0.8"/>
+      </svg>
+    </div>
+    <div class="variant-name">Gradient Glass</div>
+    <div class="variant-source">Stripe · Premium Depth</div>
+    <div class="variant-desc">Multi-color gradient glass.<br>Each agent has its own hue.</div>
+  </div>
+
+  <!-- 04: GOOGLE DEEPMIND — clean concentric geometry -->
+  <div class="variant">
+    <div class="variant-num">04</div>
+    <div class="variant-icon">
+      <svg width="170" height="170" viewBox="0 0 170 170" fill="none">
+        <defs>
+          <filter id="g4-glow"><feGaussianBlur stdDeviation="3"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <!-- Outer square (the glass box) -->
+        <rect x="30" y="30" width="110" height="110" rx="14" fill="none" stroke="#4ade80" stroke-width="1" opacity="0.3"/>
+        <!-- Middle circle (the debate) -->
+        <circle cx="85" cy="85" r="38" fill="none" stroke="#4ade80" stroke-width="1.2" opacity="0.5"/>
+        <!-- Inner triangle (the 3 agents) -->
+        <path d="M85 52 L114 102 L56 102 Z" fill="rgba(74,222,128,0.04)" stroke="#4ade80" stroke-width="1.5" opacity="0.7"/>
+        <!-- Agent dots at vertices -->
+        <circle cx="85" cy="52" r="5" fill="#4ade80" opacity="0.8" filter="url(#g4-glow)"/>
+        <circle cx="114" cy="102" r="5" fill="#4ade80" opacity="0.8" filter="url(#g4-glow)"/>
+        <circle cx="56" cy="102" r="5" fill="#4ade80" opacity="0.8" filter="url(#g4-glow)"/>
+        <!-- Center convergence -->
+        <circle cx="85" cy="85" r="3" fill="white" opacity="0.6"/>
+        <!-- Hairline radials to center -->
+        <line x1="85" y1="57" x2="85" y2="82" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/>
+        <line x1="110" y1="100" x2="88" y2="86" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/>
+        <line x1="60" y1="100" x2="82" y2="86" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/>
+      </svg>
+    </div>
+    <div class="variant-name">Concentric Geometry</div>
+    <div class="variant-source">Google DeepMind · Precision</div>
+    <div class="variant-desc">Square → circle → triangle.<br>Mathematical clarity and order.</div>
+  </div>
+
+  <!-- 05: OPENAI SWARM — particle dots forming a glass shape -->
+  <div class="variant">
+    <div class="variant-num">05</div>
+    <div class="variant-icon">
+      <svg width="170" height="170" viewBox="0 0 170 170" fill="none">
+        <defs>
+          <filter id="g5-glow"><feGaussianBlur stdDeviation="2"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <!-- Particles forming the outline of a box -->
+        <!-- Top edge particles -->
+        <circle cx="38" cy="35" r="2" fill="#4ade80" opacity="0.4"/><circle cx="52" cy="33" r="1.5" fill="#4ade80" opacity="0.5"/>
+        <circle cx="66" cy="32" r="2.5" fill="#4ade80" opacity="0.6"/><circle cx="82" cy="31" r="2" fill="#4ade80" opacity="0.5"/>
+        <circle cx="98" cy="32" r="1.5" fill="#4ade80" opacity="0.4"/><circle cx="112" cy="33" r="2" fill="#4ade80" opacity="0.5"/>
+        <circle cx="128" cy="35" r="2.5" fill="#4ade80" opacity="0.4"/>
+        <!-- Right edge -->
+        <circle cx="132" cy="50" r="1.5" fill="#4ade80" opacity="0.4"/><circle cx="134" cy="68" r="2" fill="#4ade80" opacity="0.5"/>
+        <circle cx="135" cy="85" r="2.5" fill="#4ade80" opacity="0.6"/><circle cx="134" cy="102" r="2" fill="#4ade80" opacity="0.5"/>
+        <circle cx="132" cy="120" r="1.5" fill="#4ade80" opacity="0.4"/>
+        <!-- Bottom edge -->
+        <circle cx="128" cy="135" r="2" fill="#4ade80" opacity="0.4"/><circle cx="112" cy="137" r="1.5" fill="#4ade80" opacity="0.5"/>
+        <circle cx="98" cy="138" r="2.5" fill="#4ade80" opacity="0.6"/><circle cx="82" cy="139" r="2" fill="#4ade80" opacity="0.5"/>
+        <circle cx="66" cy="138" r="1.5" fill="#4ade80" opacity="0.4"/><circle cx="52" cy="137" r="2" fill="#4ade80" opacity="0.5"/>
+        <circle cx="38" cy="135" r="2.5" fill="#4ade80" opacity="0.4"/>
+        <!-- Left edge -->
+        <circle cx="35" cy="120" r="2" fill="#4ade80" opacity="0.4"/><circle cx="33" cy="102" r="1.5" fill="#4ade80" opacity="0.5"/>
+        <circle cx="32" cy="85" r="2.5" fill="#4ade80" opacity="0.6"/><circle cx="33" cy="68" r="2" fill="#4ade80" opacity="0.5"/>
+        <circle cx="35" cy="50" r="1.5" fill="#4ade80" opacity="0.4"/>
+        <!-- 3 core agent swarm particles -->
+        <circle cx="62" cy="72" r="7" fill="#4ade80" opacity="0.15" filter="url(#g5-glow)"/>
+        <circle cx="62" cy="72" r="4" fill="#4ade80" opacity="0.8"/>
+        <circle cx="108" cy="72" r="7" fill="#4ade80" opacity="0.15" filter="url(#g5-glow)"/>
+        <circle cx="108" cy="72" r="4" fill="#4ade80" opacity="0.8"/>
+        <circle cx="85" cy="108" r="7" fill="#4ade80" opacity="0.15" filter="url(#g5-glow)"/>
+        <circle cx="85" cy="108" r="4" fill="#4ade80" opacity="0.8"/>
+        <!-- Faint orbital paths -->
+        <ellipse cx="85" cy="85" rx="28" ry="12" fill="none" stroke="#4ade80" stroke-width="0.4" opacity="0.15" transform="rotate(-25 85 85)"/>
+        <ellipse cx="85" cy="85" rx="28" ry="12" fill="none" stroke="#4ade80" stroke-width="0.4" opacity="0.15" transform="rotate(25 85 85)"/>
+      </svg>
+    </div>
+    <div class="variant-name">Particle Swarm</div>
+    <div class="variant-source">OpenAI Swarm · Collective</div>
+    <div class="variant-desc">Dots form the glass box shape.<br>Agents as a living organism.</div>
+  </div>
+
+  <!-- 06: MICROSOFT FLUENT — stacked acrylic layers -->
+  <div class="variant">
+    <div class="variant-num">06</div>
+    <div class="variant-icon">
+      <svg width="170" height="170" viewBox="0 0 170 170" fill="none">
+        <!-- Three stacked glass layers -->
+        <!-- Back layer -->
+        <rect x="42" y="22" width="95" height="65" rx="10" fill="rgba(74,222,128,0.04)" stroke="rgba(74,222,128,0.2)" stroke-width="0.8"/>
+        <circle cx="78" cy="48" r="4" fill="#4ade80" opacity="0.3"/>
+        <circle cx="100" cy="48" r="4" fill="#4ade80" opacity="0.3"/>
+        <line x1="82" y1="48" x2="96" y2="48" stroke="#4ade80" stroke-width="0.5" opacity="0.2"/>
+        <!-- Middle layer (offset) -->
+        <rect x="32" y="48" width="95" height="65" rx="10" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.1)" stroke-width="0.8"/>
+        <path d="M32 58 L32 48 Q32 48 42 48" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5" stroke-linecap="round"/>
+        <circle cx="65" cy="75" r="5" fill="#4ade80" opacity="0.5"/>
+        <circle cx="95" cy="75" r="5" fill="#4ade80" opacity="0.5"/>
+        <line x1="70" y1="75" x2="90" y2="75" stroke="#4ade80" stroke-width="0.8" opacity="0.3"/>
+        <!-- Front layer -->
+        <rect x="22" y="78" width="95" height="65" rx="10" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+        <path d="M22 88 L22 78 Q22 78 32 78" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="55" cy="105" r="6" fill="#4ade80" opacity="0.7"/>
+        <circle cx="85" cy="105" r="6" fill="#4ade80" opacity="0.7"/>
+        <circle cx="70" cy="125" r="6" fill="#4ade80" opacity="0.7"/>
+        <line x1="61" y1="105" x2="79" y2="105" stroke="#4ade80" stroke-width="1" opacity="0.4"/>
+        <line x1="58" y1="110" x2="66" y2="120" stroke="#4ade80" stroke-width="1" opacity="0.35"/>
+        <line x1="82" y1="110" x2="74" y2="120" stroke="#4ade80" stroke-width="1" opacity="0.35"/>
+      </svg>
+    </div>
+    <div class="variant-name">Stacked Acrylic</div>
+    <div class="variant-source">Microsoft Fluent · Layers</div>
+    <div class="variant-desc">Three glass panels stacked.<br>Each layer shows more agents.</div>
+  </div>
+
+  <!-- 07: LINEAR ULTRA-CLEAN — razor thin, modern SaaS -->
+  <div class="variant">
+    <div class="variant-num">07</div>
+    <div class="variant-icon">
+      <svg width="170" height="170" viewBox="0 0 170 170" fill="none">
+        <!-- Ultra-thin box -->
+        <rect x="35" y="35" width="100" height="100" rx="6" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="0.8"/>
+        <!-- Elegant thin triangle -->
+        <path d="M65 62 L105 62 L85 100 Z" fill="none" stroke="#4ade80" stroke-width="1" opacity="0.8"/>
+        <!-- Dots at vertices — crisp, no glow -->
+        <circle cx="65" cy="62" r="3.5" fill="#4ade80"/>
+        <circle cx="105" cy="62" r="3.5" fill="#4ade80"/>
+        <circle cx="85" cy="100" r="3.5" fill="#4ade80"/>
+        <!-- Center dot — white -->
+        <circle cx="85" cy="74" r="2" fill="white" opacity="0.8"/>
+      </svg>
+    </div>
+    <div class="variant-name">Ultra-Clean</div>
+    <div class="variant-source">Linear · Modern SaaS</div>
+    <div class="variant-desc">Razor-thin lines, zero clutter.<br>The icon equivalent of a whisper.</div>
+  </div>
+
+  <!-- 08: ATLASSIAN ROVO — sparkle + active AI indicator -->
+  <div class="variant">
+    <div class="variant-num">08</div>
+    <div class="variant-icon">
+      <svg width="170" height="170" viewBox="0 0 170 170" fill="none">
+        <defs>
+          <filter id="g8-glow"><feGaussianBlur stdDeviation="3"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <rect x="30" y="30" width="110" height="110" rx="16" fill="rgba(74,222,128,0.03)" stroke="#4ade80" stroke-width="1.2" opacity="0.5"/>
+        <!-- Glass shine -->
+        <path d="M30 46 L30 30 Q30 30 46 30" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="2" stroke-linecap="round"/>
+        <!-- AI Sparkle (4-point star) at top-right -->
+        <path d="M120 30 L122 38 L130 40 L122 42 L120 50 L118 42 L110 40 L118 38 Z" fill="#4ade80" opacity="0.8" filter="url(#g8-glow)"/>
+        <!-- Active working telepointer line -->
+        <path d="M118 50 Q100 55 85 55" fill="none" stroke="#4ade80" stroke-width="0.8" opacity="0.3" stroke-dasharray="3 2"/>
+        <!-- Agent nodes -->
+        <circle cx="62" cy="75" r="9" fill="rgba(74,222,128,0.08)" stroke="#4ade80" stroke-width="1.2"/>
+        <text x="62" y="78" text-anchor="middle" fill="#4ade80" font-size="8" font-weight="700" font-family="Inter">A</text>
+        <circle cx="108" cy="75" r="9" fill="rgba(74,222,128,0.08)" stroke="#4ade80" stroke-width="1.2"/>
+        <text x="108" y="78" text-anchor="middle" fill="#4ade80" font-size="8" font-weight="700" font-family="Inter">B</text>
+        <circle cx="85" cy="115" r="9" fill="rgba(74,222,128,0.08)" stroke="#4ade80" stroke-width="1.2"/>
+        <text x="85" y="118" text-anchor="middle" fill="#4ade80" font-size="8" font-weight="700" font-family="Inter">C</text>
+        <!-- Animated-look connections -->
+        <line x1="70" y1="78" x2="100" y2="78" stroke="#4ade80" stroke-width="1" opacity="0.3" stroke-dasharray="4 3"/>
+        <line x1="66" y1="83" x2="80" y2="108" stroke="#4ade80" stroke-width="1" opacity="0.3" stroke-dasharray="4 3"/>
+        <line x1="104" y1="83" x2="90" y2="108" stroke="#4ade80" stroke-width="1" opacity="0.3" stroke-dasharray="4 3"/>
+      </svg>
+    </div>
+    <div class="variant-name">Sparkle Active</div>
+    <div class="variant-source">Atlassian Rovo · AI Working</div>
+    <div class="variant-desc">✦ sparkle shows AI is alive.<br>Agents actively debating.</div>
+  </div>
+
+  <!-- 09: ISOMETRIC GLASS CUBE — 3D see-through box -->
+  <div class="variant">
+    <div class="variant-num">09</div>
+    <div class="variant-icon">
+      <svg width="170" height="170" viewBox="0 0 170 170" fill="none">
+        <defs>
+          <linearGradient id="iso-top" x1="50%" y1="0%" x2="50%" y2="100%">
+            <stop offset="0%" style="stop-color:rgba(255,255,255,0.1)"/>
+            <stop offset="100%" style="stop-color:rgba(255,255,255,0.02)"/>
+          </linearGradient>
+          <filter id="g9-glow"><feGaussianBlur stdDeviation="3"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <!-- Isometric cube edges -->
+        <!-- Top face -->
+        <path d="M85 25 L140 55 L85 85 L30 55 Z" fill="url(#iso-top)" stroke="#4ade80" stroke-width="1" opacity="0.6"/>
+        <!-- Left face -->
+        <path d="M30 55 L85 85 L85 140 L30 110 Z" fill="rgba(74,222,128,0.03)" stroke="#4ade80" stroke-width="0.8" opacity="0.4"/>
+        <!-- Right face -->
+        <path d="M140 55 L85 85 L85 140 L140 110 Z" fill="rgba(74,222,128,0.06)" stroke="#4ade80" stroke-width="0.8" opacity="0.5"/>
+        <!-- Agents visible inside (positioned in 3D space) -->
+        <circle cx="72" cy="70" r="4" fill="#4ade80" opacity="0.7" filter="url(#g9-glow)"/>
+        <circle cx="98" cy="70" r="4" fill="#4ade80" opacity="0.7" filter="url(#g9-glow)"/>
+        <circle cx="85" cy="105" r="4" fill="#4ade80" opacity="0.5" filter="url(#g9-glow)"/>
+        <!-- Faint connections -->
+        <line x1="76" y1="70" x2="94" y2="70" stroke="#4ade80" stroke-width="0.6" opacity="0.3"/>
+        <line x1="74" y1="74" x2="82" y2="101" stroke="#4ade80" stroke-width="0.6" opacity="0.25"/>
+        <line x1="96" y1="74" x2="88" y2="101" stroke="#4ade80" stroke-width="0.6" opacity="0.25"/>
+        <!-- Top edge highlight -->
+        <path d="M85 25 L30 55" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+      </svg>
+    </div>
+    <div class="variant-name">Isometric Cube</div>
+    <div class="variant-source">3D Glass · Spatial</div>
+    <div class="variant-desc">Actual 3D glass box.<br>Agents floating inside the cube.</div>
+  </div>
+
+  <!-- 10: GLASSMORPHISM CARD — the ultimate frosted glass with blur backdrop -->
+  <div class="variant">
+    <div class="variant-num">10</div>
+    <div class="variant-icon">
+      <svg width="170" height="170" viewBox="0 0 170 170" fill="none">
+        <defs>
+          <linearGradient id="gm-bg1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#4ade80;stop-opacity:0.15"/>
+            <stop offset="100%" style="stop-color:#22d3ee;stop-opacity:0.08"/>
+          </linearGradient>
+          <linearGradient id="gm-border" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:rgba(255,255,255,0.3)"/>
+            <stop offset="100%" style="stop-color:rgba(255,255,255,0.05)"/>
+          </linearGradient>
+          <filter id="gm-blur">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="8"/>
+          </filter>
+          <filter id="g10-glow"><feGaussianBlur stdDeviation="4"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <!-- Blurred background blobs -->
+        <circle cx="50" cy="60" r="35" fill="#4ade80" opacity="0.12" filter="url(#gm-blur)"/>
+        <circle cx="120" cy="65" r="30" fill="#22d3ee" opacity="0.1" filter="url(#gm-blur)"/>
+        <circle cx="85" cy="120" r="30" fill="#818cf8" opacity="0.08" filter="url(#gm-blur)"/>
+        <!-- Glass card -->
+        <rect x="25" y="28" width="120" height="114" rx="18" fill="url(#gm-bg1)" stroke="url(#gm-border)" stroke-width="1"/>
+        <!-- Top-left corner shine -->
+        <path d="M25 48 L25 28 Q25 28 45 28" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1.5" stroke-linecap="round"/>
+        <!-- Agent A -->
+        <circle cx="58" cy="68" r="10" fill="rgba(74,222,128,0.1)" stroke="rgba(74,222,128,0.6)" stroke-width="1"/>
+        <circle cx="58" cy="68" r="4" fill="#4ade80" opacity="0.8"/>
+        <!-- Agent B -->
+        <circle cx="112" cy="68" r="10" fill="rgba(34,211,238,0.1)" stroke="rgba(34,211,238,0.6)" stroke-width="1"/>
+        <circle cx="112" cy="68" r="4" fill="#22d3ee" opacity="0.8"/>
+        <!-- Agent C -->
+        <circle cx="85" cy="112" r="10" fill="rgba(129,140,248,0.1)" stroke="rgba(129,140,248,0.6)" stroke-width="1"/>
+        <circle cx="85" cy="112" r="4" fill="#818cf8" opacity="0.8"/>
+        <!-- Trust connections with varying weight -->
+        <line x1="66" y1="72" x2="104" y2="72" stroke="rgba(255,255,255,0.2)" stroke-width="2"/>
+        <line x1="62" y1="76" x2="80" y2="104" stroke="rgba(255,255,255,0.12)" stroke-width="1.5"/>
+        <line x1="108" y1="76" x2="90" y2="104" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+        <!-- Trust score labels -->
+        <text x="85" y="63" text-anchor="middle" fill="white" font-size="5.5" opacity="0.5" font-family="Inter" font-weight="600">0.92</text>
+        <text x="66" y="96" text-anchor="middle" fill="white" font-size="5" opacity="0.35" font-family="Inter" font-weight="600">0.78</text>
+        <text x="104" y="96" text-anchor="middle" fill="white" font-size="5" opacity="0.25" font-family="Inter" font-weight="600">0.45</text>
+      </svg>
+    </div>
+    <div class="variant-name">Full Glassmorphism</div>
+    <div class="variant-source">Apple + Stripe + Trust Scores</div>
+    <div class="variant-desc">Frosted glass, colored blobs behind,<br>trust scores on every connection.</div>
+  </div>
+
+</div>
+
+</body>
+</html>
