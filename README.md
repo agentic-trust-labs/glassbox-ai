@@ -4,98 +4,163 @@
 
 # GlassBox AI
 
-**Autonomous coding agents for enterprise engineering - where every ticket costs real money and every bad merge costs more.**
+> **Trust is earned, not assumed.** 💎
 
 [![Python](https://img.shields.io/badge/python-3.11%2B-blue)]()
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)]()
 [![Status](https://img.shields.io/badge/status-early%20stage-orange)]()
 
-Enterprise AI needs agents that improve with oversight, not despite it. GlassBox is our approach: a state machine that orchestrates coding agents with a full audit trail, human-in-the-loop checkpoints, and a correction mechanism where every failed patch makes the next run smarter.
+GlassBox is an orchestration platform for autonomous AI agents, built for enterprise problems where decisions are consequential and accountability is non-negotiable.
 
-Still early. The learning loop is built. We're now running it and measuring.
+The platform centers on one idea: **auditability, human oversight, and continuous improvement should be structural properties of agent systems - not features you bolt on afterward.**
 
 ---
 
-## The Approach
+## Why This Exists
 
-Most coding agents are stateless. They don't learn from corrections. When a human rejects a patch and explains why, that knowledge disappears.
+Enterprise AI agents today are largely black boxes. They take actions, produce outputs, and when something goes wrong, there's no trace of what happened, no mechanism to feed corrections back, and no human with a meaningful checkpoint. Deploy them anyway and you're betting that the model is right. Most of the time, that's not good enough.
 
-GlassBox takes a different approach:
+We're building an orchestration layer where:
+- Every action an agent takes is logged in an append-only audit trail
+- Human review is a first-class state in the execution graph, not an external wrapper
+- Corrections from humans are captured, persisted, and fed back into future runs
+- The agent gets measurably better over time without retraining
 
-- **Rules that accumulate.** Human corrections are written to `RULES.md` - a version-controlled file injected into every agent prompt. Currently 27 rules, bootstrapped from studying how the top SWE-bench agents (Codex CLI, OpenHands, Augment Code, Cursor, Aider, Claude Code, mini-swe-agent) handle common failure modes.
+The design is domain-agnostic. The same engine, the same audit model, the same HITL mechanism - applied to any enterprise workflow where an AI agent acts autonomously.
 
-- **Episodes that persist.** Every correction is also logged to `episodes.jsonl`. The agent has a `recall_episodes` tool to search past corrections during problem-solving.
+---
 
-- **Audit trail by default.** Every state transition, tool call, and LLM response is logged. When a patch fails, you can trace what happened. This isn't a feature we added - it's how the state machine works.
+## How the Platform Works
 
-- **Human checkpoints as real states.** The engine pauses, waits for human input, and resumes with full context. Not a bolt-on.
+GlassBox is a lean state machine engine (~260 lines) that knows one thing: states exist, transitions connect them, and agents are plain functions that return events. Everything else - what the agent does, what tools it has, what the domain is - lives in self-contained use cases.
 
 ```
-Issue  ->  Agent loop (bash + str_replace_editor + LLM)
-       ->  Patch produced
-       ->  Evaluation (swebench Docker harness)
-       ->  Human reviews
-       ->  If rejected: correction captured, rules updated
-       ->  Next run starts with more context
+                    +------------------------------------------+
+                    |         GlassBox Engine (core)            |
+                    |  state machine, transitions, audit trail   |
+                    |  never imports from use cases              |
+                    +---+-------------------+-------------------+
+                        |                   |
+           +------------v------+   +--------v-----------+
+           |   Agent (any)      |   |   HITL Memory       |
+           |   plain function   |   |   RULES.md          |
+           |   returns events   |   |   episodes.jsonl    |
+           +------------+------+   +--------+-----------+
+                        |                   |
+                    +---v-------------------v---+
+                    |    Use Case (self-contained)|
+                    |    states, pipeline,        |
+                    |    settings, tools          |
+                    +---+------------------------+
+                        |
+                    +---v----------------------------+
+                    |  Audit Trail (append-only)      |
+                    |  every step: state, event,      |
+                    |  agent, timestamp, cost, detail  |
+                    +--------------------------------+
+```
+
+**Core properties:**
+- **Append-only audit trail** - every state, event, tool call, LLM response, cost, and timestamp is logged. Not configurable. Always on.
+- **HITL as a real state** - `awaiting_review` is a pause state in the machine. The engine waits, resumes with full context. Not a workaround.
+- **Corrections that accumulate** - human feedback is written to `RULES.md` (injected into every future prompt) and `episodes.jsonl` (searchable by the agent at runtime via `recall_episodes`).
+- **Modular use cases** - adding a new domain means adding a folder. The engine never changes.
+
+```python
+# Every agent is a plain function - same contract across all use cases and domains
+def run(ctx: AgentContext, **kwargs) -> dict:
+    return {"event": "done", "detail": "..."}
+
+# Engine drives the state machine, logs every step, handles HITL pauses
+engine.run(ctx, state="received")
 ```
 
 ---
 
-## Where We Are
+## Use Cases
 
-We ran 3 SWE-bench Verified instances end-to-end:
+Use cases are self-contained folders that plug into the engine. Each defines its own states, agent pipeline, configuration, and tools. The engine sees none of this - it only sees state transitions and events.
 
-| Instance | Patch | Steps | Cost | Result | Correction Captured |
-|----------|:---:|:---:|---:|--------|---------------------|
-| astropy-14365 | Yes | 10 | $0.13 | Failed - incomplete (read path only, not write path) | "re.IGNORECASE alone insufficient" |
-| astropy-14539 | Yes | 29 | $0.66 | Failed - wrong approach to VLA comparison | "Use element-wise comparison for object-dtype" |
-| astropy-14508 | Yes | 9 | $0.09 | Partial - target test passed, caused regression | "str() gives lowercase e, FITS needs uppercase E" |
+### UC-1: Coding Agent (active, early stage)
 
-**3/3 patches produced. 0/3 passed. 4 corrections captured. $0.88 total.**
+An autonomous coding agent for software bug-fixing, evaluated on SWE-bench Verified - the industry-standard benchmark for coding agents.
 
-The agent produces patches. They're not good enough yet. Each failure produced a structured correction that feeds into the next run. Whether this compounds into meaningful improvement is the open question.
+The agent runs a tool loop (`bash`, `str_replace_editor`, `recall_episodes`) against real repositories, produces a git patch, which is then evaluated in Docker via the swebench harness.
+
+**HITL learning loop:**
+```
+Run  ->  Agent produces patch
+     ->  Evaluation (Docker, swebench harness)
+     ->  Human reviews failure, writes correction
+     ->  Correction added to RULES.md + episodes.jsonl
+     ->  Next run: agent reads updated rules, can recall past corrections
+```
+
+**Where we are - first end-to-end run (3 instances):**
+
+| Instance | Patch | Steps | Cost | Result | Correction |
+|----------|:---:|:---:|---:|--------|------------|
+| astropy-14365 | Yes | 10 | $0.13 | Failed - read path fixed, write path missed | "re.IGNORECASE alone insufficient - write path needs uppercase too" |
+| astropy-14539 | Yes | 29 | $0.66 | Failed - wrong approach to VLA comparison | "Use element-wise comparison for object-dtype arrays" |
+| astropy-14508 | Yes | 9 | $0.09 | Partial - target test passed, caused regression | "str() gives lowercase e, FITS spec requires uppercase E" |
+
+3/3 patches produced. 0/3 passed evaluation. 4 corrections captured. $0.88 total cost.
+
+The pass rate is not the point yet. The loop is: failures become corrections, corrections become rules, rules improve the next run. Whether this compounds is what we're measuring.
 
 ---
 
-## How It Works
+## Comparison
 
-The core is a state machine engine (~260 lines) that drives transitions and logs every step. Use cases are self-contained folders - adding one doesn't require touching the engine.
+How GlassBox compares to existing agent frameworks and platforms:
 
-The first use case is a coding agent:
+| | [LangGraph](https://github.com/langchain-ai/langgraph) | [CrewAI](https://github.com/crewAIInc/crewAI) | [OpenHands](https://github.com/All-Hands-AI/OpenHands) | [SWE-agent](https://github.com/SWE-agent/SWE-agent) | [Devin](https://devin.ai) | **GlassBox** |
+|---|:---:|:---:|:---:|:---:|:---:|:---:|
+| **Orchestration layer** | Graph-based | Role-based | Single agent | Single agent | Proprietary | State machine |
+| **Audit trail (structural)** | No | No | No | Trajectories only | No | Yes - every step |
+| **HITL as first-class state** | Partial | No | No | No | Partial | Yes |
+| **Corrections fed back to agent** | No | No | No | No | No | Yes - rules + episodes |
+| **Domain-agnostic use cases** | Yes | Yes | No | No | No | Yes |
+| **Modular / pluggable** | Yes | Yes | No | No | No | Yes |
+| **Open source** | Yes | Yes | Yes | Yes | No | Yes |
+| **SWE-bench score** | N/A | N/A | 37% | 43% | Undisclosed | 0% (n=3, WIP) |
+| **Production-ready** | Yes | Yes | Yes | Yes | Yes | No |
+
+**Where GlassBox is behind:**
+- **SWE-bench score** - 0% on 3 instances. Not competitive. The agent loop works; the patches aren't good enough yet.
+- **Production-ready** - Early stage. No production deployments, no hardened APIs, no enterprise support.
+- **Ecosystem** - LangGraph and CrewAI have large ecosystems, integrations, and community. We have none of that.
+- **Sandboxing** - Agent runs locally. Evaluation is in Docker. Full inference sandboxing is not built yet.
+
+**Where GlassBox is different:**
+- **HITL is structural, not optional** - In LangGraph you can add human-in-the-loop as a graph node. In GlassBox, `awaiting_review` is a native state - the engine was designed around it, not patched to support it.
+- **Corrections compound** - No other framework has a mechanism where human corrections become version-controlled rules that every future agent run reads. `RULES.md` and `episodes.jsonl` are the start of that.
+- **Audit trail is not observability** - Observability tools (LangSmith, Arize, etc.) log what happened. GlassBox's audit trail is structural - it's the execution record the engine produces, tied to the state machine, not a separate monitoring layer.
+- **Lean by design** - The engine is ~260 lines. Agents are plain functions. There is no framework magic to debug.
+
+---
+
+## Project Structure
 
 ```
 src/glassbox/
-  core/                 State machine engine, models, base states
+  core/
+    engine.py         State machine: step(), run(), audit trail
+    state.py          BaseState enum + BASE_TRANSITIONS
+    models.py         AgentContext, AuditEntry, TriageResult
+
   use_cases/
-    coder/
-      pipeline.py       Agent loop: LLM calls, tool dispatch, patch extraction
-      tools.py          bash, str_replace_editor, complete (Anthropic-style)
-      RULES.md          27 rules injected into system prompt
-      run_swebench.py   Batch runner for SWE-bench instances
+    coder/            UC-1: Coding agent (SWE-bench)
+      pipeline.py     Agent loop, tool dispatch, patch extraction
+      states.py       State transitions for this use case
+      settings.py     Config keys with defaults
+      tools.py        bash, str_replace_editor, complete
+      RULES.md        27 accumulated rules (version-controlled)
+      run_swebench.py Batch runner for SWE-bench instances
       memory/
-        episodes.py     Episode store + recall_episodes tool
-        episodes.jsonl  Correction history (append-only)
+        episodes.py   Episode store + recall_episodes tool
+        episodes.jsonl Correction history (append-only)
 ```
-
-**Tools:** `bash`, `str_replace_editor`, `complete`, `recall_episodes`
-**Model:** Any model via litellm (currently GPT-4o)
-**Prompt design:** Based on [OpenAI's GPT-4.1 guide](https://cookbook.openai.com/examples/gpt4-1_prompting_guide) - persistence, tool-calling, planning
-**Evaluation:** Docker containers via swebench harness, same setup as every leaderboard submission
-
----
-
-## Landscape
-
-For context on where this sits:
-
-| | SWE-bench | Learns from Corrections | Audit Trail | Open Source |
-|---|:---:|:---:|:---:|:---:|
-| [SWE-agent](https://github.com/SWE-agent/SWE-agent) | 43% | No | Trajectories | Yes |
-| [OpenHands](https://github.com/All-Hands-AI/OpenHands) | 37% | No | Conversation logs | Yes |
-| [Agentless](https://github.com/OpenAutoCoder/Agentless) | 27% | No | No | Yes |
-| **GlassBox** | **0% (n=3)** | **In progress** | **State machine log** | **Yes** |
-
-The benchmark score is not competitive. The bet is that a correction loop - rules that accumulate, episodes that persist, humans that stay in the loop - is the right foundation for enterprise reliability. That's unproven. We're working on proving it.
 
 ---
 
@@ -109,11 +174,19 @@ pip install -r requirements.txt
 
 cp .env.example .env  # Set OPENAI_API_KEY and GLASSBOX_MODEL=gpt-4o
 
+# Run the coding agent on a SWE-bench instance
 python src/glassbox/use_cases/coder/run_swebench.py \
     --dataset SWE-bench/SWE-bench_Verified \
     --split test \
     --instance_ids astropy__astropy-14365 \
     --output predictions.json
+
+# Evaluate with Docker
+DOCKER_HOST=unix://$HOME/.docker/run/docker.sock \
+python -m swebench.harness.run_evaluation \
+    --dataset_name SWE-bench/SWE-bench_Verified \
+    --predictions_path predictions.json \
+    --max_workers 1 --run_id my_eval
 ```
 
 ---
@@ -121,21 +194,23 @@ python src/glassbox/use_cases/coder/run_swebench.py \
 ## What's Next
 
 - [ ] Re-run 3 instances with accumulated corrections, measure if pass rate improves
-- [ ] Scale to 50+ SWE-bench instances to get a statistically meaningful score
-- [ ] Docker sandboxing for agent inference, not just evaluation
-- [ ] Test whether `recall_episodes` meaningfully changes agent behavior
-- [ ] Multi-language support beyond Python
+- [ ] Scale to 50+ SWE-bench instances
+- [ ] Full Docker sandboxing for agent inference
+- [ ] Validate that `recall_episodes` measurably changes agent behavior
+- [ ] Second use case (domain TBD) to validate platform generality
 
 ---
 
-## Related Work
+## Research Foundation
 
-- [Reflexion](https://arxiv.org/abs/2303.11366) (NeurIPS 2023) - Verbal reinforcement learning for agents
-- [HULA](https://arxiv.org) (ICSE 2025) - Human-in-the-loop study: 54% said code had defects without human oversight
-- [SWE-agent](https://github.com/SWE-agent/SWE-agent) (NeurIPS 2024) - Agent-computer interfaces for software engineering
-- [Agentless](https://github.com/OpenAutoCoder/Agentless) - Localize, repair, validate without an agent loop
+- [Reflexion](https://arxiv.org/abs/2303.11366) (NeurIPS 2023) - Verbal reinforcement learning: corrections as learning signal
+- [HULA](https://arxiv.org) (ICSE 2025) - 54% of agent outputs had defects without human review
+- [SWE-agent](https://arxiv.org/abs/2405.15793) (NeurIPS 2024) - Agent-computer interfaces for software engineering
+- [Agentless](https://arxiv.org/abs/2407.01489) - Localize, repair, validate - no agent loop needed
 - [OpenAI GPT-4.1 Guide](https://cookbook.openai.com/examples/gpt4-1_prompting_guide) - Persistence + tool-calling + planning
 
 ---
 
 MIT - [Sourabh Gupta](https://www.linkedin.com/in/sourabhgupta16/) / [Agentic Trust Labs](https://github.com/agentic-trust-labs)
+
+**Trust is earned, not assumed. 💎**
