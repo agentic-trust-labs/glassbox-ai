@@ -4,208 +4,138 @@
 
 # GlassBox AI
 
-> **Trust is earned, not assumed.** 💎
+**Autonomous coding agents for enterprise engineering - where every ticket costs real money and every bad merge costs more.**
 
 [![Python](https://img.shields.io/badge/python-3.11%2B-blue)]()
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)]()
+[![Status](https://img.shields.io/badge/status-early%20stage-orange)]()
 
-An orchestration platform for autonomous coding agents - built for enterprise problems where every ticket is worth hundreds of dollars in engineer time. GlassBox makes **auditability**, **human oversight**, and **continuous improvement** first-class concerns, not afterthoughts.
+Enterprise AI needs agents that improve with oversight, not despite it. GlassBox is our approach: a state machine that orchestrates coding agents with a full audit trail, human-in-the-loop checkpoints, and a correction mechanism where every failed patch makes the next run smarter.
 
-Most agent frameworks optimize for autonomy. We optimize for **trust**.
-
----
-
-## The Problem
-
-Enterprise engineering teams face a growing paradox: AI coding agents are powerful enough to ship real fixes, but too unreliable to trust without oversight. A single bad merge can cost hours of debugging. A hallucinated API call can break production.
-
-Current tools treat human oversight as a speed bump. GlassBox treats it as the engine.
+Still early. The learning loop is built. We're now running it and measuring.
 
 ---
 
-## How GlassBox Works
+## The Approach
 
-GlassBox is a state machine that orchestrates autonomous agents with five first-class guarantees:
+Most coding agents are stateless. They don't learn from corrections. When a human rejects a patch and explains why, that knowledge disappears.
 
-### 1. Full Auditability
-Every state transition, every tool call, every LLM response - logged in an append-only audit trail. When a patch ships, you can trace exactly what happened, what was decided, and why. No black boxes.
+GlassBox takes a different approach:
 
-### 2. Human-in-the-Loop (HITL)
-Human checkpoints are real pause states in the machine, not bolt-on features. The engine pauses, waits for human input, and resumes from the exact right state with full context. Reviewers see the agent's reasoning, not just its output.
+- **Rules that accumulate.** Human corrections are written to `RULES.md` - a version-controlled file injected into every agent prompt. Currently 27 rules, bootstrapped from studying how the top SWE-bench agents (Codex CLI, OpenHands, Augment Code, Cursor, Aider, Claude Code, mini-swe-agent) handle common failure modes.
 
-### 3. Continuous Improvement
-Every human correction is captured as a structured episode. Rules evolve over time. The agent gets better with every interaction - not through fine-tuning, but through accumulated experience:
+- **Episodes that persist.** Every correction is also logged to `episodes.jsonl`. The agent has a `recall_episodes` tool to search past corrections during problem-solving.
 
-- **RULES.md** - 27 rules bootstrapped from top SWE-bench agents (Codex CLI, OpenHands, Augment Code), injected into every prompt
-- **episodes.jsonl** - Append-only store of human corrections, searchable by the agent via a recall tool
-- **Reflection loop** - Failed patches become learning signals, not just retries
+- **Audit trail by default.** Every state transition, tool call, and LLM response is logged. When a patch fails, you can trace what happened. This isn't a feature we added - it's how the state machine works.
 
-### 4. Transparency
-The agent's system prompt, rules, episodes, and decision log are all readable files in the repo. No hidden weights, no opaque embeddings. You can read every rule the agent follows, edit them, and version-control them alongside your code.
-
-### 5. Reliability
-Deterministic state machine with explicit transitions. No probabilistic routing, no hidden fallbacks. If the agent gets stuck, it escalates - it doesn't silently guess. Patches are stripped of artifacts, validated against test suites in Docker, and only shipped after human review.
+- **Human checkpoints as real states.** The engine pauses, waits for human input, and resumes with full context. Not a bolt-on.
 
 ```
-Task arrives  ->  Engine classifies and routes
-              ->  Agent loop: bash + str_replace_editor + LLM reasoning
-              ->  Patch produced, new files stripped automatically
-              ->  Docker evaluation (swebench harness)
-              ->  Human review checkpoint
-              ->  If rejected: correction captured as episode, agent re-runs with guidance
-              ->  Rules evolve, next run is smarter
+Issue  ->  Agent loop (bash + str_replace_editor + LLM)
+       ->  Patch produced
+       ->  Evaluation (swebench Docker harness)
+       ->  Human reviews
+       ->  If rejected: correction captured, rules updated
+       ->  Next run starts with more context
 ```
 
 ---
 
-## Architecture
+## Where We Are
 
-```
-        +---------------------------------------------------+
-        |              GlassBox Engine (core)                |
-        |  state machine - transitions - audit trail         |
-        |  ~260 lines. never imports from use cases.         |
-        +--------+------------------+-----------------------+
-                 |                  |
-        +--------v--------+  +-----v---------+
-        |   Agent Loop     |  |   HITL Memory  |
-        |  bash, editor,   |  |  RULES.md      |
-        |  LLM (litellm)   |  |  episodes.jsonl |
-        |  recall_episodes  |  |  recall tool    |
-        +--------+--------+  +-----+---------+
-                 |                  |
-        +--------v------------------v-----------+
-        |          Use Case: Coder               |
-        |  pipeline.py  - agent loop + tools     |
-        |  settings.py  - model, limits, config  |
-        |  states.py    - transitions            |
-        |  RULES.md     - 27 learned rules       |
-        |  memory/      - episode store           |
-        +--------+------------------------------+
-                 |
-        +--------v------------------------------+
-        |  SWE-bench Evaluation (Docker)         |
-        |  swebench harness, per-instance        |
-        |  containers, test-verified results     |
-        +---------------------------------------+
-```
+We ran 3 SWE-bench Verified instances end-to-end:
 
-**Adding a use case = adding a folder.** The engine never changes.
+| Instance | Patch | Steps | Cost | Result | Correction Captured |
+|----------|:---:|:---:|---:|--------|---------------------|
+| astropy-14365 | Yes | 10 | $0.13 | Failed - incomplete (read path only, not write path) | "re.IGNORECASE alone insufficient" |
+| astropy-14539 | Yes | 29 | $0.66 | Failed - wrong approach to VLA comparison | "Use element-wise comparison for object-dtype" |
+| astropy-14508 | Yes | 9 | $0.09 | Partial - target test passed, caused regression | "str() gives lowercase e, FITS needs uppercase E" |
+
+**3/3 patches produced. 0/3 passed. 4 corrections captured. $0.88 total.**
+
+The agent produces patches. They're not good enough yet. Each failure produced a structured correction that feeds into the next run. Whether this compounds into meaningful improvement is the open question.
 
 ---
 
-## The Coder Agent
+## How It Works
 
-An autonomous coding agent that fixes bugs from real-world open-source repositories. Evaluated on SWE-bench Verified - the industry standard benchmark.
+The core is a state machine engine (~260 lines) that drives transitions and logs every step. Use cases are self-contained folders - adding one doesn't require touching the engine.
 
-**Tools:** bash, str_replace_editor, complete, recall_episodes
-**Prompt:** Borrowed from OpenAI's GPT-4.1 guide (persistence + tool-calling + planning = +20% on SWE-bench)
-**Rules:** 27 rules from 7 top SWE-bench agents (Codex CLI, OpenHands, Augment Code, Cursor, Aider, Claude Code, mini-swe-agent)
-**Evaluation:** Docker containers via swebench harness - same setup used by every leaderboard submission
-
-### HITL Learning in Action
+The first use case is a coding agent:
 
 ```
-Run 1:  Agent produces patch for astropy-14508
-        -> Docker eval: target test passes, but test_invalid_float_cards2 regresses
-        -> HITL diagnosis: str() shortcut produces lowercase 'e', FITS requires uppercase 'E'
-        -> Episode captured in episodes.jsonl
-
-Run 2:  Agent sees the correction in its prompt
-        -> Produces improved patch with proper guard
-        -> Episode library grows, future similar bugs benefit
+src/glassbox/
+  core/                 State machine engine, models, base states
+  use_cases/
+    coder/
+      pipeline.py       Agent loop: LLM calls, tool dispatch, patch extraction
+      tools.py          bash, str_replace_editor, complete (Anthropic-style)
+      RULES.md          27 rules injected into system prompt
+      run_swebench.py   Batch runner for SWE-bench instances
+      memory/
+        episodes.py     Episode store + recall_episodes tool
+        episodes.jsonl  Correction history (append-only)
 ```
 
-**First end-to-end HITL run (3 instances):**
-
-| Instance | Patch | Steps | Cost | Eval Result | HITL Correction |
-|----------|-------|-------|------|-------------|-----------------|
-| astropy-14365 | 619 chars | 10 | $0.13 | Tests failed (incomplete fix) | "re.IGNORECASE alone insufficient - write path needs uppercase too" |
-| astropy-14539 | 1251 chars | 29 | $0.66 | Tests failed (wrong approach) | "VLA padding wrong - use element-wise comparison for object-dtype" |
-| astropy-14508 | 514 chars | 9 | $0.09 | Target test passed, regression | "str() gives lowercase e, FITS needs uppercase E - use .16G format" |
-
-**Total cost: $0.88 for 3 instances.** Every failure becomes a learning signal.
+**Tools:** `bash`, `str_replace_editor`, `complete`, `recall_episodes`
+**Model:** Any model via litellm (currently GPT-4o)
+**Prompt design:** Based on [OpenAI's GPT-4.1 guide](https://cookbook.openai.com/examples/gpt4-1_prompting_guide) - persistence, tool-calling, planning
+**Evaluation:** Docker containers via swebench harness, same setup as every leaderboard submission
 
 ---
 
-## Honest Comparison
+## Landscape
 
-We believe in transparency - including about where we fall short.
+For context on where this sits:
 
-| Capability | Devin | OpenHands | Augment Code | Codex CLI | **GlassBox** |
-|---|:---:|:---:|:---:|:---:|:---:|
-| **Autonomous bug fixing** | 🟢 | 🟢 | 🟢 | 🟢 | 🟢 |
-| **SWE-bench score** | 🟢 undisclosed | 🟢 37% | 🟢 65% | 🟢 ~70% | 🔴 **0% (3 instances, WIP)** |
-| **Sandboxed execution** | 🟢 | 🟢 | 🟢 | 🟢 | 🟡 **Local + Docker eval** |
-| **Multi-language support** | 🟢 | 🟢 | 🟢 | 🟢 | 🟡 **Python only (for now)** |
-| **State machine audit trail** | 🔴 | 🔴 | 🔴 | 🔴 | 🟢 |
-| **Human checkpoints (first-class)** | 🟡 Partial | 🔴 | 🔴 | 🔴 | 🟢 |
-| **HITL learning (corrections become rules)** | 🔴 | 🔴 | 🔴 | 🔴 | 🟢 |
-| **Transparent rules (readable, editable, versioned)** | 🔴 | 🔴 | 🟡 | 🟡 AGENTS.md | 🟢 |
-| **Episode memory (past corrections searchable)** | 🔴 | 🔴 | 🔴 | 🔴 | 🟢 |
-| **Enterprise audit compliance** | 🟡 | 🔴 | 🔴 | 🔴 | 🟢 |
-| **Open source** | 🔴 | 🟢 | 🟡 Partial | 🟢 | 🟢 |
+| | SWE-bench | Learns from Corrections | Audit Trail | Open Source |
+|---|:---:|:---:|:---:|:---:|
+| [SWE-agent](https://github.com/SWE-agent/SWE-agent) | 43% | No | Trajectories | Yes |
+| [OpenHands](https://github.com/All-Hands-AI/OpenHands) | 37% | No | Conversation logs | Yes |
+| [Agentless](https://github.com/OpenAutoCoder/Agentless) | 27% | No | No | Yes |
+| **GlassBox** | **0% (n=3)** | **In progress** | **State machine log** | **Yes** |
 
-**Where we're behind** (and working on it):
-- 🔴 **SWE-bench score:** 0% on 3 instances vs 65%+ for leaders. We're early. The infrastructure is built, the scores will follow as we iterate with HITL corrections and stronger models.
-- 🟡 **Sandboxing:** Agent runs locally, evaluation in Docker. Full Docker sandboxing for inference is planned.
-- 🟡 **Language coverage:** Python-only today. The architecture is language-agnostic but tooling isn't.
-
-**Where we lead:**
-- No other open-source agent has first-class HITL learning where human corrections become persistent rules
-- No other agent ships a readable, version-controlled rule file that evolves with every interaction
-- No other agent has an append-only episode store that the agent can search during problem-solving
+The benchmark score is not competitive. The bet is that a correction loop - rules that accumulate, episodes that persist, humans that stay in the loop - is the right foundation for enterprise reliability. That's unproven. We're working on proving it.
 
 ---
 
 ## Quick Start
 
 ```bash
-# Clone and set up
 git clone https://github.com/agentic-trust-labs/glassbox-ai.git
 cd glassbox-ai
 python3.11 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 
-# Set your API key
-cp .env.example .env
-# Edit .env: OPENAI_API_KEY=sk-... and GLASSBOX_MODEL=gpt-4o
+cp .env.example .env  # Set OPENAI_API_KEY and GLASSBOX_MODEL=gpt-4o
 
-# Run on a SWE-bench instance
-.venv/bin/python src/glassbox/use_cases/coder/run_swebench.py \
+python src/glassbox/use_cases/coder/run_swebench.py \
     --dataset SWE-bench/SWE-bench_Verified \
     --split test \
     --instance_ids astropy__astropy-14365 \
     --output predictions.json
-
-# Evaluate with Docker
-DOCKER_HOST=unix://$HOME/.docker/run/docker.sock \
-.venv/bin/python -m swebench.harness.run_evaluation \
-    --dataset_name SWE-bench/SWE-bench_Verified \
-    --predictions_path predictions.json \
-    --max_workers 1 \
-    --run_id my_eval
 ```
 
 ---
 
-## Research
+## What's Next
 
-Built on peer-reviewed research:
-
-- **HITL for Agents** - [HULA, ICSE 2025](https://arxiv.org) - 54% said code had defects without human oversight
-- **Self-Correction** - [Reflexion, NeurIPS 2023](https://arxiv.org/abs/2303.11366), [Self-Refine, NeurIPS 2023](https://arxiv.org/abs/2303.17651)
-- **Agent Prompting** - [OpenAI GPT-4.1 Guide](https://developers.openai.com/cookbook/examples/gpt4-1_prompting_guide/) - persistence + tool-calling + planning
-- **Trust** - [EigenTrust, WWW 2003](https://dl.acm.org/doi/10.1145/775152.775242), [AI Safety via Debate, 2018](https://arxiv.org/abs/1805.00899)
-
----
-
-## License
-
-MIT
+- [ ] Re-run 3 instances with accumulated corrections, measure if pass rate improves
+- [ ] Scale to 50+ SWE-bench instances to get a statistically meaningful score
+- [ ] Docker sandboxing for agent inference, not just evaluation
+- [ ] Test whether `recall_episodes` meaningfully changes agent behavior
+- [ ] Multi-language support beyond Python
 
 ---
 
-Built by [Sourabh Gupta](https://www.linkedin.com/in/sourabhgupta16/) at [Agentic Trust Labs](https://github.com/agentic-trust-labs)
+## Related Work
 
-**Trust is earned, not assumed. 💎**
+- [Reflexion](https://arxiv.org/abs/2303.11366) (NeurIPS 2023) - Verbal reinforcement learning for agents
+- [HULA](https://arxiv.org) (ICSE 2025) - Human-in-the-loop study: 54% said code had defects without human oversight
+- [SWE-agent](https://github.com/SWE-agent/SWE-agent) (NeurIPS 2024) - Agent-computer interfaces for software engineering
+- [Agentless](https://github.com/OpenAutoCoder/Agentless) - Localize, repair, validate without an agent loop
+- [OpenAI GPT-4.1 Guide](https://cookbook.openai.com/examples/gpt4-1_prompting_guide) - Persistence + tool-calling + planning
+
+---
+
+MIT - [Sourabh Gupta](https://www.linkedin.com/in/sourabhgupta16/) / [Agentic Trust Labs](https://github.com/agentic-trust-labs)
